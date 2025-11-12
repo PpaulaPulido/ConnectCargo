@@ -4,14 +4,14 @@ import enum
 import json
 
 class CarrierType(enum.Enum):
-    INDIVIDUAL = 'individual'
-    COMPANY = 'company'
+    INDIVIDUAL = 'INDIVIDUAL'  # Cambiar a mayúsculas
+    COMPANY = 'COMPANY'
 
 class DocumentStatus(enum.Enum):
-    PENDING = 'pending'
-    UNDER_REVIEW = 'under_review'
-    APPROVED = 'approved'
-    REJECTED = 'rejected'
+    PENDING = 'PENDING'
+    UNDER_REVIEW = 'UNDER_REVIEW'
+    APPROVED = 'APPROVED'
+    REJECTED = 'REJECTED'
 
 class Carrier(db.Model):
     __tablename__ = 'carriers'
@@ -19,40 +19,40 @@ class Carrier(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False, unique=True)
     
-    # Professional information
+    # Información profesional
     carrier_type = db.Column(db.Enum(CarrierType), nullable=False)
     driver_license = db.Column(db.String(50), unique=True)
     license_category = db.Column(db.String(10))
     license_expiry_date = db.Column(db.Date)
     
-    # Insurance and documentation
+    # Seguros y documentación
     active_insurance = db.Column(db.Boolean, default=False)
     insurance_policy = db.Column(db.String(100))
     insurance_expiry_date = db.Column(db.Date)
     
-    # Experience and capacity
+    # Experiencia y capacidad
     years_experience = db.Column(db.Integer, default=0)
     max_capacity_kg = db.Column(db.Float)
-    available_vehicle_types = db.Column(db.Text)  
+    available_vehicle_types = db.Column(db.Text)  # JSON
     
-    # History and reputation
+    # Historial y reputación
     carrier_registration_date = db.Column(db.DateTime, default=datetime.utcnow)
     completed_trips = db.Column(db.Integer, default=0)
     average_rating = db.Column(db.Float, default=0.0)
     successful_delivery_rate = db.Column(db.Float, default=0.0)
     
-    # Document verification
+    # Verificación de documentos
     document_status = db.Column(db.Enum(DocumentStatus), default=DocumentStatus.PENDING)
-    complete_documents = db.Column(db.Boolean, default=False)
+    documents_complete = db.Column(db.Boolean, default=False)
     background_check_verified = db.Column(db.Boolean, default=False)
     reliability_seal = db.Column(db.Boolean, default=False)
     
-    # Specializations
-    cargo_specializations = db.Column(db.Text)  
-    usual_routes = db.Column(db.Text) 
+    # Especializaciones
+    cargo_specializations = db.Column(db.Text)  # JSON
+    usual_routes = db.Column(db.Text)  # JSON
     availability_24_7 = db.Column(db.Boolean, default=False)
     
-    # Additional information
+    # Información adicional
     client_reference_1 = db.Column(db.String(200))
     client_reference_2 = db.Column(db.String(200))
     additional_notes = db.Column(db.Text)

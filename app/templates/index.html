@@ -30,8 +30,12 @@
             </ul>
 
             <div class="nav-actions">
-                <a href="#" class="login-btn desktop-only"><i class="fas fa-key"></i> Iniciar sesión</a>
-                <a href="#" class="btn btn-primary desktop-only"><i class="fas fa-plus"></i> Registrarse</a>
+                <a href="{{ url_for('auth.login') }}" class="login-btn desktop-only">
+                    <i class="fas fa-key"></i> Iniciar sesión
+                </a>
+                <a href="{{ url_for('auth.register') }}" class="btn btn-primary desktop-only">
+                    <i class="fas fa-plus"></i> Registrarse
+                </a>
 
                 <!-- Mobile Menu Button - Solo visible en móvil -->
                 <button class="mobile-menu-btn">
@@ -74,10 +78,10 @@
             </ul>
 
             <div class="mobile-menu-actions">
-                <a href="#" class="btn btn-full btn-primary">
+                <a href="{{ url_for('auth.register') }}" class="btn btn-full btn-primary">
                     <i class="fas fa-plus"></i> Registrarse ahora
                 </a>
-                <a href="#" class="btn btn-full btn-secondary mobile-login-btn">
+                <a href="{{ url_for('auth.login') }}" class="btn btn-full btn-secondary mobile-login-btn">
                     <i class="fas fa-key"></i> Iniciar sesión
                 </a>
             </div>
@@ -225,7 +229,8 @@
             <div class="section-content">
                 <div class="section-visual">
                     <div class="image-container driver-image">
-                        <img src="https://images.unsplash.com/photo-1592805144716-feeccccef5ac?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1170">
+                        <img
+                            src="https://images.unsplash.com/photo-1592805144716-feeccccef5ac?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1170">
                         <div class="image-badge">
                             <i class="fas fa-truck"></i>
                             <span>Conductores verificados</span>

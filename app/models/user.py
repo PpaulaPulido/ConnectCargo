@@ -1,5 +1,5 @@
 from app import db
-from datetime import datetime
+from datetime import datetime, timedelta
 import enum
 
 class UserType(enum.Enum):
@@ -40,10 +40,15 @@ class User(db.Model):
     country = db.Column(db.String(100), default='Colombia')
     
     # Validation and verification
-    identity_document = db.Column(db.String(50), unique=True)
+    identity_document = db.Column(db.String(50), unique=True, nullable=True) 
     document_type = db.Column(db.Enum(DocumentType))
     document_verified = db.Column(db.Boolean, default=False)
     verification_date = db.Column(db.DateTime)
+    
+    # Email verification
+    email_verified = db.Column(db.Boolean, default=False)
+    verification_token = db.Column(db.String(100), unique=True)
+    verification_token_expires = db.Column(db.DateTime)
     
     # Account status
     registration_date = db.Column(db.DateTime, default=datetime.utcnow)
@@ -63,6 +68,27 @@ class User(db.Model):
     # Relationships
     company = db.relationship('Company', backref='user', uselist=False, cascade='all, delete-orphan')
     carrier = db.relationship('Carrier', backref='user', uselist=False, cascade='all, delete-orphan')
+    
+    def generate_verification_token(self):
+        """Generate unique verification token"""
+        import secrets
+        self.verification_token = secrets.token_urlsafe(32)
+        self.verification_token_expires = datetime.utcnow() + timedelta(hours=24)
+        return self.verification_token
+    
+    def is_verification_token_valid(self):
+        """Check if verification token is valid"""
+        if not self.verification_token or not self.verification_token_expires:
+            return False
+        return datetime.utcnow() < self.verification_token_expires
+    
+    def verify_email(self):
+        """Mark email as verified"""
+        self.email_verified = True
+        self.account_status = AccountStatus.ACTIVE
+        self.verification_date = datetime.utcnow()
+        self.verification_token = None
+        self.verification_token_expires = None
     
     def __repr__(self):
         return f'<User {self.email} - {self.user_type.value}>'
