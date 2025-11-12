@@ -930,3 +930,196 @@ body {
         text-align: center;
     }
 }
+
+/* Estilos específicos para Forgot Password */
+.forgot-password-container {
+    width: 100%;
+    max-width: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.forgot-password-card {
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(20px);
+    border-radius: var(--border-radius-lg);
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.1),
+        0 2px 8px rgba(255, 255, 255, 0.1) inset;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 3rem;
+    width: 100%;
+    max-width: 450px;
+    animation: cardSlideIn 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    transition: var(--transition-slow);
+}
+
+.forgot-password-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: var(--transition-slow);
+}
+
+.forgot-password-card:hover::before {
+    left: 100%;
+}
+
+.forgot-password-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 
+        0 15px 40px rgba(0, 0, 0, 0.15),
+        0 2px 8px rgba(255, 255, 255, 0.2) inset;
+}
+
+/* Información adicional */
+.form-info {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.25rem;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: var(--border-radius);
+    border-left: 4px solid var(--accent-primary);
+    margin: 1.5rem 0;
+    backdrop-filter: blur(10px);
+    animation: slideIn 0.6s ease-out;
+}
+
+.form-info i {
+    color: var(--accent-primary);
+    font-size: 1.2rem;
+    margin-top: 0.1rem;
+    flex-shrink: 0;
+}
+
+.form-info p {
+    color: var(--text-light);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin: 0;
+    opacity: 0.9;
+}
+
+/* Botón de advertencia */
+.warning-btn {
+    background: linear-gradient(135deg, #F59E0B, #D97706);
+    box-shadow: 0 8px 25px rgba(245, 158, 11, 0.3);
+}
+
+.warning-btn:hover {
+    box-shadow: 0 12px 35px rgba(245, 158, 11, 0.4);
+}
+
+.warning-btn::before {
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+}
+
+/* Animación específica para el ícono de forgot password */
+.forgot-password-card .header-icon {
+    background: linear-gradient(135deg, #F59E0B, #D97706);
+    box-shadow: 0 8px 25px rgba(245, 158, 11, 0.3);
+}
+
+/* Enlace de volver */
+.auth-footer a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: var(--transition);
+}
+
+.auth-footer a:hover {
+    transform: translateX(-3px);
+}
+
+/* Estados de éxito para el formulario */
+.success-state {
+    text-align: center;
+    padding: 2rem 0;
+}
+
+.success-icon {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #10B981, #059669);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    color: var(--text-light);
+    font-size: 2rem;
+    box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
+    animation: successPulse 2s ease-in-out infinite;
+}
+
+@keyframes successPulse {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 12px 35px rgba(16, 185, 129, 0.4);
+    }
+}
+
+.success-state h3 {
+    color: var(--text-light);
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.success-state p {
+    color: var(--text-light);
+    opacity: 0.9;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+}
+
+/* Responsive para forgot password */
+@media (max-width: 768px) {
+    .forgot-password-card {
+        padding: 2rem;
+        margin: 1rem;
+    }
+    
+    .form-info {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.75rem;
+    }
+    
+    .form-info i {
+        align-self: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .forgot-password-card {
+        padding: 1.5rem;
+    }
+    
+    .form-info {
+        padding: 1rem;
+    }
+    
+    .success-state {
+        padding: 1.5rem 0;
+    }
+    
+    .success-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 1.5rem;
+    }
+}

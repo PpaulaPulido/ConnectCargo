@@ -2,8 +2,11 @@ class Auth {
     constructor() {
         this.isLoginPage = document.getElementById('loginForm') !== null;
         this.isRegisterPage = document.getElementById('registerForm') !== null;
+        this.isForgotPasswordPage = document.getElementById('forgotPasswordForm') !== null;
+        
         this.form = this.isLoginPage ? document.getElementById('loginForm') : 
-                     this.isRegisterPage ? document.getElementById('registerForm') : null;
+                     this.isRegisterPage ? document.getElementById('registerForm') :
+                     this.isForgotPasswordPage ? document.getElementById('forgotPasswordForm') : null;
         
         if (this.form) {
             this.init();
@@ -17,6 +20,10 @@ class Auth {
         if (this.isRegisterPage) {
             this.setupRealTimeValidation();
             this.setupPasswordStrength();
+        }
+        
+        if (this.isForgotPasswordPage) {
+            this.setupForgotPasswordValidation();
         }
         
         this.setupInputAnimations();
@@ -80,6 +87,20 @@ class Auth {
                 input.style.transition = 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
             }, index * 100);
         });
+
+        // Animación para elementos de información
+        const infoElements = document.querySelectorAll('.form-info');
+        infoElements.forEach((element, index) => {
+            element.style.animationDelay = `${(index + inputs.length) * 0.1}s`;
+            element.style.opacity = '0';
+            element.style.transform = 'translateX(-30px)';
+            
+            setTimeout(() => {
+                element.style.opacity = '1';
+                element.style.transform = 'translateX(0)';
+                element.style.transition = 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+            }, (index + inputs.length) * 100);
+        });
     }
 
     setupRealTimeValidation() {
@@ -101,6 +122,15 @@ class Auth {
         if (confirmPassword) {
             confirmPassword.addEventListener('blur', () => {
                 this.validatePasswordMatch();
+            });
+        }
+    }
+
+    setupForgotPasswordValidation() {
+        const emailInput = document.getElementById('email');
+        if (emailInput) {
+            emailInput.addEventListener('blur', () => {
+                this.validateEmail(emailInput.value);
             });
         }
     }
@@ -293,8 +323,11 @@ class Auth {
         submitBtn.classList.add('loading');
         submitBtn.disabled = true;
 
-        // Simular envío al servidor
-        const delay = this.isLoginPage ? 1500 : 2000;
+        // Simular envío al servidor con diferentes tiempos
+        let delay = 1500;
+        if (this.isRegisterPage) delay = 2000;
+        if (this.isForgotPasswordPage) delay = 1800;
+
         await new Promise(resolve => setTimeout(resolve, delay));
 
         this.form.submit();
