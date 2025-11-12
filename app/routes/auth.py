@@ -213,7 +213,7 @@ def register():
                 new_profile = Carrier(
                     user_id=new_user.id,
                     carrier_type=CarrierType.INDIVIDUAL,  # Usar el enum CarrierType
-                    driver_license=''  # Se actualizará en el perfil
+                    driver_license=None  # Se actualizará en el perfil
                 )
             
             db.session.add(new_profile)
