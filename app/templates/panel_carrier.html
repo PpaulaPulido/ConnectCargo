@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bienvenida Transportista - ConnectCargo</title>
+    <style>
+        body { font-family: Arial; max-width: 800px; margin: 50px auto; padding: 20px; }
+        .welcome-container { text-align: center; padding: 40px; background: #f8f9fa; border-radius: 10px; }
+        .welcome-title { color: #28a745; font-size: 32px; margin-bottom: 20px; }
+        .welcome-subtitle { color: #666; font-size: 18px; margin-bottom: 30px; }
+        .dashboard-options { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 40px; }
+        .option-card { background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); text-align: center; }
+        .option-card h3 { color: #28a745; margin-bottom: 15px; }
+        .btn { display: inline-block; padding: 12px 24px; background: #28a745; color: white; text-decoration: none; border-radius: 5px; margin: 10px 5px; }
+        .btn-secondary { background: #6c757d; }
+    </style>
+</head>
+<body>
+    <div class="welcome-container">
+        <h1 class="welcome-title">¡Bienvenido Transportista!</h1>
+        <p class="welcome-subtitle">Estamos encantados de tenerte en ConnectCargo</p>
+        <p>Ahora puedes comenzar a encontrar cargas y optimizar tus rutas.</p>
+        
+        <div class="dashboard-options">
+            <div class="option-card">
+                <h3>🚚 Encontrar Cargas</h3>
+                <p>Explora cargas disponibles que se ajusten a tu ruta</p>
+                <a href="#" class="btn">Buscar cargas</a>
+            </div>
+            
+            <div class="option-card">
+                <h3>🗺️ Mis Rutas</h3>
+                <p>Gestiona y optimiza tus rutas de transporte</p>
+                <a href="#" class="btn">Gestionar rutas</a>
+            </div>
+            
+            <div class="option-card">
+                <h3>📊 Mi Dashboard</h3>
+                <p>Revisa tus viajes, ganancias y calificaciones</p>
+                <a href="#" class="btn">Ver dashboard</a>
+            </div>
+            
+            <div class="option-card">
+                <h3>⚙️ Mi Perfil</h3>
+                <p>Completa tu información y documentos</p>
+                <a href="#" class="btn btn-secondary">Editar perfil</a>
+            </div>
+        </div>
+        
+        <div style="margin-top: 40px;">
+            <a href="{{ url_for('main.index') }}" class="btn">Ir al inicio</a>
+            <a href="{{ url_for('auth.login') }}" class="btn btn-secondary">Cerrar sesión</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -262,7 +262,13 @@ def login():
             db.session.commit()
             
             flash(f'¡Bienvenido de nuevo, {email}!', 'success')
-            return redirect(url_for('main.index'))
+            
+            # Redirigir según el tipo de usuario
+            if user.user_type == UserType.COMPANY:
+                return redirect(url_for('auth.welcome_company'))
+            else:  # CARRIER
+                return redirect(url_for('auth.welcome_carrier'))
+                
         else:
             # Incrementar intentos fallidos
             if user:
@@ -275,6 +281,16 @@ def login():
                 flash('Email o contraseña inválidos.', 'error')
     
     return render_template('login.html')
+
+@bp.route('/welcome/company')
+def welcome_company():
+    """Página de bienvenida para empresas"""
+    return render_template('panel_company.html')
+
+@bp.route('/welcome/carrier')
+def welcome_carrier():
+    """Página de bienvenida para transportistas"""
+    return render_template('panel_carrier.html')
 
 @bp.route('/verify-email/<token>')
 def verify_email(token):
