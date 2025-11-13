@@ -31,7 +31,7 @@ class User(db.Model):
     password_hash = db.Column(db.String(255), nullable=False)
     user_type = db.Column(db.Enum(UserType), nullable=False)
     
-    # Contact information
+    # Información de contacto
     phone = db.Column(db.String(20), nullable=False)
     alternative_phone = db.Column(db.String(20))
     address = db.Column(db.String(200), nullable=False)
@@ -39,7 +39,10 @@ class User(db.Model):
     state = db.Column(db.String(100))
     country = db.Column(db.String(100), default='Colombia')
     
-    # Validation and verification
+    # Foto de perfil - NUEVO CAMPO
+    profile_picture = db.Column(db.String(255), nullable=True)  # Ruta/URL de la imagen
+    
+    # Validación y verificación
     identity_document = db.Column(db.String(50), unique=True, nullable=True) 
     document_type = db.Column(db.Enum(DocumentType))
     document_verified = db.Column(db.Boolean, default=False)
@@ -89,6 +92,16 @@ class User(db.Model):
         self.verification_date = datetime.utcnow()
         self.verification_token = None
         self.verification_token_expires = None
+    
+    def get_profile_picture_url(self):
+        """Obtener URL de la foto de perfil"""
+        if self.profile_picture:
+            return f"/static/uploads/profiles/{self.profile_picture}"
+        # Foto por defecto basada en el tipo de usuario
+        if self.user_type == UserType.COMPANY:
+            return "/static/images/default-company.png"
+        else:
+            return "/static/images/default-carrier.png"
     
     def __repr__(self):
         return f'<User {self.email} - {self.user_type.value}>'
