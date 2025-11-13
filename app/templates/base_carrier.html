@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}ConnectCargo - Conductor{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+    <div class="carrier-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-truck-moving"></i>
+                    </div>
+                    <span class="logo-text">ConnectCargo</span>
+                </div>
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+
+            <nav class="sidebar-nav">
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="{{ url_for('carriers.carrier_dashboard') }}"
+                            class="nav-link {% if request.endpoint == 'carriers.carrier_dashboard' %}active{% endif %}">
+                            <i class="fas fa-home"></i>
+                            <span>Inicio</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item has-submenu">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-search"></i>
+                            <span>Buscar Cargas</span>
+                            <i class="fas fa-chevron-down submenu-toggle"></i>
+                        </a>
+                        <ul class="submenu">
+                            <li><a href="{{ url_for('carriers.available_loads') }}">Cargas Disponibles</a></li>
+                            <li><a href="{{ url_for('carriers.filter_loads') }}">Filtrar por Destino/Peso/Flete</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item has-submenu">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-truck-loading"></i>
+                            <span>Mis Viajes</span>
+                            <i class="fas fa-chevron-down submenu-toggle"></i>
+                        </a>
+                        <ul class="submenu">
+                            <li><a href="{{ url_for('carriers.pending_trips') }}">Pendientes</a></li>
+                            <li><a href="{{ url_for('carriers.accepted_trips') }}">Aceptadas</a></li>
+                            <li><a href="{{ url_for('carriers.completed_trips') }}">Finalizadas</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item has-submenu">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-file-alt"></i>
+                            <span>Documentación</span>
+                            <i class="fas fa-chevron-down submenu-toggle"></i>
+                        </a>
+                        <ul class="submenu">
+                            <li><a href="{{ url_for('carriers.license_insurance') }}">Licencia y Seguros</a></li>
+                            <li><a href="{{ url_for('carriers.verification_status') }}">Estado de Verificación</a></li>
+                            <li><a href="{{ url_for('carriers.upload_documents') }}">Cargar Documentos</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{{ url_for('carriers.vehicle_info') }}" class="nav-link">
+                            <i class="fas fa-truck"></i>
+                            <span>Vehículo</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{{ url_for('carriers.routes') }}" class="nav-link">
+                            <i class="fas fa-route"></i>
+                            <span>Rutas</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{{ url_for('carriers.reputation') }}" class="nav-link">
+                            <i class="fas fa-star"></i>
+                            <span>Reputación</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="{{ url_for('carriers.settings') }}" class="nav-link">
+                            <i class="fas fa-cog"></i>
+                            <span>Configuración</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="notification-badge">
+                    <a href="{{ url_for('carriers.notifications') }}" class="nav-link">
+                        <i class="fas fa-bell"></i>
+                        <span>Notificaciones</span>
+                        <span class="badge">3</span>
+                    </a>
+                </div>
+                <a href="{{ url_for('auth.logout') }}" class="nav-link logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Cerrar Sesión</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <header class="top-header">
+                <div class="header-content">
+                    <div class="header-left">
+                        <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                            <i class="fas fa-bars"></i>
+                        </button>
+                        <div class="search-bar">
+                            <i class="fas fa-search"></i>
+                            <input type="text" placeholder="Buscar carga o destino..." class="search-input">
+                        </div>
+                    </div>
+
+                    <div class="header-right">
+                        <div class="notification-icon">
+                            <a href="{{ url_for('carriers.notifications') }}" class="notification-link">
+                                <i class="fas fa-bell"></i>
+                                <span class="notification-dot"></span>
+                            </a>
+                        </div>
+                        <div class="user-profile">
+                            <div class="profile-dropdown">
+                                <button class="profile-trigger">
+                                    <img src="{{ url_for('static', filename='images/default-avatar.jpg') }}"
+                                        alt="Perfil" class="profile-image">
+                                    <span class="profile-name">{{ current_user.name if current_user else 'Conductor'
+                                        }}</span>
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                                <div class="dropdown-menu">
+                                    <a href="{{ url_for('carriers.carrier_profile') }}" class="dropdown-item">
+                                        <i class="fas fa-user"></i>
+                                        Ver Perfil
+                                    </a>
+                                    <a href="{{ url_for('carriers.settings') }}" class="dropdown-item">
+                                        <i class="fas fa-cog"></i>
+                                        Configuración
+                                    </a>
+                                    <div class="dropdown-divider"></div>
+                                    <a href="{{ url_for('auth.logout') }}" class="dropdown-item">
+                                        <i class="fas fa-sign-out-alt"></i>
+                                        Cerrar Sesión
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Page Content -->
+            <main class="page-content">
+                {% block content %}{% endblock %}
+            </main>
+
+            <!-- Footer -->
+            <footer class="footer">
+                <div class="container">
+                    <div class="footer-content">
+                        <div class="footer-main">
+                            <div class="footer-brand">
+                                <a href="{{ url_for('main.index') }}" class="logo">
+                                    <div class="logo-icon">
+                                        <i class="fas fa-truck-moving"></i>
+                                    </div>
+                                    <span class="span-connect">ConnectCargo</span>
+                                </a>
+                                <p class="footer-description">
+                                    Conectando transportistas con empresas para una logística más eficiente y
+                                    sostenible.
+                                </p>
+                                <div class="social-links">
+                                    <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                                    <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="footer-bottom">
+                            <p>&copy; 2025 ConnectCargo. Todos los derechos reservados.</p>
+                            <div class="footer-apps">
+                                <a href="#" class="app-link">
+                                    <i class="fab fa-apple"></i>
+                                    <span>App Store</span>
+                                </a>
+                                <a href="#" class="app-link">
+                                    <i class="fab fa-google-play"></i>
+                                    <span>Google Play</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Overlay for mobile -->
+    <div class="mobile-overlay" id="mobileOverlay"></div>
+
+    <script src="{{ url_for('static', filename='js/functions.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/base.js') }}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+
+</html>

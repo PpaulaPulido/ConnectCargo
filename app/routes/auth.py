@@ -351,3 +351,9 @@ def forgot_password():
         return redirect(url_for('auth.login'))
     
     return render_template('forgot_password.html')
+
+@bp.route('/logout')
+def logout():
+    """Cerrar sesión del usuario"""
+    flash('Has cerrado sesión correctamente.', 'success')
+    return redirect(url_for('auth.login'))

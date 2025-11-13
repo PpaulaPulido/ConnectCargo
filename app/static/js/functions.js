@@ -1,198 +1,99 @@
-// Utility Functions - Reutilizables en toda la aplicación
+// Utility functions for carrier dashboard
 
-class FormValidator {
-    static validateEmail(email) {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(email);
+class CarrierUtils {
+    // Format currency
+    static formatCurrency(amount, currency = 'USD') {
+        return new Intl.NumberFormat('es-MX', {
+            style: 'currency',
+            currency: currency
+        }).format(amount);
     }
 
-    static validatePhone(phone) {
-        const phoneRegex = /^[\+]?[1-9][\d]{0,15}$/;
-        return phoneRegex.test(phone.replace(/[\s\-\(\)]/g, ''));
-    }
-
-    static validatePassword(password) {
-        const rules = {
-            length: password.length >= 8,
-            uppercase: /[A-Z]/.test(password),
-            number: /\d/.test(password),
-            special: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)
+    // Format date
+    static formatDate(date, options = {}) {
+        const defaultOptions = {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric'
         };
-        
-        return {
-            isValid: Object.values(rules).every(Boolean),
-            rules: rules
-        };
+        return new Date(date).toLocaleDateString('es-MX', { ...defaultOptions, ...options });
     }
 
-    static showValidation(element, isValid, message = '') {
-        const formGroup = element.closest('.form-group');
-        const feedback = formGroup.querySelector('.form-feedback');
+    // Format time
+    static formatTime(date) {
+        return new Date(date).toLocaleTimeString('es-MX', {
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+    }
+
+    // Calculate distance between coordinates (Haversine formula)
+    static calculateDistance(lat1, lon1, lat2, lon2) {
+        const R = 6371; // Earth's radius in km
+        const dLat = this.deg2rad(lat2 - lat1);
+        const dLon = this.deg2rad(lon2 - lon1);
+        const a = 
+            Math.sin(dLat/2) * Math.sin(dLat/2) +
+            Math.cos(this.deg2rad(lat1)) * Math.cos(this.deg2rad(lat2)) * 
+            Math.sin(dLon/2) * Math.sin(dLon/2); 
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+        return R * c;
+    }
+
+    static deg2rad(deg) {
+        return deg * (Math.PI/180);
+    }
+
+    // Estimate travel time
+    static estimateTravelTime(distanceKm, averageSpeed = 60) {
+        const hours = distanceKm / averageSpeed;
+        const totalMinutes = Math.round(hours * 60);
         
-        element.classList.remove('error', 'success');
-        feedback.classList.remove('error', 'success');
-        feedback.textContent = '';
-        
-        if (message) {
-            element.classList.add(isValid ? 'success' : 'error');
-            feedback.classList.add(isValid ? 'success' : 'error');
-            feedback.textContent = message;
+        if (totalMinutes < 60) {
+            return `${totalMinutes} min`;
+        } else {
+            const hours = Math.floor(totalMinutes / 60);
+            const minutes = totalMinutes % 60;
+            return minutes > 0 ? `${hours}h ${minutes}min` : `${hours}h`;
         }
-        
-        return isValid;
-    }
-}
-
-class AnimationHelper {
-    static fadeIn(element, duration = 300) {
-        element.style.opacity = '0';
-        element.style.display = 'block';
-        
-        const start = performance.now();
-        
-        function animate(time) {
-            const elapsed = time - start;
-            const progress = Math.min(elapsed / duration, 1);
-            
-            element.style.opacity = progress;
-            
-            if (progress < 1) {
-                requestAnimationFrame(animate);
-            }
-        }
-        
-        requestAnimationFrame(animate);
     }
 
-    static fadeOut(element, duration = 300) {
-        const start = performance.now();
-        const startOpacity = parseFloat(getComputedStyle(element).opacity);
-        
-        function animate(time) {
-            const elapsed = time - start;
-            const progress = Math.min(elapsed / duration, 1);
-            
-            element.style.opacity = startOpacity * (1 - progress);
-            
-            if (progress < 1) {
-                requestAnimationFrame(animate);
-            } else {
-                element.style.display = 'none';
-            }
-        }
-        
-        requestAnimationFrame(animate);
+    // Generate random ID
+    static generateId(prefix = '') {
+        return prefix + Math.random().toString(36).substr(2, 9);
     }
 
-    static slideDown(element, duration = 300) {
-        element.style.display = 'block';
-        const height = element.offsetHeight;
-        element.style.height = '0px';
-        element.style.overflow = 'hidden';
-        
-        const start = performance.now();
-        
-        function animate(time) {
-            const elapsed = time - start;
-            const progress = Math.min(elapsed / duration, 1);
-            const ease = AnimationHelper.easeOutQuart(progress);
-            
-            element.style.height = `${height * ease}px`;
-            
-            if (progress < 1) {
-                requestAnimationFrame(animate);
-            } else {
-                element.style.height = '';
-                element.style.overflow = '';
-            }
-        }
-        
-        requestAnimationFrame(animate);
-    }
-
-    static slideUp(element, duration = 300) {
-        const height = element.offsetHeight;
-        element.style.height = `${height}px`;
-        element.style.overflow = 'hidden';
-        
-        const start = performance.now();
-        
-        function animate(time) {
-            const elapsed = time - start;
-            const progress = Math.min(elapsed / duration, 1);
-            const ease = AnimationHelper.easeOutQuart(progress);
-            
-            element.style.height = `${height * (1 - ease)}px`;
-            
-            if (progress < 1) {
-                requestAnimationFrame(animate);
-            } else {
-                element.style.display = 'none';
-                element.style.height = '';
-                element.style.overflow = '';
-            }
-        }
-        
-        requestAnimationFrame(animate);
-    }
-
-    static easeOutQuart(x) {
-        return 1 - Math.pow(1 - x, 4);
-    }
-}
-
-class DOMHelper {
-    static createRipple(event) {
-        const button = event.currentTarget;
-        const circle = document.createElement('span');
-        const diameter = Math.max(button.clientWidth, button.clientHeight);
-        const radius = diameter / 2;
-        
-        circle.style.width = circle.style.height = `${diameter}px`;
-        circle.style.left = `${event.clientX - button.getBoundingClientRect().left - radius}px`;
-        circle.style.top = `${event.clientY - button.getBoundingClientRect().top - radius}px`;
-        circle.classList.add('ripple');
-        
-        const ripple = button.getElementsByClassName('ripple')[0];
-        if (ripple) {
-            ripple.remove();
-        }
-        
-        button.appendChild(circle);
-        
-        setTimeout(() => circle.remove(), 600);
-    }
-
-    static debounce(func, wait) {
+    // Debounce function
+    static debounce(func, wait, immediate) {
         let timeout;
         return function executedFunction(...args) {
             const later = () => {
-                clearTimeout(timeout);
-                func(...args);
+                timeout = null;
+                if (!immediate) func(...args);
             };
+            const callNow = immediate && !timeout;
             clearTimeout(timeout);
             timeout = setTimeout(later, wait);
+            if (callNow) func(...args);
         };
     }
 
+    // Throttle function
     static throttle(func, limit) {
         let inThrottle;
-        return function() {
-            const args = arguments;
-            const context = this;
+        return function(...args) {
             if (!inThrottle) {
-                func.apply(context, args);
+                func.apply(this, args);
                 inThrottle = true;
                 setTimeout(() => inThrottle = false, limit);
             }
         };
     }
-}
 
-class StorageHelper {
-    static set(key, value) {
+    // Local storage utilities
+    static setStorage(key, value) {
         try {
-            localStorage.setItem(key, JSON.stringify(value));
+            localStorage.setItem(`carrier_${key}`, JSON.stringify(value));
             return true;
         } catch (error) {
             console.error('Error saving to localStorage:', error);
@@ -200,69 +101,149 @@ class StorageHelper {
         }
     }
 
-    static get(key) {
+    static getStorage(key, defaultValue = null) {
         try {
-            const item = localStorage.getItem(key);
-            return item ? JSON.parse(item) : null;
+            const item = localStorage.getItem(`carrier_${key}`);
+            return item ? JSON.parse(item) : defaultValue;
         } catch (error) {
             console.error('Error reading from localStorage:', error);
-            return null;
+            return defaultValue;
         }
     }
 
-    static remove(key) {
+    static removeStorage(key) {
         try {
-            localStorage.removeItem(key);
+            localStorage.removeItem(`carrier_${key}`);
             return true;
         } catch (error) {
             console.error('Error removing from localStorage:', error);
             return false;
         }
     }
-}
 
-class NotificationManager {
-    static show(message, type = 'info', duration = 5000) {
-        // Reutilizar el sistema de flash messages o crear notificaciones toast
-        const flashMessages = document.querySelector('.flash-messages');
-        if (flashMessages) {
-            const notification = document.createElement('div');
-            notification.className = `flash-message flash-${type}`;
-            notification.innerHTML = `
-                <span class="flash-icon">
-                    <i class="fas fa-${this.getIcon(type)}"></i>
-                </span>
-                <span class="flash-text">${message}</span>
-                <button class="flash-close" onclick="this.parentElement.remove()">
-                    <i class="fas fa-times"></i>
-                </button>
+    // Notification utilities
+    static showNotification(message, type = 'info', duration = 5000) {
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.className = `notification notification-${type}`;
+        notification.innerHTML = `
+            <div class="notification-content">
+                <i class="notification-icon ${this.getNotificationIcon(type)}"></i>
+                <span>${message}</span>
+            </div>
+            <button class="notification-close">&times;</button>
+        `;
+
+        // Add styles if not already added
+        if (!document.querySelector('#notification-styles')) {
+            const styles = document.createElement('style');
+            styles.id = 'notification-styles';
+            styles.textContent = `
+                .notification {
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: white;
+                    border-radius: var(--border-radius);
+                    box-shadow: var(--shadow-large);
+                    padding: 1rem 1.5rem;
+                    display: flex;
+                    align-items: center;
+                    gap: 1rem;
+                    max-width: 400px;
+                    z-index: 10000;
+                    animation: slideInRight 0.3s ease;
+                    border-left: 4px solid;
+                }
+                .notification-success { border-left-color: #10B981; }
+                .notification-error { border-left-color: #EF4444; }
+                .notification-warning { border-left-color: #F59E0B; }
+                .notification-info { border-left-color: #3B82F6; }
+                .notification-content { display: flex; align-items: center; gap: 0.75rem; flex: 1; }
+                .notification-close { background: none; border: none; font-size: 1.2rem; cursor: pointer; opacity: 0.7; }
+                .notification-close:hover { opacity: 1; }
+                @keyframes slideInRight {
+                    from { transform: translateX(100%); opacity: 0; }
+                    to { transform: translateX(0); opacity: 1; }
+                }
             `;
+            document.head.appendChild(styles);
+        }
+
+        document.body.appendChild(notification);
+
+        // Auto remove after duration
+        const autoRemove = setTimeout(() => {
+            notification.remove();
+        }, duration);
+
+        // Close button
+        notification.querySelector('.notification-close').addEventListener('click', () => {
+            clearTimeout(autoRemove);
+            notification.remove();
+        });
+
+        return notification;
+    }
+
+    static getNotificationIcon(type) {
+        const icons = {
+            success: 'fas fa-check-circle',
+            error: 'fas fa-exclamation-circle',
+            warning: 'fas fa-exclamation-triangle',
+            info: 'fas fa-info-circle'
+        };
+        return icons[type] || icons.info;
+    }
+
+    // Form validation
+    static validateEmail(email) {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(email);
+    }
+
+    static validatePhone(phone) {
+        const re = /^[\+]?[1-9][\d]{0,15}$/;
+        const cleanPhone = phone.replace(/[\s\-\(\)]/g, '');
+        return re.test(cleanPhone);
+    }
+
+    // API request helper
+    static async apiRequest(endpoint, options = {}) {
+        const defaultOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include'
+        };
+
+        try {
+            const response = await fetch(endpoint, { ...defaultOptions, ...options });
+            const data = await response.json();
             
-            flashMessages.appendChild(notification);
-            
-            if (duration > 0) {
-                setTimeout(() => {
-                    if (notification.parentElement) {
-                        notification.remove();
-                    }
-                }, duration);
+            if (!response.ok) {
+                throw new Error(data.message || 'Request failed');
             }
+            
+            return data;
+        } catch (error) {
+            console.error('API request failed:', error);
+            throw error;
         }
     }
 
-    static getIcon(type) {
-        const icons = {
-            success: 'check-circle',
-            error: 'exclamation-circle',
-            warning: 'exclamation-triangle',
-            info: 'info-circle'
-        };
-        return icons[type] || 'info-circle';
+    // Load animation
+    static showLoading(element) {
+        element.classList.add('loading');
+        element.disabled = true;
+    }
+
+    static hideLoading(element) {
+        element.classList.remove('loading');
+        element.disabled = false;
     }
 }
 
-window.FormValidator = FormValidator;
-window.AnimationHelper = AnimationHelper;
-window.DOMHelper = DOMHelper;
-window.StorageHelper = StorageHelper;
-window.NotificationManager = NotificationManager;
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = CarrierUtils;
+}
