@@ -1,87 +1,219 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, flash, redirect, url_for, request, jsonify
+from flask_login import login_required, current_user
 
 bp = Blueprint('carriers', __name__)
 
 @bp.route('/')
+@login_required
 def carrier_dashboard():
-    return "Carrier Dashboard - Coming Soon"
+    """Dashboard del transportista"""
+    if current_user.user_type.value != 'carrier':
+        flash('No tienes permisos para acceder a esta sección', 'error')
+        return redirect(url_for('main.index'))
+    
+    return render_template('carriers/dashboard.html')
 
 @bp.route('/profile')
+@login_required
 def carrier_profile():
-    return "Carrier Profile - Coming Soon"
+    """Perfil del transportista"""
+    if current_user.user_type.value != 'carrier':
+        flash('No tienes permisos para acceder a esta sección', 'error')
+        return redirect(url_for('main.index'))
+    
+    return render_template('carriers/profile.html')
 
 # ------------------------
 # CARGAS / BÚSQUEDA
 # ------------------------
 
 @bp.route('/available-loads')
+@login_required
 def available_loads():
-    return "Cargas disponibles - Coming Soon"
+    """Cargas disponibles"""
+    if current_user.user_type.value != 'carrier':
+        flash('No tienes permisos para acceder a esta sección', 'error')
+        return redirect(url_for('main.index'))
+    
+    return render_template('carriers/available_loads.html')
 
 @bp.route('/filter-loads')
+@login_required
 def filter_loads():
-    return "Filtrar cargas - Coming Soon"
+    """Filtrar cargas"""
+    if current_user.user_type.value != 'carrier':
+        flash('No tienes permisos para acceder a esta sección', 'error')
+        return redirect(url_for('main.index'))
+    
+    return render_template('carriers/filter_loads.html')
 
 @bp.route('/manage-loads')
+@login_required
 def manage_loads():
-    return "Gestionar cargas - Coming Soon"
+    """Gestionar cargas"""
+    if current_user.user_type.value != 'carrier':
+        flash('No tienes permisos para acceder a esta sección', 'error')
+        return redirect(url_for('main.index'))
+    
+    return render_template('carriers/manage_loads.html')
 
 # ------------------------
 # VIAJES (MIS VIAJES)
 # ------------------------
 
 @bp.route('/pending-trips')
+@login_required
 def pending_trips():
-    return "Viajes pendientes - Coming Soon"
+    """Viajes pendientes"""
+    if current_user.user_type.value != 'carrier':
+        flash('No tienes permisos para acceder a esta sección', 'error')
+        return redirect(url_for('main.index'))
+    
+    return render_template('carriers/pending_trips.html')
 
 @bp.route('/accepted-trips')
+@login_required
 def accepted_trips():
-    return "Viajes aceptados - Coming Soon"
+    """Viajes aceptados"""
+    if current_user.user_type.value != 'carrier':
+        flash('No tienes permisos para acceder a esta sección', 'error')
+        return redirect(url_for('main.index'))
+    
+    return render_template('carriers/accepted_trips.html')
 
 @bp.route('/completed-trips')
+@login_required
 def completed_trips():
-    return "Viajes finalizados - Coming Soon"
+    """Viajes finalizados"""
+    if current_user.user_type.value != 'carrier':
+        flash('No tienes permisos para acceder a esta sección', 'error')
+        return redirect(url_for('main.index'))
+    
+    return render_template('carriers/completed_trips.html')
 
 # ------------------------
 # DOCUMENTACIÓN
 # ------------------------
 
 @bp.route('/license-insurance')
+@login_required
 def license_insurance():
-    return "Licencia y seguros - Coming Soon"
+    """Licencia y seguros"""
+    if current_user.user_type.value != 'carrier':
+        flash('No tienes permisos para acceder a esta sección', 'error')
+        return redirect(url_for('main.index'))
+    
+    return render_template('carriers/license_insurance.html')
 
 @bp.route('/verification-status')
+@login_required
 def verification_status():
-    return "Estado de verificación - Coming Soon"
+    """Estado de verificación"""
+    if current_user.user_type.value != 'carrier':
+        flash('No tienes permisos para acceder a esta sección', 'error')
+        return redirect(url_for('main.index'))
+    
+    return render_template('carriers/verification_status.html')
 
 @bp.route('/upload-documents')
+@login_required
 def upload_documents():
-    return "Cargar documentos - Coming Soon"
+    """Cargar documentos"""
+    if current_user.user_type.value != 'carrier':
+        flash('No tienes permisos para acceder a esta sección', 'error')
+        return redirect(url_for('main.index'))
+    
+    return render_template('carriers/upload_documents.html')
 
 # ------------------------
 # VEHÍCULO / RUTAS / REPUTACIÓN
 # ------------------------
 
 @bp.route('/vehicle-info')
+@login_required
 def vehicle_info():
-    return "Información del vehículo - Coming Soon"
+    """Información del vehículo"""
+    if current_user.user_type.value != 'carrier':
+        flash('No tienes permisos para acceder a esta sección', 'error')
+        return redirect(url_for('main.index'))
+    
+    return render_template('carriers/vehicle_info.html')
 
 @bp.route('/routes')
+@login_required
 def routes():
-    return "Rutas - Coming Soon"
+    """Rutas"""
+    if current_user.user_type.value != 'carrier':
+        flash('No tienes permisos para acceder a esta sección', 'error')
+        return redirect(url_for('main.index'))
+    
+    return render_template('carriers/routes.html')
 
 @bp.route('/reputation')
+@login_required
 def reputation():
-    return "Reputación del conductor - Coming Soon"
+    """Reputación del conductor"""
+    if current_user.user_type.value != 'carrier':
+        flash('No tienes permisos para acceder a esta sección', 'error')
+        return redirect(url_for('main.index'))
+    
+    return render_template('carriers/reputation.html')
 
 # ------------------------
 # CONFIGURACIÓN / NOTIFICACIONES
 # ------------------------
 
 @bp.route('/settings')
+@login_required
 def settings():
-    return "Configuración - Coming Soon"
+    """Configuración"""
+    if current_user.user_type.value != 'carrier':
+        flash('No tienes permisos para acceder a esta sección', 'error')
+        return redirect(url_for('main.index'))
+    
+    return render_template('carriers/settings.html')
 
 @bp.route('/notifications')
+@login_required
 def notifications():
-    return "Notificaciones - Coming Soon"
+    """Notificaciones"""
+    if current_user.user_type.value != 'carrier':
+        flash('No tienes permisos para acceder a esta sección', 'error')
+        return redirect(url_for('main.index'))
+    
+    return render_template('carriers/notifications.html')
+
+# ------------------------
+# APIs y funcionalidades adicionales
+# ------------------------
+
+@bp.route('/api/available-loads')
+@login_required
+def api_available_loads():
+    """API para cargas disponibles"""
+    if current_user.user_type.value != 'carrier':
+        return jsonify({'error': 'No autorizado'}), 403
+    
+    loads = []
+    return jsonify(loads)
+
+@bp.route('/api/accept-load/<int:load_id>', methods=['POST'])
+@login_required
+def api_accept_load(load_id):
+    """API para aceptar una carga"""
+    if current_user.user_type.value != 'carrier':
+        return jsonify({'error': 'No autorizado'}), 403
+    
+    # Lógica para aceptar carga
+    flash('Carga aceptada exitosamente', 'success')
+    return jsonify({'success': True, 'message': 'Carga aceptada'})
+
+@bp.route('/api/update-location', methods=['POST'])
+@login_required
+def api_update_location():
+    """API para actualizar ubicación"""
+    if current_user.user_type.value != 'carrier':
+        return jsonify({'error': 'No autorizado'}), 403
+    
+    # Lógica para actualizar ubicación
+    return jsonify({'success': True, 'message': 'Ubicación actualizada'})
