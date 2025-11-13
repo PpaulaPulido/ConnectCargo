@@ -1,6 +1,7 @@
 from app import db
 from datetime import datetime, timedelta
 import enum
+from flask_login import UserMixin 
 
 class UserType(enum.Enum):
     COMPANY = 'company'
@@ -23,7 +24,7 @@ class VerificationLevel(enum.Enum):
     VERIFIED = 'verified'
     PREMIUM = 'premium'
 
-class User(db.Model):
+class User(db.Model, UserMixin): 
     __tablename__ = 'users'
     
     id = db.Column(db.Integer, primary_key=True)
@@ -39,8 +40,8 @@ class User(db.Model):
     state = db.Column(db.String(100))
     country = db.Column(db.String(100), default='Colombia')
     
-    # Foto de perfil - NUEVO CAMPO
-    profile_picture = db.Column(db.String(255), nullable=True)  # Ruta/URL de la imagen
+    # Foto de perfil
+    profile_picture = db.Column(db.String(255), nullable=True)
     
     # Validación y verificación
     identity_document = db.Column(db.String(50), unique=True, nullable=True) 
@@ -72,6 +73,21 @@ class User(db.Model):
     company = db.relationship('Company', backref='user', uselist=False, cascade='all, delete-orphan')
     carrier = db.relationship('Carrier', backref='user', uselist=False, cascade='all, delete-orphan')
     
+    @property
+    def is_active(self):
+        return self.account_status == AccountStatus.ACTIVE
+    
+    @property
+    def is_authenticated(self):
+        return True
+    
+    @property
+    def is_anonymous(self):
+        return False
+    
+    def get_id(self):
+        return str(self.id)
+    
     def generate_verification_token(self):
         """Generate unique verification token"""
         import secrets
@@ -97,7 +113,6 @@ class User(db.Model):
         """Obtener URL de la foto de perfil"""
         if self.profile_picture:
             return f"/static/uploads/profiles/{self.profile_picture}"
-        # Foto por defecto basada en el tipo de usuario
         if self.user_type == UserType.COMPANY:
             return "/static/images/default-company.png"
         else:

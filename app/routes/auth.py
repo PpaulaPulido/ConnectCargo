@@ -1,9 +1,10 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify, current_app
 from flask_mail import Message
+from flask_login import login_user, logout_user, login_required, current_user  # ¡IMPORTANTE!
 from app import db, mail
 from app.models.user import User, AccountStatus, UserType
-from app.models.company import Company, CompanyType  # Añadir CompanyType al import
-from app.models.carrier import Carrier, CarrierType  # Añadir CarrierType al import
+from app.models.company import Company, CompanyType
+from app.models.carrier import Carrier, CarrierType
 import re
 import hashlib
 import secrets
@@ -17,12 +18,10 @@ class EmailVerification:
     @staticmethod
     def is_valid_email(email):
         """Validación robusta de email"""
-        # Patrón más estricto para validación de email
         pattern = r'^[a-zA-Z0-9][a-zA-Z0-9._%+-]{3,}@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
         if not re.match(pattern, email):
             return False
         
-        # Verificar que el dominio tenga al menos 2 partes
         domain = email.split('@')[1]
         if '.' not in domain or len(domain.split('.')[-1]) < 2:
             return False
@@ -33,7 +32,6 @@ class EmailVerification:
     def send_verification_email(user):
         """Enviar email de verificación real"""
         try:
-            # Crear el mensaje
             subject = "Verifica tu cuenta de ConnectCargo"
             verification_url = f"http://localhost:5000/auth/verify-email/{user.verification_token}"
             
@@ -99,7 +97,6 @@ class EmailVerification:
                 body=text_body
             )
             
-            # Enviar el email
             mail.send(msg)
             print(f"✅ Email de verificación enviado a: {user.email}")
             return True
@@ -207,13 +204,13 @@ def register():
                     user_id=new_user.id,
                     legal_name=full_name,
                     commercial_name=full_name,
-                    company_type=CompanyType.LEGAL  # Usar el enum CompanyType
+                    company_type=CompanyType.LEGAL
                 )
             else:  # carrier
                 new_profile = Carrier(
                     user_id=new_user.id,
-                    carrier_type=CarrierType.INDIVIDUAL,  # Usar el enum CarrierType
-                    driver_license=None  # Se actualizará en el perfil
+                    carrier_type=CarrierType.INDIVIDUAL,
+                    driver_license=None
                 )
             
             db.session.add(new_profile)
@@ -257,17 +254,21 @@ def login():
                 flash('Tu cuenta no está activa. Por favor contacta al soporte.', 'error')
                 return render_template('login.html')
             
+            # ¡IMPORTANTE: Iniciar sesión con Flask-Login!
+            login_user(user, remember=True)
+            
             # Actualizar último login
             user.last_login = datetime.utcnow()
+            user.failed_attempts = 0  # Resetear intentos fallidos
             db.session.commit()
             
             flash(f'¡Bienvenido de nuevo, {email}!', 'success')
             
             # Redirigir según el tipo de usuario
             if user.user_type == UserType.COMPANY:
-                return redirect(url_for('auth.welcome_company'))
+                return redirect(url_for('companies.company_dashboard'))
             else:  # CARRIER
-                return redirect(url_for('auth.welcome_carrier'))
+                return redirect(url_for('carriers.carrier_dashboard'))
                 
         else:
             # Incrementar intentos fallidos
@@ -277,19 +278,28 @@ def login():
                     user.lockout_date = datetime.utcnow()
                     flash('Cuenta temporalmente bloqueada por demasiados intentos fallidos.', 'error')
                 db.session.commit()
-            else:
-                flash('Email o contraseña inválidos.', 'error')
+            flash('Email o contraseña inválidos.', 'error')
     
     return render_template('login.html')
 
 @bp.route('/welcome/company')
+@login_required  # Proteger la ruta
 def welcome_company():
     """Página de bienvenida para empresas"""
+    if current_user.user_type != UserType.COMPANY:
+        flash('No tienes permisos para acceder a esta página.', 'error')
+        return redirect(url_for('main.index'))
+    
     return render_template('panel_company.html')
 
 @bp.route('/welcome/carrier')
+@login_required  # Proteger la ruta
 def welcome_carrier():
     """Página de bienvenida para transportistas"""
+    if current_user.user_type != UserType.CARRIER:
+        flash('No tienes permisos para acceder a esta página.', 'error')
+        return redirect(url_for('main.index'))
+    
     return render_template('panel_carrier.html')
 
 @bp.route('/verify-email/<token>')
@@ -343,7 +353,6 @@ def forgot_password():
         
         user = User.query.filter_by(email=email).first()
         if user and user.email_verified:
-            # En una aplicación real, enviar email de recuperación
             flash('Las instrucciones para restablecer tu contraseña han sido enviadas a tu email.', 'success')
         else:
             flash('Si este email existe y está verificado, las instrucciones de recuperación han sido enviadas.', 'success')
@@ -353,7 +362,9 @@ def forgot_password():
     return render_template('forgot_password.html')
 
 @bp.route('/logout')
+@login_required  # Solo usuarios logueados pueden cerrar sesión
 def logout():
     """Cerrar sesión del usuario"""
+    logout_user()  # ¡IMPORTANTE: Usar logout_user de Flask-Login!
     flash('Has cerrado sesión correctamente.', 'success')
     return redirect(url_for('auth.login'))

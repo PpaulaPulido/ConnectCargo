@@ -11,7 +11,8 @@ def carrier_dashboard():
         flash('No tienes permisos para acceder a esta sección', 'error')
         return redirect(url_for('main.index'))
     
-    return render_template('carriers/dashboard.html')
+    return render_template('panel_carrier.html')
+
 
 @bp.route('/profile')
 @login_required
@@ -148,16 +149,6 @@ def routes():
         return redirect(url_for('main.index'))
     
     return render_template('carriers/routes.html')
-
-@bp.route('/reputation')
-@login_required
-def reputation():
-    """Reputación del conductor"""
-    if current_user.user_type.value != 'carrier':
-        flash('No tienes permisos para acceder a esta sección', 'error')
-        return redirect(url_for('main.index'))
-    
-    return render_template('carriers/reputation.html')
 
 # ------------------------
 # CONFIGURACIÓN / NOTIFICACIONES

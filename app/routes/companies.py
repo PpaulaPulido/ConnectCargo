@@ -12,7 +12,7 @@ def company_dashboard():
         flash('No tienes permisos para acceder a esta sección', 'error')
         return redirect(url_for('main.index'))
     
-    return render_template('companies/panel_company.html')
+    return render_template('panel_company.html')
 
 @bp.route('/profile')
 @login_required
