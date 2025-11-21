@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for, jsonify, current_app
 from flask_mail import Message
-from flask_login import login_user, logout_user, login_required, current_user  # ¡IMPORTANTE!
+from flask_login import login_user, logout_user, login_required, current_user
 from app import db, mail
 from app.models.user import User, AccountStatus, UserType
 from app.models.company import Company, CompanyType
@@ -13,11 +13,11 @@ from datetime import datetime
 bp = Blueprint('auth', __name__)
 
 class EmailVerification:
-    """Sistema real de verificación de email"""
+    """Sistema real de verificacion de email"""
     
     @staticmethod
     def is_valid_email(email):
-        """Validación robusta de email"""
+        """Validacion robusta de email"""
         pattern = r'^[a-zA-Z0-9][a-zA-Z0-9._%+-]{3,}@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
         if not re.match(pattern, email):
             return False
@@ -30,7 +30,7 @@ class EmailVerification:
     
     @staticmethod
     def send_verification_email(user):
-        """Enviar email de verificación real"""
+        """Enviar email de verificacion real"""
         try:
             subject = "Verifica tu cuenta de ConnectCargo"
             verification_url = f"http://localhost:5000/auth/verify-email/{user.verification_token}"
@@ -54,18 +54,18 @@ class EmailVerification:
                         <h1>¡Bienvenido a ConnectCargo!</h1>
                     </div>
                     <div class="content">
-                        <h2>Verifica tu dirección de email</h2>
+                        <h2>Verifica tu direccion de email</h2>
                         <p>Hola,</p>
-                        <p>Gracias por registrarte en ConnectCargo. Para completar tu registro y comenzar a usar nuestra plataforma, por favor verifica tu dirección de email haciendo clic en el botón de abajo:</p>
+                        <p>Gracias por registrarte en ConnectCargo. Para completar tu registro y comenzar a usar nuestra plataforma, por favor verifica tu direccion de email haciendo clic en el boton de abajo:</p>
                         
                         <a href="{verification_url}" class="button">Verificar Email</a>
                         
-                        <p>Este enlace de verificación expirará en 24 horas.</p>
+                        <p>Este enlace de verificacion expirara en 24 horas.</p>
                         <p>Si no creaste una cuenta con ConnectCargo, por favor ignora este email.</p>
                     </div>
                     <div class="footer">
                         <p>&copy; 2024 ConnectCargo. Todos los derechos reservados.</p>
-                        <p>Este es un mensaje automático, por favor no respondas a este email.</p>
+                        <p>Este es un mensaje automatico, por favor no respondas a este email.</p>
                     </div>
                 </div>
             </body>
@@ -75,15 +75,15 @@ class EmailVerification:
             text_body = f"""
             ¡Bienvenido a ConnectCargo!
             
-            Verifica tu dirección de email
+            Verifica tu direccion de email
             
             Hola,
             
-            Gracias por registrarte en ConnectCargo. Para completar tu registro y comenzar a usar nuestra plataforma, por favor verifica tu dirección de email visitando el siguiente enlace:
+            Gracias por registrarte en ConnectCargo. Para completar tu registro y comenzar a usar nuestra plataforma, por favor verifica tu direccion de email visitando el siguiente enlace:
             
             {verification_url}
             
-            Este enlace de verificación expirará en 24 horas.
+            Este enlace de verificacion expirara en 24 horas.
             
             Si no creaste una cuenta con ConnectCargo, por favor ignora este email.
             
@@ -98,49 +98,49 @@ class EmailVerification:
             )
             
             mail.send(msg)
-            print(f"✅ Email de verificación enviado a: {user.email}")
+            print(f"Email de verificacion enviado a: {user.email}")
             return True
             
         except Exception as e:
-            print(f"❌ Error enviando email de verificación: {str(e)}")
+            print(f"Error enviando email de verificacion: {str(e)}")
             return False
 
 class PasswordHelper:
-    """Clase de utilidades para contraseñas"""
+    """Clase de utilidades para contrasenas"""
     
     @staticmethod
     def hash_password(password):
-        """Hashear una contraseña para almacenamiento"""
+        """Hashear una contrasena para almacenamiento"""
         return hashlib.sha256(password.encode()).hexdigest()
     
     @staticmethod
     def verify_password(password, hashed):
-        """Verificar una contraseña contra su hash"""
+        """Verificar una contrasena contra su hash"""
         return hashlib.sha256(password.encode()).hexdigest() == hashed
     
     @staticmethod
     def is_strong_password(password):
-        """Validar fortaleza de la contraseña"""
+        """Validar fortaleza de la contrasena"""
         if len(password) < 8:
-            return False, "La contraseña debe tener al menos 8 caracteres"
+            return False, "La contrasena debe tener al menos 8 caracteres"
         
         if not re.search(r'[A-Z]', password):
-            return False, "La contraseña debe contener al menos una letra mayúscula"
+            return False, "La contrasena debe contener al menos una letra mayuscula"
         
         if not re.search(r'[a-z]', password):
-            return False, "La contraseña debe contener al menos una letra minúscula"
+            return False, "La contrasena debe contener al menos una letra minuscula"
         
         if not re.search(r'[0-9]', password):
-            return False, "La contraseña debe contener al menos un número"
+            return False, "La contrasena debe contener al menos un numero"
         
         if not re.search(r'[!@#$%^&*(),.?":{}|<>]', password):
-            return False, "La contraseña debe contener al menos un carácter especial"
+            return False, "La contrasena debe contener al menos un caracter especial"
         
-        return True, "Contraseña segura"
+        return True, "Contrasena segura"
 
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
-    """Página de registro de usuario"""
+    """Pagina de registro de usuario"""
     if request.method == 'POST':
         email = request.form.get('email', '').strip().lower()
         password = request.form.get('password', '')
@@ -149,33 +149,32 @@ def register():
         full_name = request.form.get('full_name', '').strip()
         phone = request.form.get('phone', '').strip()
         
-        # Validación de email
+        # Validacion de email
         if not EmailVerification.is_valid_email(email):
-            flash('Por favor ingresa una dirección de email válida con dominio apropiado.', 'error')
-            return render_template('register.html')
+            flash('Por favor ingresa una direccion de email valida con dominio apropiado.', 'error')
+            return render_template('auth/register.html') 
         
-        # Validación de contraseña
+        # Validacion de contrasena
         is_strong, password_message = PasswordHelper.is_strong_password(password)
         if not is_strong:
             flash(password_message, 'error')
-            return render_template('register.html')
+            return render_template('auth/register.html')
         
         if password != confirm_password:
-            flash('Las contraseñas no coinciden.', 'error')
-            return render_template('register.html')
+            flash('Las contrasenas no coinciden.', 'error')
+            return render_template('auth/register.html')  
         
         if user_type not in ['company', 'carrier']:
-            flash('Por favor selecciona un tipo de usuario válido.', 'error')
-            return render_template('register.html')
+            flash('Por favor selecciona un tipo de usuario valido.', 'error')
+            return render_template('auth/register.html') 
         
         # Verificar si el email ya existe
         existing_user = User.query.filter_by(email=email).first()
         if existing_user:
             flash('Ya existe una cuenta con este email.', 'error')
-            return render_template('register.html')
+            return render_template('auth/register.html') 
         
         try:
-            # Determinar el tipo de usuario usando el enum
             user_type_enum = UserType.CARRIER if user_type == 'carrier' else UserType.COMPANY
             
             # Crear usuario
@@ -192,13 +191,13 @@ def register():
                 terms_acceptance_date=datetime.utcnow()
             )
             
-            # Generar token de verificación
+            # Generar token de verificacion
             new_user.generate_verification_token()
             
             db.session.add(new_user)
             db.session.flush()  # Obtener el ID del usuario
             
-            # Crear perfil específico basado en el tipo de usuario
+            # Crear perfil especifico basado en el tipo de usuario
             if user_type == 'company':
                 new_profile = Company(
                     user_id=new_user.id,
@@ -215,27 +214,27 @@ def register():
             
             db.session.add(new_profile)
             
-            # Enviar email de verificación
+            # Enviar email de verificacion
             email_sent = EmailVerification.send_verification_email(new_user)
             
             if email_sent:
                 db.session.commit()
-                flash('¡Registro exitoso! Por favor revisa tu email para las instrucciones de verificación.', 'success')
+                flash('¡Registro exitoso! Por favor revisa tu email para las instrucciones de verificacion.', 'success')
                 return redirect(url_for('auth.login'))
             else:
                 db.session.rollback()
-                flash('Error enviando email de verificación. Por favor intenta de nuevo.', 'error')
+                flash('Error enviando email de verificacion. Por favor intenta de nuevo.', 'error')
             
         except Exception as e:
             db.session.rollback()
-            flash('Ocurrió un error durante el registro. Por favor intenta de nuevo.', 'error')
+            flash('Ocurrio un error durante el registro. Por favor intenta de nuevo.', 'error')
             print(f"Error de registro: {str(e)}")
     
-    return render_template('register.html')
+    return render_template('auth/register.html') 
 
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
-    """Página de login de usuario"""
+
     if request.method == 'POST':
         email = request.form.get('email', '').strip().lower()
         password = request.form.get('password', '')
@@ -244,30 +243,30 @@ def login():
         user = User.query.filter_by(email=email).first()
         
         if user and PasswordHelper.verify_password(password, user.password_hash):
-            # Verificar si el email está verificado
+            # Verificar si el email esta verificado
             if not user.email_verified:
-                flash('Por favor verifica tu email antes de iniciar sesión. Revisa tu bandeja de entrada para el enlace de verificación.', 'warning')
-                return render_template('login.html')
+                flash('Por favor verifica tu email antes de iniciar sesion. Revisa tu bandeja de entrada para el enlace de verificacion.', 'warning')
+                return render_template('auth/login.html') 
             
-            # Verificar si la cuenta está activa
+            # Verificar si la cuenta esta activa
             if user.account_status != AccountStatus.ACTIVE:
-                flash('Tu cuenta no está activa. Por favor contacta al soporte.', 'error')
-                return render_template('login.html')
+                flash('Tu cuenta no esta activa. Por favor contacta al soporte.', 'error')
+                return render_template('auth/login.html') 
             
-            # ¡IMPORTANTE: Iniciar sesión con Flask-Login!
+            # Iniciar sesion con Flask-Login!
             login_user(user, remember=True)
             
-            # Actualizar último login
+            # Actualizar ultimo login
             user.last_login = datetime.utcnow()
-            user.failed_attempts = 0  # Resetear intentos fallidos
+            user.failed_attempts = 0
             db.session.commit()
             
             flash(f'¡Bienvenido de nuevo, {email}!', 'success')
             
-            # Redirigir según el tipo de usuario
+            # Redirigir segun el tipo de usuario
             if user.user_type == UserType.COMPANY:
                 return redirect(url_for('companies.company_dashboard'))
-            else:  # CARRIER
+            else:  
                 return redirect(url_for('carriers.carrier_dashboard'))
                 
         else:
@@ -278,16 +277,16 @@ def login():
                     user.lockout_date = datetime.utcnow()
                     flash('Cuenta temporalmente bloqueada por demasiados intentos fallidos.', 'error')
                 db.session.commit()
-            flash('Email o contraseña inválidos.', 'error')
+            flash('Email o contrasena invalidos.', 'error')
     
-    return render_template('login.html')
+    return render_template('auth/login.html')  
 
 @bp.route('/welcome/company')
 @login_required  # Proteger la ruta
 def welcome_company():
-    """Página de bienvenida para empresas"""
+    """Pagina de bienvenida para empresas"""
     if current_user.user_type != UserType.COMPANY:
-        flash('No tienes permisos para acceder a esta página.', 'error')
+        flash('No tienes permisos para acceder a esta pagina.', 'error')
         return redirect(url_for('main.index'))
     
     return render_template('panel_company.html')
@@ -295,32 +294,32 @@ def welcome_company():
 @bp.route('/welcome/carrier')
 @login_required  # Proteger la ruta
 def welcome_carrier():
-    """Página de bienvenida para transportistas"""
+    """Pagina de bienvenida para transportistas"""
     if current_user.user_type != UserType.CARRIER:
-        flash('No tienes permisos para acceder a esta página.', 'error')
+        flash('No tienes permisos para acceder a esta pagina.', 'error')
         return redirect(url_for('main.index'))
     
     return render_template('panel_carrier.html')
 
 @bp.route('/verify-email/<token>')
 def verify_email(token):
-    """Endpoint de verificación de email"""
+    """Endpoint de verificacion de email"""
     try:
         user = User.query.filter_by(verification_token=token).first()
         
         if not user:
-            flash('Token de verificación inválido.', 'error')
+            flash('Token de verificacion invalido.', 'error')
             return redirect(url_for('auth.login'))
         
         if not user.is_verification_token_valid():
-            flash('El token de verificación ha expirado. Por favor regístrate de nuevo.', 'error')
+            flash('El token de verificacion ha expirado. Por favor registrate de nuevo.', 'error')
             return redirect(url_for('auth.register'))
         
         # Verificar email
         user.verify_email()
         db.session.commit()
         
-        flash('¡Email verificado exitosamente! Ya puedes iniciar sesión.', 'success')
+        flash('¡Email verificado exitosamente! Ya puedes iniciar sesion.', 'success')
         return redirect(url_for('auth.login'))
         
     except Exception as e:
@@ -347,24 +346,24 @@ def check_email():
 
 @bp.route('/forgot-password', methods=['GET', 'POST'])
 def forgot_password():
-    """Recuperación de contraseña"""
+    """Recuperacion de contrasena"""
     if request.method == 'POST':
         email = request.form.get('email', '').strip().lower()
         
         user = User.query.filter_by(email=email).first()
         if user and user.email_verified:
-            flash('Las instrucciones para restablecer tu contraseña han sido enviadas a tu email.', 'success')
+            flash('Las instrucciones para restablecer tu contrasena han sido enviadas a tu email.', 'success')
         else:
-            flash('Si este email existe y está verificado, las instrucciones de recuperación han sido enviadas.', 'success')
+            flash('Si este email existe y esta verificado, las instrucciones de recuperacion han sido enviadas.', 'success')
         
         return redirect(url_for('auth.login'))
     
-    return render_template('forgot_password.html')
+    return render_template('auth/forgot_password.html') 
 
 @bp.route('/logout')
-@login_required  # Solo usuarios logueados pueden cerrar sesión
+@login_required  # Solo usuarios logueados pueden cerrar sesion
 def logout():
-    """Cerrar sesión del usuario"""
-    logout_user()  # ¡IMPORTANTE: Usar logout_user de Flask-Login!
-    flash('Has cerrado sesión correctamente.', 'success')
+    """Cerrar sesion del usuario"""
+    logout_user()  # IMPORTANTE: Usar logout_user de Flask-Login!
+    flash('Has cerrado sesion correctamente.', 'success')
     return redirect(url_for('auth.login'))

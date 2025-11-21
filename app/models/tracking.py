@@ -28,11 +28,10 @@ class TrackingEvent(db.Model):
     longitude = db.Column(db.Float)
     
     # Metadata adicional
-    estimated_remaining_time = db.Column(db.Integer)  # en minutos
+    estimated_remaining_time = db.Column(db.Integer)  
     notes = db.Column(db.Text)
     
-    # Relación
-    shipment = db.relationship('Shipment', backref='tracking_events')
+    shipment_rel = db.relationship('Shipment', back_populates='tracking_events_rel')
     
     def __repr__(self):
         return f'<TrackingEvent {self.event_type.value} - {self.timestamp}>'

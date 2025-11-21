@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, flash, redirect, url_for, request, jsonify
 from flask_login import login_required, current_user
+from app.models.user import UserType  
 
 bp = Blueprint('carriers', __name__)
 
@@ -7,19 +8,20 @@ bp = Blueprint('carriers', __name__)
 @login_required
 def carrier_dashboard():
     """Dashboard del transportista"""
-    if current_user.user_type.value != 'carrier':
-        flash('No tienes permisos para acceder a esta sección', 'error')
+
+    if current_user.user_type != UserType.CARRIER:
+        flash('No tienes permisos para acceder a esta seccion', 'error')
         return redirect(url_for('main.index'))
     
-    return render_template('panel_carrier.html')
+    return render_template('carriers/panel_carrier.html')
 
 
 @bp.route('/profile')
 @login_required
 def carrier_profile():
     """Perfil del transportista"""
-    if current_user.user_type.value != 'carrier':
-        flash('No tienes permisos para acceder a esta sección', 'error')
+    if current_user.user_type != UserType.CARRIER:
+        flash('No tienes permisos para acceder a esta seccion', 'error')
         return redirect(url_for('main.index'))
     
     return render_template('carriers/profile.html')
@@ -32,7 +34,7 @@ def carrier_profile():
 @login_required
 def available_loads():
     """Cargas disponibles"""
-    if current_user.user_type.value != 'carrier':
+    if current_user.user_type != UserType.CARRIER:
         flash('No tienes permisos para acceder a esta sección', 'error')
         return redirect(url_for('main.index'))
     
@@ -42,7 +44,7 @@ def available_loads():
 @login_required
 def filter_loads():
     """Filtrar cargas"""
-    if current_user.user_type.value != 'carrier':
+    if current_user.user_type != UserType.CARRIER:
         flash('No tienes permisos para acceder a esta sección', 'error')
         return redirect(url_for('main.index'))
     
@@ -52,7 +54,7 @@ def filter_loads():
 @login_required
 def manage_loads():
     """Gestionar cargas"""
-    if current_user.user_type.value != 'carrier':
+    if current_user.user_type != UserType.CARRIER:
         flash('No tienes permisos para acceder a esta sección', 'error')
         return redirect(url_for('main.index'))
     
@@ -66,7 +68,7 @@ def manage_loads():
 @login_required
 def pending_trips():
     """Viajes pendientes"""
-    if current_user.user_type.value != 'carrier':
+    if current_user.user_type != UserType.CARRIER:
         flash('No tienes permisos para acceder a esta sección', 'error')
         return redirect(url_for('main.index'))
     
@@ -76,7 +78,7 @@ def pending_trips():
 @login_required
 def accepted_trips():
     """Viajes aceptados"""
-    if current_user.user_type.value != 'carrier':
+    if current_user.user_type != UserType.CARRIER:
         flash('No tienes permisos para acceder a esta sección', 'error')
         return redirect(url_for('main.index'))
     
@@ -86,7 +88,7 @@ def accepted_trips():
 @login_required
 def completed_trips():
     """Viajes finalizados"""
-    if current_user.user_type.value != 'carrier':
+    if current_user.user_type != UserType.CARRIER:
         flash('No tienes permisos para acceder a esta sección', 'error')
         return redirect(url_for('main.index'))
     
@@ -100,7 +102,7 @@ def completed_trips():
 @login_required
 def license_insurance():
     """Licencia y seguros"""
-    if current_user.user_type.value != 'carrier':
+    if current_user.user_type != UserType.CARRIER:
         flash('No tienes permisos para acceder a esta sección', 'error')
         return redirect(url_for('main.index'))
     
@@ -110,7 +112,7 @@ def license_insurance():
 @login_required
 def verification_status():
     """Estado de verificación"""
-    if current_user.user_type.value != 'carrier':
+    if current_user.user_type != UserType.CARRIER:
         flash('No tienes permisos para acceder a esta sección', 'error')
         return redirect(url_for('main.index'))
     
@@ -120,7 +122,7 @@ def verification_status():
 @login_required
 def upload_documents():
     """Cargar documentos"""
-    if current_user.user_type.value != 'carrier':
+    if current_user.user_type != UserType.CARRIER:
         flash('No tienes permisos para acceder a esta sección', 'error')
         return redirect(url_for('main.index'))
     
@@ -134,7 +136,7 @@ def upload_documents():
 @login_required
 def vehicle_info():
     """Información del vehículo"""
-    if current_user.user_type.value != 'carrier':
+    if current_user.user_type != UserType.CARRIER:
         flash('No tienes permisos para acceder a esta sección', 'error')
         return redirect(url_for('main.index'))
     
@@ -144,7 +146,7 @@ def vehicle_info():
 @login_required
 def routes():
     """Rutas"""
-    if current_user.user_type.value != 'carrier':
+    if current_user.user_type != UserType.CARRIER:
         flash('No tienes permisos para acceder a esta sección', 'error')
         return redirect(url_for('main.index'))
     
@@ -158,7 +160,7 @@ def routes():
 @login_required
 def settings():
     """Configuración"""
-    if current_user.user_type.value != 'carrier':
+    if current_user.user_type != UserType.CARRIER:
         flash('No tienes permisos para acceder a esta sección', 'error')
         return redirect(url_for('main.index'))
     
@@ -168,7 +170,7 @@ def settings():
 @login_required
 def notifications():
     """Notificaciones"""
-    if current_user.user_type.value != 'carrier':
+    if current_user.user_type != UserType.CARRIER:
         flash('No tienes permisos para acceder a esta sección', 'error')
         return redirect(url_for('main.index'))
     
@@ -182,7 +184,7 @@ def notifications():
 @login_required
 def api_available_loads():
     """API para cargas disponibles"""
-    if current_user.user_type.value != 'carrier':
+    if current_user.user_type != UserType.CARRIER:
         return jsonify({'error': 'No autorizado'}), 403
     
     loads = []
@@ -192,7 +194,7 @@ def api_available_loads():
 @login_required
 def api_accept_load(load_id):
     """API para aceptar una carga"""
-    if current_user.user_type.value != 'carrier':
+    if current_user.user_type != UserType.CARRIER:
         return jsonify({'error': 'No autorizado'}), 403
     
     # Lógica para aceptar carga
@@ -203,7 +205,7 @@ def api_accept_load(load_id):
 @login_required
 def api_update_location():
     """API para actualizar ubicación"""
-    if current_user.user_type.value != 'carrier':
+    if current_user.user_type != UserType.CARRIER:
         return jsonify({'error': 'No autorizado'}), 403
     
     # Lógica para actualizar ubicación

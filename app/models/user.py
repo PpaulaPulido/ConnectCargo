@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 import enum
 from flask_login import UserMixin 
 import secrets
+from werkzeug.security import generate_password_hash, check_password_hash
 
 class UserType(enum.Enum):
     COMPANY = 'company'
@@ -40,44 +41,49 @@ class User(db.Model, UserMixin):
     address = db.Column(db.String(200), nullable=False)
     city = db.Column(db.String(100), nullable=False)
     state = db.Column(db.String(100))
-    country = db.Column(db.String(100), default='Colombia')
+    country = db.Column(db.String(100))
     
-    # Foto de perfil - 
-    profile_picture_id = db.Column(db.Integer, db.ForeignKey('media.id'), nullable=True)
+    # Foto de perfil
+    profile_picture = db.Column(db.String(255))
     
     # Validación y verificación
-    identity_document = db.Column(db.String(50), unique=True, nullable=True) 
+    identity_document = db.Column(db.String(50))
     document_type = db.Column(db.Enum(DocumentType))
     document_verified = db.Column(db.Boolean, default=False)
     verification_date = db.Column(db.DateTime)
     
     # Email verification
     email_verified = db.Column(db.Boolean, default=False)
-    verification_token = db.Column(db.String(100), unique=True)
+    verification_token = db.Column(db.String(100))
     verification_token_expires = db.Column(db.DateTime)
     
     # Account status
     registration_date = db.Column(db.DateTime, default=datetime.utcnow)
-    account_status = db.Column(db.Enum(AccountStatus), default=AccountStatus.PENDING_VERIFICATION)
-    verification_level = db.Column(db.Enum(VerificationLevel), default=VerificationLevel.BASIC)
+    account_status = db.Column(db.Enum(AccountStatus))
+    verification_level = db.Column(db.Enum(VerificationLevel))
     
     # Security
     last_login = db.Column(db.DateTime)
     failed_attempts = db.Column(db.Integer, default=0)
     lockout_date = db.Column(db.DateTime)
-    reset_token = db.Column(db.String(100), unique=True)  
-    reset_token_expires = db.Column(db.DateTime)
     
     # Terms and conditions
     accepted_terms = db.Column(db.Boolean, default=False)
     terms_acceptance_date = db.Column(db.DateTime)
     notifications_active = db.Column(db.Boolean, default=True)
-    marketing_emails = db.Column(db.Boolean, default=False)  
     
     # Relationships
     company = db.relationship('Company', backref='user', uselist=False, cascade='all, delete-orphan')
     carrier = db.relationship('Carrier', backref='user', uselist=False, cascade='all, delete-orphan')
-    profile_picture = db.relationship('Media', foreign_keys=[profile_picture_id]) 
+    
+    # Métodos para manejo de contraseñas
+    def set_password(self, password):
+        """Establece la contraseña hash"""
+        self.password_hash = generate_password_hash(password)
+    
+    def check_password(self, password):
+        """Verifica la contraseña"""
+        return check_password_hash(self.password_hash, password)
     
     @property
     def is_active(self):
@@ -100,28 +106,17 @@ class User(db.Model, UserMixin):
         self.verification_token_expires = datetime.utcnow() + timedelta(hours=24)
         return self.verification_token
     
-    def generate_password_reset_token(self):
-        """Generate password reset token"""
-        self.reset_token = secrets.token_urlsafe(32)
-        self.reset_token_expires = datetime.utcnow() + timedelta(hours=1)
-        return self.reset_token
-    
     def is_verification_token_valid(self):
         """Check if verification token is valid"""
         if not self.verification_token or not self.verification_token_expires:
             return False
         return datetime.utcnow() < self.verification_token_expires
     
-    def is_reset_token_valid(self):
-        """Check if reset token is valid"""
-        if not self.reset_token or not self.reset_token_expires:
-            return False
-        return datetime.utcnow() < self.reset_token_expires
-    
     def verify_email(self):
         """Mark email as verified"""
         self.email_verified = True
-        self.account_status = AccountStatus.ACTIVE
+        if not self.account_status:
+            self.account_status = AccountStatus.ACTIVE
         self.verification_date = datetime.utcnow()
         self.verification_token = None
         self.verification_token_expires = None
@@ -129,7 +124,7 @@ class User(db.Model, UserMixin):
     def get_profile_picture_url(self):
         """Obtener URL de la foto de perfil"""
         if self.profile_picture:
-            return self.profile_picture.file_path
+            return self.profile_picture
         if self.user_type == UserType.COMPANY:
             return "/static/images/default-company.png"
         else:

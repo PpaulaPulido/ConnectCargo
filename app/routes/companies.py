@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, flash, redirect, url_for, request, jsonify
 from flask_login import login_required, current_user
+from app.models.user import UserType 
 
 bp = Blueprint('companies', __name__)
 
@@ -7,19 +8,18 @@ bp = Blueprint('companies', __name__)
 @login_required
 def company_dashboard():
     """Dashboard principal de la empresa"""
-    # Verificar que el usuario es una empresa
-    if current_user.user_type.value != 'company':
-        flash('No tienes permisos para acceder a esta sección', 'error')
+    if current_user.user_type != UserType.COMPANY:
+        flash('No tienes permisos para acceder a esta seccion', 'error')
         return redirect(url_for('main.index'))
     
-    return render_template('panel_company.html')
+    return render_template('companies/panel_company.html') 
 
 @bp.route('/profile')
 @login_required
 def company_profile():
     """Perfil de la empresa"""
-    if current_user.user_type.value != 'company':
-        flash('No tienes permisos para acceder a esta sección', 'error')
+    if current_user.user_type != UserType.COMPANY:
+        flash('No tienes permisos para acceder a esta seccion', 'error')
         return redirect(url_for('main.index'))
     
     return render_template('companies/profile.html')
@@ -28,7 +28,7 @@ def company_profile():
 @login_required
 def publish_load():
     """Publicar nueva carga"""
-    if current_user.user_type.value != 'company':
+    if current_user.user_type != UserType.COMPANY:
         flash('No tienes permisos para acceder a esta sección', 'error')
         return redirect(url_for('main.index'))
     
@@ -38,7 +38,7 @@ def publish_load():
 @login_required
 def find_drivers():
     """Buscar conductores disponibles"""
-    if current_user.user_type.value != 'company':
+    if current_user.user_type != UserType.COMPANY:
         flash('No tienes permisos para acceder a esta sección', 'error')
         return redirect(url_for('main.index'))
     
@@ -48,7 +48,7 @@ def find_drivers():
 @login_required
 def published_loads():
     """Cargas publicadas por la empresa"""
-    if current_user.user_type.value != 'company':
+    if current_user.user_type != UserType.COMPANY:
         flash('No tienes permisos para acceder a esta sección', 'error')
         return redirect(url_for('main.index'))
     
@@ -58,7 +58,7 @@ def published_loads():
 @login_required
 def in_progress_loads():
     """Cargas en curso"""
-    if current_user.user_type.value != 'company':
+    if current_user.user_type != UserType.COMPANY:
         flash('No tienes permisos para acceder a esta sección', 'error')
         return redirect(url_for('main.index'))
     
@@ -68,7 +68,7 @@ def in_progress_loads():
 @login_required
 def completed_loads():
     """Cargas completadas"""
-    if current_user.user_type.value != 'company':
+    if current_user.user_type != UserType.COMPANY:
         flash('No tienes permisos para acceder a esta sección', 'error')
         return redirect(url_for('main.index'))
     
@@ -78,7 +78,7 @@ def completed_loads():
 @login_required
 def statistics():
     """Estadísticas de la empresa"""
-    if current_user.user_type.value != 'company':
+    if current_user.user_type != UserType.COMPANY:
         flash('No tienes permisos para acceder a esta sección', 'error')
         return redirect(url_for('main.index'))
     
@@ -88,7 +88,7 @@ def statistics():
 @login_required
 def settings():
     """Configuración de la empresa"""
-    if current_user.user_type.value != 'company':
+    if current_user.user_type != UserType.COMPANY:
         flash('No tienes permisos para acceder a esta sección', 'error')
         return redirect(url_for('main.index'))
     
@@ -98,7 +98,7 @@ def settings():
 @login_required
 def notifications():
     """Notificaciones de la empresa"""
-    if current_user.user_type.value != 'company':
+    if current_user.user_type != UserType.COMPANY:
         flash('No tienes permisos para acceder a esta sección', 'error')
         return redirect(url_for('main.index'))
     
@@ -108,7 +108,7 @@ def notifications():
 @login_required
 def help():
     """Centro de ayuda"""
-    if current_user.user_type.value != 'company':
+    if current_user.user_type != UserType.COMPANY:
         flash('No tienes permisos para acceder a esta sección', 'error')
         return redirect(url_for('main.index'))
     
@@ -120,7 +120,7 @@ def help():
 @login_required
 def load_details(load_id):
     """Detalles de una carga específica"""
-    if current_user.user_type.value != 'company':
+    if current_user.user_type != UserType.COMPANY:
         flash('No tienes permisos para acceder a esta sección', 'error')
         return redirect(url_for('main.index'))
     
@@ -130,7 +130,7 @@ def load_details(load_id):
 @login_required
 def driver_profile(driver_id):
     """Perfil de un conductor"""
-    if current_user.user_type.value != 'company':
+    if current_user.user_type != UserType.COMPANY:
         flash('No tienes permisos para acceder a esta sección', 'error')
         return redirect(url_for('main.index'))
     
@@ -140,7 +140,7 @@ def driver_profile(driver_id):
 @login_required
 def create_load():
     """API para crear una nueva carga"""
-    if current_user.user_type.value != 'company':
+    if current_user.user_type != UserType.COMPANY:
         return jsonify({'error': 'No autorizado'}), 403
     
     # Lógica para crear carga
@@ -151,7 +151,7 @@ def create_load():
 @login_required
 def edit_load(load_id):
     """Editar una carga existente"""
-    if current_user.user_type.value != 'company':
+    if current_user.user_type != UserType.COMPANY:
         flash('No tienes permisos para acceder a esta sección', 'error')
         return redirect(url_for('main.index'))
     
@@ -166,7 +166,7 @@ def edit_load(load_id):
 @login_required
 def delete_load(load_id):
     """Eliminar una carga"""
-    if current_user.user_type.value != 'company':
+    if current_user.user_type != UserType.COMPANY:
         return jsonify({'error': 'No autorizado'}), 403
     
     # Lógica para eliminar carga
@@ -177,7 +177,7 @@ def delete_load(load_id):
 @login_required
 def accept_driver(load_id, driver_id):
     """Aceptar un conductor para una carga"""
-    if current_user.user_type.value != 'company':
+    if current_user.user_type != UserType.COMPANY:
         return jsonify({'error': 'No autorizado'}), 403
     
     # Lógica para aceptar conductor
@@ -188,7 +188,7 @@ def accept_driver(load_id, driver_id):
 @login_required
 def complete_load(load_id):
     """Marcar carga como completada"""
-    if current_user.user_type.value != 'company':
+    if current_user.user_type != UserType.COMPANY:
         return jsonify({'error': 'No autorizado'}), 403
     
     # Lógica para completar carga
@@ -199,7 +199,7 @@ def complete_load(load_id):
 @login_required
 def rate_driver(driver_id):
     """Calificar a un conductor"""
-    if current_user.user_type.value != 'company':
+    if current_user.user_type != UserType.COMPANY:
         return jsonify({'error': 'No autorizado'}), 403
     
     # Lógica para calificar conductor
@@ -210,7 +210,7 @@ def rate_driver(driver_id):
 @login_required
 def api_statistics():
     """API para obtener estadísticas en formato JSON"""
-    if current_user.user_type.value != 'company':
+    if current_user.user_type != UserType.COMPANY:
         return jsonify({'error': 'No autorizado'}), 403
     
     stats = {
@@ -226,7 +226,7 @@ def api_statistics():
 @login_required
 def api_search_drivers():
     """API para buscar conductores"""
-    if current_user.user_type.value != 'company':
+    if current_user.user_type != UserType.COMPANY:
         return jsonify({'error': 'No autorizado'}), 403
     
     search_query = request.args.get('q', '')
@@ -238,7 +238,7 @@ def api_search_drivers():
 @login_required
 def api_notifications():
     """API para obtener notificaciones"""
-    if current_user.user_type.value != 'company':
+    if current_user.user_type != UserType.COMPANY:
         return jsonify({'error': 'No autorizado'}), 403
     
     notifications = []
@@ -248,7 +248,7 @@ def api_notifications():
 @login_required
 def update_profile():
     """Actualizar perfil de la empresa"""
-    if current_user.user_type.value != 'company':
+    if current_user.user_type != UserType.COMPANY:
         return jsonify({'error': 'No autorizado'}), 403
     
     # Lógica para actualizar perfil
@@ -259,7 +259,7 @@ def update_profile():
 @login_required
 def update_settings():
     """Actualizar configuración"""
-    if current_user.user_type.value != 'company':
+    if current_user.user_type != UserType.COMPANY:
         return jsonify({'error': 'No autorizado'}), 403
     
     # Lógica para actualizar configuración
@@ -272,7 +272,7 @@ def update_settings():
 @login_required
 def upload_document():
     """Subir documento de la empresa"""
-    if current_user.user_type.value != 'company':
+    if current_user.user_type != UserType.COMPANY:
         return jsonify({'error': 'No autorizado'}), 403
     
     # Lógica para subir documentos
@@ -283,7 +283,7 @@ def upload_document():
 @login_required
 def documents():
     """Gestión de documentos"""
-    if current_user.user_type.value != 'company':
+    if current_user.user_type != UserType.COMPANY:
         flash('No tienes permisos para acceder a esta sección', 'error')
         return redirect(url_for('main.index'))
     

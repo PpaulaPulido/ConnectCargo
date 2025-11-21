@@ -14,6 +14,7 @@ def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(config_class)
 
+    # Inicializar extensiones
     db.init_app(app)
     migrate.init_app(app, db)
     mail.init_app(app)
@@ -21,7 +22,7 @@ def create_app(config_class=Config):
     
     # Configurar Flask-Login
     login_manager.login_view = 'auth.login'
-    login_manager.login_message = 'Por favor inicia sesión para acceder a esta página.'
+    login_manager.login_message = 'Por favor inicia sesion para acceder a esta pagina.'
     login_manager.login_message_category = 'warning'
     login_manager.session_protection = 'strong'
     
@@ -30,7 +31,7 @@ def create_app(config_class=Config):
         from app.models.user import User
         return User.query.get(int(user_id))
     
-    # Register blueprints
+    # Registrar blueprints
     from app.routes.main import bp as main_bp
     from app.routes.auth import bp as auth_bp
     from app.routes.companies import bp as companies_bp

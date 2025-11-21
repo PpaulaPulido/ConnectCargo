@@ -72,7 +72,12 @@ class Shipment(db.Model):
     company = db.relationship('Company', backref='shipments')
     carrier = db.relationship('Carrier', backref='shipments')
     quotes = db.relationship('Quote', backref='shipment', cascade='all, delete-orphan')
-    tracking_events = db.relationship('TrackingEvent', backref='shipment', cascade='all, delete-orphan')
+    tracking_events_rel = db.relationship(
+        'TrackingEvent', 
+        back_populates='shipment_rel',
+        foreign_keys='TrackingEvent.shipment_id',
+        lazy='dynamic'
+    )
     
     @property
     def is_active(self):
