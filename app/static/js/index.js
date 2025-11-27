@@ -249,7 +249,7 @@ class InteractiveElements {
     }
 }
 
-// Smooth Scrolling - CORREGIDO
+// Smooth Scrolling 
 class SmoothScroll {
     constructor() {
         this.init();

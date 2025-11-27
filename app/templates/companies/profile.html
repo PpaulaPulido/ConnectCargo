@@ -1,0 +1,582 @@
+{% extends "/companies/base_company.html" %}
+
+{% block title %}Perfil de Empresa - ConnectCargo{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/profile_company.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="profile-company-container">
+    <!-- Header del Perfil -->
+    <div class="profile-company-header">
+        <div class="profile-company-header-content">
+            <h1 class="profile-company-title">Perfil de Empresa</h1>
+            <p class="profile-company-subtitle">Completa tu información para aumentar tu visibilidad y confianza en la plataforma</p>
+        </div>
+        <div class="profile-verification-badge">
+            <div class="profile-badge-icon">
+                <i class="fas fa-shield-alt"></i>
+            </div>
+            <div class="profile-badge-info">
+                <span class="profile-badge-status">Verificación Pendiente</span>
+                <span class="profile-badge-desc">Completa tu perfil para obtener el sello de confianza</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="profile-company-content">
+        <!-- Sidebar de Navegación -->
+        <div class="profile-company-sidebar">
+            <nav class="profile-company-nav">
+                <a href="#legal" class="profile-nav-item active" data-tab="legal">
+                    <i class="fas fa-balance-scale"></i>
+                    Información Legal
+                </a>
+                <a href="#commercial" class="profile-nav-item" data-tab="commercial">
+                    <i class="fas fa-chart-line"></i>
+                    Datos Comerciales
+                </a>
+                <a href="#logistics" class="profile-nav-item" data-tab="logistics">
+                    <i class="fas fa-truck-loading"></i>
+                    Preferencias Logísticas
+                </a>
+                <a href="#documents" class="profile-nav-item" data-tab="documents">
+                    <i class="fas fa-file-contract"></i>
+                    Documentación
+                </a>
+                <a href="#security" class="profile-nav-item" data-tab="security">
+                    <i class="fas fa-user-lock"></i>
+                    Seguridad
+                </a>
+            </nav>
+
+            <!-- Progress Card -->
+            <div class="profile-progress-card">
+                <div class="profile-progress-header">
+                    <h4>Progreso del Perfil</h4>
+                    <span class="profile-progress-percent">40%</span>
+                </div>
+                <div class="profile-progress-bar">
+                    <div class="profile-progress-fill" style="width: 40%"></div>
+                </div>
+                <div class="profile-progress-stats">
+                    <div class="profile-stat">
+                        <span class="profile-stat-number">3/8</span>
+                        <span class="profile-stat-label">Secciones completadas</span>
+                    </div>
+                </div>
+                <div class="profile-progress-tips">
+                    <i class="fas fa-lightbulb"></i>
+                    <span>Completa tu verificación para publicar cargas</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contenido Principal -->
+        <div class="profile-company-main">
+            <!-- Pestaña: Información Legal -->
+            <div class="profile-tab-content active" id="legal-tab">
+                <div class="profile-tab-header">
+                    <h2>Información Legal</h2>
+                    <p>Datos oficiales de registro y constitución de tu empresa</p>
+                </div>
+
+                <form class="profile-company-form">
+                    <div class="profile-form-section">
+                        <h3 class="profile-section-title">Datos Básicos</h3>
+                        
+                        <div class="profile-form-grid">
+                            <div class="profile-form-group">
+                                <label for="legalName">Razón Social *</label>
+                                <input type="text" id="legalName" class="profile-form-input" 
+                                       placeholder="Ej: Tecnologías Logísticas S.A.S.">
+                                <span class="profile-form-help">Nombre legal registrado en cámara de comercio</span>
+                            </div>
+
+                            <div class="profile-form-group">
+                                <label for="commercialName">Nombre Comercial</label>
+                                <input type="text" id="commercialName" class="profile-form-input" 
+                                       placeholder="Ej: LogiTech Solutions">
+                                <span class="profile-form-help">Nombre con el que opera en el mercado</span>
+                            </div>
+                        </div>
+
+                        <div class="profile-form-grid">
+                            <div class="profile-form-group">
+                                <label for="companyType">Tipo de Empresa *</label>
+                                <select id="companyType" class="profile-form-select">
+                                    <option value="">Seleccionar tipo</option>
+                                    <option value="natural">Persona Natural</option>
+                                    <option value="legal">Persona Jurídica</option>
+                                    <option value="sas">S.A.S.</option>
+                                    <option value="ltda">Ltda.</option>
+                                    <option value="sa">S.A.</option>
+                                </select>
+                            </div>
+
+                            <div class="profile-form-group">
+                                <label for="incorporationDate">Fecha de Constitución</label>
+                                <input type="date" id="incorporationDate" class="profile-form-input">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="profile-form-section">
+                        <h3 class="profile-section-title">Documentación Legal</h3>
+                        
+                        <div class="profile-document-upload">
+                            <div class="profile-upload-card">
+                                <div class="profile-upload-icon">
+                                    <i class="fas fa-file-invoice"></i>
+                                </div>
+                                <div class="profile-upload-info">
+                                    <h4>Registro Mercantil</h4>
+                                    <p>Cámara de comercio o documento equivalente</p>
+                                    <span class="profile-file-requirements">PDF, máximo 5MB</span>
+                                </div>
+                                <button type="button" class="profile-upload-btn">
+                                    <i class="fas fa-upload"></i>
+                                    Subir Documento
+                                </button>
+                            </div>
+
+                            <div class="profile-upload-card">
+                                <div class="profile-upload-icon">
+                                    <i class="fas fa-id-card"></i>
+                                </div>
+                                <div class="profile-upload-info">
+                                    <h4>Documento de Identidad</h4>
+                                    <p>Representante legal o titular</p>
+                                    <span class="profile-file-requirements">PDF o imagen, máximo 2MB</span>
+                                </div>
+                                <button type="button" class="profile-upload-btn">
+                                    <i class="fas fa-upload"></i>
+                                    Subir Documento
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="profile-form-actions">
+                        <button type="button" class="profile-btn profile-btn-secondary">Cancelar</button>
+                        <button type="submit" class="profile-btn profile-btn-primary">Guardar Información Legal</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Pestaña: Datos Comerciales -->
+            <div class="profile-tab-content" id="commercial-tab">
+                <div class="profile-tab-header">
+                    <h2>Datos Comerciales</h2>
+                    <p>Información financiera y de operación de tu empresa</p>
+                </div>
+
+                <form class="profile-company-form">
+                    <div class="profile-form-section">
+                        <h3 class="profile-section-title">Información Financiera</h3>
+                        
+                        <div class="profile-form-grid">
+                            <div class="profile-form-group">
+                                <label for="companySize">Tamaño de Empresa</label>
+                                <select id="companySize" class="profile-form-select">
+                                    <option value="">Seleccionar</option>
+                                    <option value="micro">Microempresa (1-10 empleados)</option>
+                                    <option value="small">Pequeña (11-50 empleados)</option>
+                                    <option value="medium">Mediana (51-200 empleados)</option>
+                                    <option value="large">Grande (+200 empleados)</option>
+                                </select>
+                            </div>
+
+                            <div class="profile-form-group">
+                                <label for="annualRevenue">Ingresos Anuales</label>
+                                <select id="annualRevenue" class="profile-form-select">
+                                    <option value="">Seleccionar rango</option>
+                                    <option value="less_100k">Menos de $100M COP</option>
+                                    <option value="k100_500k">$100M - $500M COP</option>
+                                    <option value="k500_1m">$500M - $1.000M COP</option>
+                                    <option value="k1m_5m">$1.000M - $5.000M COP</option>
+                                    <option value="more_5m">Más de $5.000M COP</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="profile-form-group">
+                            <label for="employees">Número de Empleados Directos</label>
+                            <input type="number" id="employees" class="profile-form-input" 
+                                   placeholder="Ej: 25" min="0">
+                        </div>
+
+                        <div class="profile-form-group">
+                            <label for="website">Sitio Web</label>
+                            <input type="url" id="website" class="profile-form-input" 
+                                   placeholder="https://tuempresa.com">
+                        </div>
+                    </div>
+
+                    <div class="profile-form-section">
+                        <h3 class="profile-section-title">Referencias Comerciales</h3>
+                        
+                        <div class="profile-form-group">
+                            <label for="bankReference">Referencia Bancaria</label>
+                            <input type="text" id="bankReference" class="profile-form-input" 
+                                   placeholder="Nombre del banco y contacto">
+                        </div>
+
+                        <div class="profile-form-grid">
+                            <div class="profile-form-group">
+                                <label for="reference1">Referencia Comercial 1</label>
+                                <input type="text" id="reference1" class="profile-form-input" 
+                                       placeholder="Empresa y contacto">
+                            </div>
+                            <div class="profile-form-group">
+                                <label for="reference2">Referencia Comercial 2</label>
+                                <input type="text" id="reference2" class="profile-form-input" 
+                                       placeholder="Empresa y contacto">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="profile-form-actions">
+                        <button type="button" class="profile-btn profile-btn-secondary">Cancelar</button>
+                        <button type="submit" class="profile-btn profile-btn-primary">Guardar Datos Comerciales</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Pestaña: Preferencias Logísticas -->
+            <div class="profile-tab-content" id="logistics-tab">
+                <div class="profile-tab-header">
+                    <h2>Preferencias Logísticas</h2>
+                    <p>Configura tus necesidades y especialidades de transporte</p>
+                </div>
+
+                <form class="profile-company-form">
+                    <div class="profile-form-section">
+                        <h3 class="profile-section-title">Frecuencia y Volumen</h3>
+                        
+                        <div class="profile-form-group">
+                            <label for="shippingFrequency">Frecuencia de Envíos</label>
+                            <select id="shippingFrequency" class="profile-form-select">
+                                <option value="">Seleccionar frecuencia</option>
+                                <option value="occasional">Ocasional (1-2 veces/mes)</option>
+                                <option value="weekly">Semanal</option>
+                                <option value="biweekly">Quincenal</option>
+                                <option value="monthly">Mensual</option>
+                                <option value="daily">Diario</option>
+                            </select>
+                        </div>
+
+                        <div class="profile-form-group">
+                            <label>Tipos de Carga Usuales</label>
+                            <div class="profile-checkbox-grid">
+                                <label class="profile-checkbox-label">
+                                    <input type="checkbox" name="cargoTypes" value="general">
+                                    <span class="profile-checkmark"></span>
+                                    Carga General
+                                </label>
+                                <label class="profile-checkbox-label">
+                                    <input type="checkbox" name="cargoTypes" value="refrigerated">
+                                    <span class="profile-checkmark"></span>
+                                    Refrigerada
+                                </label>
+                                <label class="profile-checkbox-label">
+                                    <input type="checkbox" name="cargoTypes" value="dangerous">
+                                    <span class="profile-checkmark"></span>
+                                    Mercancía Peligrosa
+                                </label>
+                                <label class="profile-checkbox-label">
+                                    <input type="checkbox" name="cargoTypes" value="fragile">
+                                    <span class="profile-checkmark"></span>
+                                    Frágil
+                                </label>
+                                <label class="profile-checkbox-label">
+                                    <input type="checkbox" name="cargoTypes" value="oversized">
+                                    <span class="profile-checkmark"></span>
+                                    Dimensional
+                                </label>
+                                <label class="profile-checkbox-label">
+                                    <input type="checkbox" name="cargoTypes" value="livestock">
+                                    <span class="profile-checkmark"></span>
+                                    Carga Viva
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="profile-form-section">
+                        <h3 class="profile-section-title">Cobertura y Zonas</h3>
+                        
+                        <div class="profile-form-group">
+                            <label for="coverageZones">Zonas de Cobertura</label>
+                            <textarea id="coverageZones" class="profile-form-textarea" 
+                                      placeholder="Describe las ciudades, departamentos o regiones donde operas..."
+                                      rows="3"></textarea>
+                            <span class="profile-form-help">Ej: Bogotá, Medellín, Costa Caribe, Zona Andina</span>
+                        </div>
+
+                        <div class="profile-form-group">
+                            <label>Tipos de Vehículo Preferidos</label>
+                            <div class="profile-checkbox-grid">
+                                <label class="profile-checkbox-label">
+                                    <input type="checkbox" name="vehicleTypes" value="pickup">
+                                    <span class="profile-checkmark"></span>
+                                    Camioneta Pickup
+                                </label>
+                                <label class="profile-checkbox-label">
+                                    <input type="checkbox" name="vehicleTypes" value="van">
+                                    <span class="profile-checkmark"></span>
+                                    Van/Camión
+                                </label>
+                                <label class="profile-checkbox-label">
+                                    <input type="checkbox" name="vehicleTypes" value="truck">
+                                    <span class="profile-checkmark"></span>
+                                    Tractocamión
+                                </label>
+                                <label class="profile-checkbox-label">
+                                    <input type="checkbox" name="vehicleTypes" value="refrigerated">
+                                    <span class="profile-checkmark"></span>
+                                    Refrigerado
+                                </label>
+                                <label class="profile-checkbox-label">
+                                    <input type="checkbox" name="vehicleTypes" value="tanker">
+                                    <span class="profile-checkmark"></span>
+                                    Tanque
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="profile-form-actions">
+                        <button type="button" class="profile-btn profile-btn-secondary">Cancelar</button>
+                        <button type="submit" class="profile-btn profile-btn-primary">Guardar Preferencias</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Pestaña: Documentación -->
+            <div class="profile-tab-content" id="documents-tab">
+                <div class="profile-tab-header">
+                    <h2>Documentación</h2>
+                    <p>Gestiona y sube los documentos requeridos para la verificación</p>
+                </div>
+
+                <div class="profile-documents-grid">
+                    <div class="profile-document-card required">
+                        <div class="profile-doc-header">
+                            <div class="profile-doc-icon">
+                                <i class="fas fa-file-contract"></i>
+                            </div>
+                            <div class="profile-doc-status pending">
+                                <span>Pendiente</span>
+                            </div>
+                        </div>
+                        <div class="profile-doc-content">
+                            <h4>Registro Mercantil</h4>
+                            <p>Certificado de cámara de comercio vigente</p>
+                            <div class="profile-doc-requirements">
+                                <span class="profile-req-item">• PDF máximo 5MB</span>
+                                <span class="profile-req-item">• Vigencia no mayor a 2 meses</span>
+                            </div>
+                        </div>
+                        <button class="profile-doc-action profile-btn-primary">
+                            <i class="fas fa-upload"></i>
+                            Subir Documento
+                        </button>
+                    </div>
+
+                    <div class="profile-document-card required">
+                        <div class="profile-doc-header">
+                            <div class="profile-doc-icon">
+                                <i class="fas fa-id-card"></i>
+                            </div>
+                            <div class="profile-doc-status pending">
+                                <span>Pendiente</span>
+                            </div>
+                        </div>
+                        <div class="profile-doc-content">
+                            <h4>Documento de Identidad</h4>
+                            <p>Representante legal o titular</p>
+                            <div class="profile-doc-requirements">
+                                <span class="profile-req-item">• PDF o imagen</span>
+                                <span class="profile-req-item">• Mínimo 300 DPI</span>
+                            </div>
+                        </div>
+                        <button class="profile-doc-action profile-btn-primary">
+                            <i class="fas fa-upload"></i>
+                            Subir Documento
+                        </button>
+                    </div>
+
+                    <div class="profile-document-card">
+                        <div class="profile-doc-header">
+                            <div class="profile-doc-icon">
+                                <i class="fas fa-certificate"></i>
+                            </div>
+                            <div class="profile-doc-status optional">
+                                <span>Opcional</span>
+                            </div>
+                        </div>
+                        <div class="profile-doc-content">
+                            <h4>Certificaciones</h4>
+                            <p>ISO, ambientales, de calidad, etc.</p>
+                            <div class="profile-doc-requirements">
+                                <span class="profile-req-item">• Múltiples archivos</span>
+                                <span class="profile-req-item">• PDF o imagen</span>
+                            </div>
+                        </div>
+                        <button class="profile-doc-action profile-btn-secondary">
+                            <i class="fas fa-plus"></i>
+                            Agregar
+                        </button>
+                    </div>
+
+                    <div class="profile-document-card">
+                        <div class="profile-doc-header">
+                            <div class="profile-doc-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <div class="profile-doc-status optional">
+                                <span>Opcional</span>
+                            </div>
+                        </div>
+                        <div class="profile-doc-content">
+                            <h4>Seguros</h4>
+                            <p>Pólizas de responsabilidad civil</p>
+                            <div class="profile-doc-requirements">
+                                <span class="profile-req-item">• PDF máximo 10MB</span>
+                                <span class="profile-req-item">• Vigente</span>
+                            </div>
+                        </div>
+                        <button class="profile-doc-action profile-btn-secondary">
+                            <i class="fas fa-plus"></i>
+                            Agregar
+                        </button>
+                    </div>
+                </div>
+
+                <div class="profile-verification-process">
+                    <h3>Proceso de Verificación</h3>
+                    <div class="profile-process-steps">
+                        <div class="profile-process-step completed">
+                            <div class="profile-step-number">1</div>
+                            <div class="profile-step-info">
+                                <h4>Registro Inicial</h4>
+                                <p>Cuenta creada exitosamente</p>
+                            </div>
+                        </div>
+                        <div class="profile-process-step current">
+                            <div class="profile-step-number">2</div>
+                            <div class="profile-step-info">
+                                <h4>Documentación</h4>
+                                <p>Sube los documentos requeridos</p>
+                            </div>
+                        </div>
+                        <div class="profile-process-step">
+                            <div class="profile-step-number">3</div>
+                            <div class="profile-step-info">
+                                <h4>Revisión</h4>
+                                <p>Validamos tu información</p>
+                            </div>
+                        </div>
+                        <div class="profile-process-step">
+                            <div class="profile-step-number">4</div>
+                            <div class="profile-step-info">
+                                <h4>Verificado</h4>
+                                <p>Sello de confianza activado</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pestaña: Seguridad -->
+            <div class="profile-tab-content" id="security-tab">
+                <div class="profile-tab-header">
+                    <h2>Seguridad y Acceso</h2>
+                    <p>Gestiona la seguridad de tu cuenta y preferencias de acceso</p>
+                </div>
+
+                <div class="profile-security-sections">
+                    <div class="profile-security-card">
+                        <div class="profile-security-header">
+                            <i class="fas fa-lock"></i>
+                            <h3>Cambiar Contraseña</h3>
+                        </div>
+                        <form class="profile-security-form">
+                            <div class="profile-form-group">
+                                <label for="currentPassword">Contraseña Actual</label>
+                                <input type="password" id="currentPassword" class="profile-form-input">
+                            </div>
+                            <div class="profile-form-group">
+                                <label for="newPassword">Nueva Contraseña</label>
+                                <input type="password" id="newPassword" class="profile-form-input">
+                            </div>
+                            <div class="profile-form-group">
+                                <label for="confirmPassword">Confirmar Contraseña</label>
+                                <input type="password" id="confirmPassword" class="profile-form-input">
+                            </div>
+                            <button type="submit" class="profile-btn profile-btn-primary">Actualizar Contraseña</button>
+                        </form>
+                    </div>
+
+                    <div class="profile-security-card">
+                        <div class="profile-security-header">
+                            <i class="fas fa-bell"></i>
+                            <h3>Notificaciones</h3>
+                        </div>
+                        <div class="profile-notifications-settings">
+                            <label class="profile-switch-label">
+                                <input type="checkbox" checked>
+                                <span class="profile-slider"></span>
+                                Notificaciones de nuevas ofertas
+                            </label>
+                            <label class="profile-switch-label">
+                                <input type="checkbox" checked>
+                                <span class="profile-slider"></span>
+                                Alertas de estado de envíos
+                            </label>
+                            <label class="profile-switch-label">
+                                <input type="checkbox">
+                                <span class="profile-slider"></span>
+                                Boletines promocionales
+                            </label>
+                            <label class="profile-switch-label">
+                                <input type="checkbox" checked>
+                                <span class="profile-slider"></span>
+                                Recordatorios de pago
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="profile-security-card">
+                        <div class="profile-security-header">
+                            <i class="fas fa-shield-alt"></i>
+                            <h3>Sesión Actual</h3>
+                        </div>
+                        <div class="profile-session-info">
+                            <div class="profile-session-item">
+                                <span class="profile-session-label">Dispositivo:</span>
+                                <span class="profile-session-value">Chrome en Windows</span>
+                            </div>
+                            <div class="profile-session-item">
+                                <span class="profile-session-label">Último acceso:</span>
+                                <span class="profile-session-value">Hace 2 horas</span>
+                            </div>
+                            <div class="profile-session-item">
+                                <span class="profile-session-label">Dirección IP:</span>
+                                <span class="profile-session-value">190.85.120.45</span>
+                            </div>
+                        </div>
+                        <button class="profile-btn profile-btn-secondary">Cerrar Otras Sesiones</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/profile_company.js') }}"></script>
+{% endblock %}

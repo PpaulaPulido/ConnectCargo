@@ -1,0 +1,561 @@
+{% extends "/companies/base_company.html" %}
+
+{% block title %}Centro de Ayuda - ConnectCargo{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/help_company.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="help-company-container">
+    <!-- Header -->
+    <div class="help-company-header">
+        <div class="help-company-header-content">
+            <h1 class="help-company-title">Centro de Ayuda</h1>
+            <p class="help-company-subtitle">Encuentra respuestas rápidas y soporte personalizado para tu empresa</p>
+        </div>
+        <div class="help-company-header-actions">
+            <button class="help-btn help-btn-primary" id="contactSupport">
+                <i class="fas fa-headset"></i>
+                Contactar Soporte
+            </button>
+        </div>
+    </div>
+
+    <!-- Búsqueda Rápida -->
+    <div class="help-search-section">
+        <div class="help-search-container">
+            <div class="help-search-icon">
+                <i class="fas fa-search"></i>
+            </div>
+            <input type="text" class="help-search-input" placeholder="Buscar en el centro de ayuda...">
+            <button class="help-search-btn">
+                <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+        <div class="help-search-suggestions">
+            <span class="help-suggestion-label">Sugerencias:</span>
+            <button class="help-suggestion-tag">publicar carga</button>
+            <button class="help-suggestion-tag">pagos</button>
+            <button class="help-suggestion-tag">seguimiento</button>
+            <button class="help-suggestion-tag">facturación</button>
+        </div>
+    </div>
+
+    <!-- Acciones Rápidas -->
+    <div class="help-quick-actions">
+        <div class="help-quick-action-card">
+            <div class="help-action-icon help-action-primary">
+                <i class="fas fa-shipping-fast"></i>
+            </div>
+            <h3>Gestión de Envíos</h3>
+            <p>Aprende a publicar, gestionar y hacer seguimiento de tus envíos</p>
+            <button class="help-action-link" data-category="shipments">
+                Ver Guías
+                <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+
+        <div class="help-quick-action-card">
+            <div class="help-action-icon help-action-success">
+                <i class="fas fa-file-invoice-dollar"></i>
+            </div>
+            <h3>Pagos y Facturación</h3>
+            <p>Todo sobre métodos de pago, facturas y gestión financiera</p>
+            <button class="help-action-link" data-category="billing">
+                Explorar
+                <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+
+        <div class="help-quick-action-card">
+            <div class="help-action-icon help-action-warning">
+                <i class="fas fa-truck"></i>
+            </div>
+            <h3>Transportistas</h3>
+            <p>Cómo encontrar, evaluar y trabajar con transportistas</p>
+            <button class="help-action-link" data-category="carriers">
+                Aprender
+                <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+
+        <div class="help-quick-action-card">
+            <div class="help-action-icon help-action-info">
+                <i class="fas fa-cog"></i>
+            </div>
+            <h3>Configuración</h3>
+            <p>Configura tu cuenta, notificaciones y preferencias</p>
+            <button class="help-action-link" data-category="settings">
+                Configurar
+                <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="help-main-content">
+        <!-- Sidebar de Navegación -->
+        <div class="help-sidebar">
+            <nav class="help-sidebar-nav">
+                <div class="help-nav-section">
+                    <h4 class="help-nav-title">Guías Principales</h4>
+                    <a href="#getting-started" class="help-nav-link help-nav-active">
+                        <i class="fas fa-rocket"></i>
+                        Comenzar
+                    </a>
+                    <a href="#account-management" class="help-nav-link">
+                        <i class="fas fa-user-cog"></i>
+                        Cuenta Empresa
+                    </a>
+                    <a href="#shipment-guides" class="help-nav-link">
+                        <i class="fas fa-boxes"></i>
+                        Gestión de Envíos
+                    </a>
+                    <a href="#billing-help" class="help-nav-link">
+                        <i class="fas fa-credit-card"></i>
+                        Pagos y Facturación
+                    </a>
+                </div>
+
+                <div class="help-nav-section">
+                    <h4 class="help-nav-title">Soporte Técnico</h4>
+                    <a href="#troubleshooting" class="help-nav-link">
+                        <i class="fas fa-tools"></i>
+                        Solución de Problemas
+                    </a>
+                    <a href="#platform-issues" class="help-nav-link">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        Problemas Comunes
+                    </a>
+                    <a href="#mobile-app" class="help-nav-link">
+                        <i class="fas fa-mobile-alt"></i>
+                        App Móvil
+                    </a>
+                </div>
+
+                <div class="help-nav-section">
+                    <h4 class="help-nav-title">Recursos</h4>
+                    <a href="#video-tutorials" class="help-nav-link">
+                        <i class="fas fa-play-circle"></i>
+                        Video Tutoriales
+                    </a>
+                    <a href="#documentation" class="help-nav-link">
+                        <i class="fas fa-book"></i>
+                        Documentación
+                    </a>
+                    <a href="#faq" class="help-nav-link">
+                        <i class="fas fa-question-circle"></i>
+                        Preguntas Frecuentes
+                    </a>
+                </div>
+            </nav>
+
+            <!-- Soporte Directo -->
+            <div class="help-support-widget">
+                <h4>¿Necesitas ayuda inmediata?</h4>
+                <div class="help-support-options">
+                    <button class="help-support-option">
+                        <i class="fas fa-comments"></i>
+                        <span>Chat en Vivo</span>
+                        <small>Disponible 24/7</small>
+                    </button>
+                    <button class="help-support-option">
+                        <i class="fas fa-phone"></i>
+                        <span>Llamar</span>
+                        <small>+57 1 234 5678</small>
+                    </button>
+                    <button class="help-support-option">
+                        <i class="fas fa-envelope"></i>
+                        <span>Email</span>
+                        <small>soporte@connectcargo.com</small>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contenido Principal -->
+        <div class="help-content">
+            <!-- Sección: Comenzar -->
+            <section class="help-section help-section-active" id="getting-started">
+                <div class="help-section-header">
+                    <h2>Comenzar con ConnectCargo</h2>
+                    <p>Guía rápida para configurar y empezar a usar la plataforma</p>
+                </div>
+
+                <div class="help-articles-grid">
+                    <article class="help-article-card">
+                        <div class="help-article-icon">
+                            <i class="fas fa-user-plus"></i>
+                        </div>
+                        <div class="help-article-content">
+                            <h3>Crear y Verificar tu Cuenta</h3>
+                            <p>Aprende a crear tu cuenta de empresa y completar el proceso de verificación para acceder a todas las funciones.</p>
+                            <div class="help-article-meta">
+                                <span class="help-article-duration">5 min lectura</span>
+                                <span class="help-article-difficulty help-beginner">Principiante</span>
+                            </div>
+                            <button class="help-article-link" data-article="account-creation">
+                                Leer Guía Completa
+                                <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </article>
+
+                    <article class="help-article-card">
+                        <div class="help-article-icon">
+                            <i class="fas fa-shipping-fast"></i>
+                        </div>
+                        <div class="help-article-content">
+                            <h3>Publicar tu Primera Carga</h3>
+                            <p>Guía paso a paso para publicar una carga y encontrar transportistas disponibles.</p>
+                            <div class="help-article-meta">
+                                <span class="help-article-duration">8 min lectura</span>
+                                <span class="help-article-difficulty help-beginner">Principiante</span>
+                            </div>
+                            <button class="help-article-link" data-article="first-shipment">
+                                Leer Guía Completa
+                                <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </article>
+
+                    <article class="help-article-card">
+                        <div class="help-article-icon">
+                            <i class="fas fa-truck"></i>
+                        </div>
+                        <div class="help-article-content">
+                            <h3>Encontrar Transportistas</h3>
+                            <p>Cómo buscar, evaluar y seleccionar los mejores transportistas para tus necesidades.</p>
+                            <div class="help-article-meta">
+                                <span class="help-article-duration">6 min lectura</span>
+                                <span class="help-article-difficulty help-beginner">Principiante</span>
+                            </div>
+                            <button class="help-article-link" data-article="find-carriers">
+                                Leer Guía Completa
+                                <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="help-video-section">
+                    <h3>Video Tutorial: Primeros Pasos</h3>
+                    <div class="help-video-placeholder">
+                        <div class="help-video-player">
+                            <i class="fas fa-play"></i>
+                        </div>
+                        <div class="help-video-info">
+                            <h4>Configuración Completa de Cuenta Empresa</h4>
+                            <p>En este video aprenderás a configurar completamente tu perfil de empresa, preferencias y comenzar a publicar cargas.</p>
+                            <div class="help-video-meta">
+                                <span><i class="fas fa-clock"></i> 12:45 min</span>
+                                <span><i class="fas fa-calendar"></i> Actualizado: Dic 2024</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sección: Gestión de Envíos -->
+            <section class="help-section" id="shipment-guides">
+                <div class="help-section-header">
+                    <h2>Gestión de Envíos</h2>
+                    <p>Aprende a gestionar eficientemente tus envíos y logística</p>
+                </div>
+
+                <div class="help-articles-grid">
+                    <article class="help-article-card">
+                        <div class="help-article-icon">
+                            <i class="fas fa-edit"></i>
+                        </div>
+                        <div class="help-article-content">
+                            <h3>Publicar Cargas Avanzado</h3>
+                            <p>Configuraciones avanzadas para publicar cargas: tipos especiales, requisitos y condiciones.</p>
+                            <div class="help-article-meta">
+                                <span class="help-article-duration">10 min lectura</span>
+                                <span class="help-article-difficulty help-intermediate">Intermedio</span>
+                            </div>
+                            <button class="help-article-link" data-article="advanced-shipment">
+                                Leer Guía Completa
+                                <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </article>
+
+                    <article class="help-article-card">
+                        <div class="help-article-icon">
+                            <i class="fas fa-search-location"></i>
+                        </div>
+                        <div class="help-article-content">
+                            <h3>Seguimiento en Tiempo Real</h3>
+                            <p>Cómo usar las herramientas de seguimiento y monitoreo de tus envíos.</p>
+                            <div class="help-article-meta">
+                                <span class="help-article-duration">7 min lectura</span>
+                                <span class="help-article-difficulty help-beginner">Principiante</span>
+                            </div>
+                            <button class="help-article-link" data-article="tracking-guide">
+                                Leer Guía Completa
+                                <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </article>
+
+                    <article class="help-article-card">
+                        <div class="help-article-icon">
+                            <i class="fas fa-file-contract"></i>
+                        </div>
+                        <div class="help-article-content">
+                            <h3>Documentación de Envíos</h3>
+                            <p>Gestión de documentos: facturas, manifiestos y certificados requeridos.</p>
+                            <div class="help-article-meta">
+                                <span class="help-article-duration">12 min lectura</span>
+                                <span class="help-article-difficulty help-advanced">Avanzado</span>
+                            </div>
+                            <button class="help-article-link" data-article="documentation">
+                                Leer Guía Completa
+                                <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <!-- FAQ Section -->
+            <section class="help-faq-section">
+                <div class="help-section-header">
+                    <h2>Preguntas Frecuentes</h2>
+                    <p>Respuestas rápidas a las dudas más comunes</p>
+                </div>
+
+                <div class="help-faq-list">
+                    <div class="help-faq-item">
+                        <div class="help-faq-question">
+                            <h4>¿Cómo puedo publicar una carga?</h4>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="help-faq-answer">
+                            <p>Para publicar una carga:</p>
+                            <ol>
+                                <li>Ve a la sección "Publicar Carga" en tu dashboard</li>
+                                <li>Completa la información básica: origen, destino, tipo de mercancía</li>
+                                <li>Especifica los detalles: peso, dimensiones, fechas</li>
+                                <li>Configura el precio máximo que estás dispuesto a pagar</li>
+                                <li>Revisa y publica la carga</li>
+                            </ol>
+                            <p>Los transportistas verán tu carga y comenzarán a enviar cotizaciones.</p>
+                        </div>
+                    </div>
+
+                    <div class="help-faq-item">
+                        <div class="help-faq-question">
+                            <h4>¿Qué métodos de pago aceptan?</h4>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="help-faq-answer">
+                            <p>Aceptamos los siguientes métodos de pago:</p>
+                            <ul>
+                                <li><strong>Transferencia bancaria</strong> - Procesamiento en 24-48 horas</li>
+                                <li><strong>Tarjeta de crédito/débito</strong> - Visa, MasterCard, American Express</li>
+                                <li><strong>PSE</strong> - Pago seguro en línea</li>
+                                <li><strong>Facturación empresarial</strong> - Para empresas con crédito aprobado</li>
+                            </ul>
+                            <p>Todos los pagos están protegidos con encriptación de grado bancario.</p>
+                        </div>
+                    </div>
+
+                    <div class="help-faq-item">
+                        <div class="help-faq-question">
+                            <h4>¿Cómo funciona el sistema de calificaciones?</h4>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="help-faq-answer">
+                            <p>El sistema de calificaciones funciona de la siguiente manera:</p>
+                            <ul>
+                                <li><strong>Después de cada envío completado</strong>, ambas partes se califican mutuamente</li>
+                                <li><strong>Escala de 1 a 5 estrellas</strong> en diferentes categorías</li>
+                                <li><strong>Comentarios opcionales</strong> para feedback detallado</li>
+                                <li><strong>Calificaciones verificadas</strong> - Solo usuarios que completaron transacciones reales pueden calificar</li>
+                            </ul>
+                            <p>Las calificaciones ayudan a mantener la calidad y confianza en la plataforma.</p>
+                        </div>
+                    </div>
+
+                    <div class="help-faq-item">
+                        <div class="help-faq-question">
+                            <h4>¿Qué hago si mi envío tiene un retraso?</h4>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="help-faq-answer">
+                            <p>Si experimentas un retraso en tu envío:</p>
+                            <ol>
+                                <li><strong>Revisa el seguimiento en tiempo real</strong> para ver la ubicación actual</li>
+                                <li><strong>Contacta al transportista</strong> directamente a través del chat de la plataforma</li>
+                                <li><strong>Verifica las actualizaciones de estado</strong> - Los retrasos suelen ser reportados con una explicación</li>
+                                <li><strong>Si el retraso es significativo</strong>, contacta a nuestro soporte para asistencia</li>
+                            </ol>
+                            <p>La mayoría de los retrasos son por condiciones climáticas, tráfico o verificaciones de seguridad.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Contact Section -->
+            <section class="help-contact-section">
+                <div class="help-contact-card">
+                    <div class="help-contact-content">
+                        <h2>¿No encuentras lo que buscas?</h2>
+                        <p>Nuestro equipo de soporte está listo para ayudarte personalmente</p>
+                        <div class="help-contact-methods">
+                            <div class="help-contact-method">
+                                <i class="fas fa-comments"></i>
+                                <div>
+                                    <h4>Chat en Vivo</h4>
+                                    <p>Respuesta inmediata 24/7</p>
+                                    <button class="help-contact-btn">Iniciar Chat</button>
+                                </div>
+                            </div>
+                            <div class="help-contact-method">
+                                <i class="fas fa-phone"></i>
+                                <div>
+                                    <h4>Llamada Telefónica</h4>
+                                    <p>+57 1 234 5678</p>
+                                    <button class="help-contact-btn">Llamar Ahora</button>
+                                </div>
+                            </div>
+                            <div class="help-contact-method">
+                                <i class="fas fa-envelope"></i>
+                                <div>
+                                    <h4>Correo Electrónico</h4>
+                                    <p>soporte@connectcargo.com</p>
+                                    <button class="help-contact-btn">Enviar Email</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="help-contact-visual">
+                        <div class="help-contact-icon">
+                            <i class="fas fa-headset"></i>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Contacto -->
+<div class="help-modal" id="contactModal">
+    <div class="help-modal-content">
+        <div class="help-modal-header">
+            <h3>Contactar Soporte</h3>
+            <button class="help-modal-close" id="contactModalClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="help-modal-body">
+            <form class="help-contact-form">
+                <div class="help-form-group">
+                    <label for="contactSubject">Asunto</label>
+                    <select id="contactSubject" class="help-form-select" required>
+                        <option value="">Selecciona un asunto</option>
+                        <option value="technical">Problema Técnico</option>
+                        <option value="billing">Facturación y Pagos</option>
+                        <option value="shipment">Problema con Envío</option>
+                        <option value="account">Cuenta y Configuración</option>
+                        <option value="other">Otro</option>
+                    </select>
+                </div>
+
+                <div class="help-form-group">
+                    <label for="contactDescription">Descripción Detallada</label>
+                    <textarea id="contactDescription" class="help-form-textarea" 
+                              placeholder="Describe tu problema o consulta en detalle..." 
+                              rows="5" required></textarea>
+                </div>
+
+                <div class="help-form-group">
+                    <label for="contactPriority">Prioridad</label>
+                    <div class="help-priority-options">
+                        <label class="help-priority-option">
+                            <input type="radio" name="priority" value="low">
+                            <span class="help-priority-check"></span>
+                            <span class="help-priority-label">
+                                <i class="fas fa-info-circle"></i>
+                                Baja
+                            </span>
+                        </label>
+                        <label class="help-priority-option">
+                            <input type="radio" name="priority" value="medium" checked>
+                            <span class="help-priority-check"></span>
+                            <span class="help-priority-label">
+                                <i class="fas fa-exclamation-circle"></i>
+                                Media
+                            </span>
+                        </label>
+                        <label class="help-priority-option">
+                            <input type="radio" name="priority" value="high">
+                            <span class="help-priority-check"></span>
+                            <span class="help-priority-label">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                Alta
+                            </span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="help-form-group">
+                    <label class="help-file-upload">
+                        <input type="file" id="contactAttachment" multiple>
+                        <i class="fas fa-paperclip"></i>
+                        <span>Adjuntar archivos (opcional)</span>
+                        <small>Capturas de pantalla, documentos, etc.</small>
+                    </label>
+                </div>
+            </form>
+        </div>
+        <div class="help-modal-footer">
+            <button class="help-btn help-btn-secondary" id="contactCancel">Cancelar</button>
+            <button class="help-btn help-btn-primary" id="contactSubmit">
+                <i class="fas fa-paper-plane"></i>
+                Enviar Solicitud
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Artículo -->
+<div class="help-modal" id="articleModal">
+    <div class="help-modal-content help-article-modal">
+        <div class="help-modal-header">
+            <h3 id="articleModalTitle">Título del Artículo</h3>
+            <button class="help-modal-close" id="articleModalClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="help-modal-body">
+            <div class="help-article-content" id="articleModalContent">
+                <!-- El contenido del artículo se cargará aquí dinámicamente -->
+            </div>
+        </div>
+        <div class="help-modal-footer">
+            <div class="help-article-feedback">
+                <span>¿Te resultó útil este artículo?</span>
+                <div class="help-feedback-buttons">
+                    <button class="help-feedback-btn help-feedback-yes">
+                        <i class="fas fa-thumbs-up"></i>
+                        Sí
+                    </button>
+                    <button class="help-feedback-btn help-feedback-no">
+                        <i class="fas fa-thumbs-down"></i>
+                        No
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/help_company.js') }}"></script>
+{% endblock %}

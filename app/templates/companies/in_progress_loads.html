@@ -1,0 +1,503 @@
+{% extends "/companies/base_company.html" %}
+
+{% block title %}Cargas en Curso - ConnectCargo{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/in_progress_loads.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="in-progress-loads-container">
+    <!-- Header -->
+    <div class="in-progress-header">
+        <div class="in-progress-header-content">
+            <h1 class="in-progress-title">Cargas en Curso</h1>
+            <p class="in-progress-subtitle">Seguimiento en tiempo real de tus envíos activos</p>
+        </div>
+        <div class="live-indicator">
+            <div class="pulse-dot"></div>
+            <span>Actualización en tiempo real</span>
+        </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="progress-stats">
+        <div class="progress-stat-card">
+            <div class="progress-stat-icon">
+                <i class="fas fa-shipping-fast"></i>
+            </div>
+            <div class="progress-stat-info">
+                <span class="progress-stat-number">3</span>
+                <span class="progress-stat-label">En Ruta</span>
+            </div>
+        </div>
+        <div class="progress-stat-card">
+            <div class="progress-stat-icon">
+                <i class="fas fa-clock"></i>
+            </div>
+            <div class="progress-stat-info">
+                <span class="progress-stat-number">1</span>
+                <span class="progress-stat-label">Por Recolectar</span>
+            </div>
+        </div>
+        <div class="progress-stat-card">
+            <div class="progress-stat-icon">
+                <i class="fas fa-map-marker-alt"></i>
+            </div>
+            <div class="progress-stat-info">
+                <span class="progress-stat-number">2</span>
+                <span class="progress-stat-label">En Punto Intermedio</span>
+            </div>
+        </div>
+        <div class="progress-stat-card">
+            <div class="progress-stat-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="progress-stat-info">
+                <span class="progress-stat-number">47</span>
+                <span class="progress-stat-label">Entregadas Hoy</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mapa de Seguimiento (Placeholder) -->
+    <div class="tracking-map-section">
+        <div class="section-header">
+            <h2>Vista General del Mapa</h2>
+            <p>Seguimiento en tiempo real de todos tus envíos activos</p>
+        </div>
+        <div class="tracking-map-placeholder">
+            <div class="map-overlay">
+                <i class="fas fa-map-marked-alt"></i>
+                <h3>Mapa de Seguimiento en Tiempo Real</h3>
+                <p>Aquí se mostraría la ubicación en tiempo real de todos tus envíos activos</p>
+                <div class="map-legend">
+                    <div class="legend-item">
+                        <div class="legend-marker pickup"></div>
+                        <span>Por recoger</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-marker in-transit"></div>
+                        <span>En tránsito</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-marker delivered"></div>
+                        <span>Entregado</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lista de Cargas en Curso -->
+    <div class="in-progress-list-section">
+        <div class="section-header">
+            <h2>Cargas Activas</h2>
+            <p>Seguimiento detallado de cada envío en curso</p>
+        </div>
+
+        <div class="in-progress-list">
+            <!-- Carga 1 - En Ruta Avanzada -->
+            <div class="progress-load-card status-in-transit">
+                <div class="progress-load-header">
+                    <div class="load-ref">
+                        <span class="ref-badge">REF</span>
+                        <span class="ref-number">#CC-2024-004</span>
+                        <span class="load-priority high">
+                            <i class="fas fa-exclamation-circle"></i>
+                            Urgente
+                        </span>
+                    </div>
+                    <div class="load-actions">
+                        <button class="action-btn live-tracking" title="Seguimiento en vivo">
+                            <i class="fas fa-satellite-dish"></i>
+                        </button>
+                        <button class="action-btn" title="Contactar conductor">
+                            <i class="fas fa-comment"></i>
+                        </button>
+                        <button class="action-btn" title="Ver detalles">
+                            <i class="fas fa-expand"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="progress-load-content">
+                    <!-- Ruta y Progreso -->
+                    <div class="route-progress">
+                        <div class="route-points">
+                            <div class="route-point completed">
+                                <div class="point-marker"></div>
+                                <div class="point-info">
+                                    <span class="point-city">Bogotá D.C.</span>
+                                    <span class="point-time">Recogido: 8:30 AM</span>
+                                </div>
+                            </div>
+                            <div class="route-point current">
+                                <div class="point-marker"></div>
+                                <div class="point-info">
+                                    <span class="point-city">Fusagasugá</span>
+                                    <span class="point-time">Actual: 10:45 AM</span>
+                                    <span class="point-eta">Próxima actualización: 11:00 AM</span>
+                                </div>
+                            </div>
+                            <div class="route-point">
+                                <div class="point-marker"></div>
+                                <div class="point-info">
+                                    <span class="point-city">Girardot</span>
+                                    <span class="point-time">Estimado: 12:30 PM</span>
+                                </div>
+                            </div>
+                            <div class="route-point">
+                                <div class="point-marker"></div>
+                                <div class="point-info">
+                                    <span class="point-city">Ibagué</span>
+                                    <span class="point-time">Destino: 2:00 PM</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="progress-container">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 45%"></div>
+                            </div>
+                            <div class="progress-stats">
+                                <span class="progress-percent">45% Completado</span>
+                                <span class="progress-distance">128 km de 285 km</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Información del Conductor -->
+                    <div class="driver-tracking-info">
+                        <div class="driver-profile">
+                            <div class="driver-avatar">
+                                <img src="{{ url_for('static', filename='images/driver-1.jpg') }}" alt="Carlos Rodríguez">
+                                <div class="driver-status online"></div>
+                            </div>
+                            <div class="driver-details">
+                                <h4 class="driver-name">Carlos Rodríguez</h4>
+                                <div class="driver-meta">
+                                    <span class="driver-rating">
+                                        <i class="fas fa-star"></i> 4.8 (142)
+                                    </span>
+                                    <span class="driver-phone">
+                                        <i class="fas fa-phone"></i> +57 300 123 4567
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tracking-details">
+                            <div class="tracking-item">
+                                <i class="fas fa-speedometer"></i>
+                                <span>Velocidad: 68 km/h</span>
+                            </div>
+                            <div class="tracking-item">
+                                <i class="fas fa-clock"></i>
+                                <span>ETA: 1 hora 15 min</span>
+                            </div>
+                            <div class="tracking-item">
+                                <i class="fas fa-road"></i>
+                                <span>Próxima parada: 45 min</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Alertas y Notificaciones -->
+                    <div class="load-alerts">
+                        <div class="alert-item info">
+                            <i class="fas fa-info-circle"></i>
+                            <span>El conductor reportó tráfico moderado en la vía</span>
+                        </div>
+                        <div class="alert-item success">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Documentación en orden - Aduana aprobada</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="progress-load-footer">
+                    <div class="load-actions-footer">
+                        <button class="action-btn-text">
+                            <i class="fas fa-history"></i>
+                            Historial de Ubicaciones
+                        </button>
+                        <button class="action-btn-text">
+                            <i class="fas fa-download"></i>
+                            Reporte de Viaje
+                        </button>
+                        <button class="action-btn-text primary">
+                            <i class="fas fa-phone-alt"></i>
+                            Llamar al Conductor
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Carga 2 - Por Recolectar -->
+            <div class="progress-load-card status-pickup">
+                <div class="progress-load-header">
+                    <div class="load-ref">
+                        <span class="ref-badge">REF</span>
+                        <span class="ref-number">#CC-2024-005</span>
+                    </div>
+                    <div class="load-actions">
+                        <button class="action-btn" title="Contactar conductor">
+                            <i class="fas fa-comment"></i>
+                        </button>
+                        <button class="action-btn" title="Ver detalles">
+                            <i class="fas fa-expand"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="progress-load-content">
+                    <!-- Ruta y Progreso -->
+                    <div class="route-progress">
+                        <div class="route-points">
+                            <div class="route-point current">
+                                <div class="point-marker"></div>
+                                <div class="point-info">
+                                    <span class="point-city">Medellín</span>
+                                    <span class="point-time">Por recoger: 11:00 AM</span>
+                                    <span class="point-eta">Conductor en camino</span>
+                                </div>
+                            </div>
+                            <div class="route-point">
+                                <div class="point-marker"></div>
+                                <div class="point-info">
+                                    <span class="point-city">Bucaramanga</span>
+                                    <span class="point-time">Destino: 6:00 PM</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="progress-container">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 0%"></div>
+                            </div>
+                            <div class="progress-stats">
+                                <span class="progress-percent">Por iniciar</span>
+                                <span class="progress-distance">Recolección pendiente</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Información del Conductor -->
+                    <div class="driver-tracking-info">
+                        <div class="driver-profile">
+                            <div class="driver-avatar">
+                                <img src="{{ url_for('static', filename='images/driver-2.jpg') }}" alt="María González">
+                                <div class="driver-status online"></div>
+                            </div>
+                            <div class="driver-details">
+                                <h4 class="driver-name">María González</h4>
+                                <div class="driver-meta">
+                                    <span class="driver-rating">
+                                        <i class="fas fa-star"></i> 5.0 (89)
+                                    </span>
+                                    <span class="driver-phone">
+                                        <i class="fas fa-phone"></i> +57 300 234 5678
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tracking-details">
+                            <div class="tracking-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>A 15 min del punto de recolección</span>
+                            </div>
+                            <div class="tracking-item">
+                                <i class="fas fa-clock"></i>
+                                <span>Llegada estimada: 10:45 AM</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Instrucciones de Recolección -->
+                    <div class="pickup-instructions">
+                        <h4>Instrucciones para el conductor:</h4>
+                        <ul>
+                            <li>Entrar por puerta principal - Bodega 5</li>
+                            <li>Contactar a: Jorge Martínez - Cel: 300 111 2233</li>
+                            <li>Documentación lista en recepción</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="progress-load-footer">
+                    <div class="load-actions-footer">
+                        <button class="action-btn-text">
+                            <i class="fas fa-edit"></i>
+                            Actualizar Instrucciones
+                        </button>
+                        <button class="action-btn-text primary">
+                            <i class="fas fa-comment-dots"></i>
+                            Enviar Mensaje
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Carga 3 - En Punto Intermedio -->
+            <div class="progress-load-card status-checkpoint">
+                <div class="progress-load-header">
+                    <div class="load-ref">
+                        <span class="ref-badge">REF</span>
+                        <span class="ref-number">#CC-2024-006</span>
+                    </div>
+                    <div class="load-actions">
+                        <button class="action-btn" title="Seguimiento en vivo">
+                            <i class="fas fa-satellite-dish"></i>
+                        </button>
+                        <button class="action-btn" title="Contactar conductor">
+                            <i class="fas fa-comment"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="progress-load-content">
+                    <!-- Ruta y Progreso -->
+                    <div class="route-progress">
+                        <div class="route-points">
+                            <div class="route-point completed">
+                                <div class="point-marker"></div>
+                                <div class="point-info">
+                                    <span class="point-city">Cali</span>
+                                    <span class="point-time">Recogido: 7:00 AM</span>
+                                </div>
+                            </div>
+                            <div class="route-point completed">
+                                <div class="point-marker"></div>
+                                <div class="point-info">
+                                    <span class="point-city">Palmira</span>
+                                    <span class="point-time">Pasó: 8:15 AM</span>
+                                </div>
+                            </div>
+                            <div class="route-point current">
+                                <div class="point-marker"></div>
+                                <div class="point-info">
+                                    <span class="point-city">Buga</span>
+                                    <span class="point-time">En parada: 9:30 AM</span>
+                                    <span class="point-eta">Descanso programado</span>
+                                </div>
+                            </div>
+                            <div class="route-point">
+                                <div class="point-marker"></div>
+                                <div class="point-info">
+                                    <span class="point-city">Barranquilla</span>
+                                    <span class="point-time">Destino: 4:00 PM</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="progress-container">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 35%"></div>
+                            </div>
+                            <div class="progress-stats">
+                                <span class="progress-percent">35% Completado</span>
+                                <span class="progress-distance">210 km de 600 km</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Información del Conductor -->
+                    <div class="driver-tracking-info">
+                        <div class="driver-profile">
+                            <div class="driver-avatar">
+                                <img src="{{ url_for('static', filename='images/driver-3.jpg') }}" alt="Javier López">
+                                <div class="driver-status away"></div>
+                            </div>
+                            <div class="driver-details">
+                                <h4 class="driver-name">Javier López</h4>
+                                <div class="driver-meta">
+                                    <span class="driver-rating">
+                                        <i class="fas fa-star"></i> 4.9 (76)
+                                    </span>
+                                    <span class="driver-phone">
+                                        <i class="fas fa-phone"></i> +57 300 345 6789
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tracking-details">
+                            <div class="tracking-item">
+                                <i class="fas fa-coffee"></i>
+                                <span>En pausa - Descanso reglamentario</span>
+                            </div>
+                            <div class="tracking-item">
+                                <i class="fas fa-clock"></i>
+                                <span>Reanuda: 10:00 AM</span>
+                            </div>
+                            <div class="tracking-item">
+                                <i class="fas fa-road"></i>
+                                <span>ETA: 4:00 PM</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Checkpoint Information -->
+                    <div class="checkpoint-info">
+                        <div class="checkpoint-details">
+                            <h4>Punto de Control - Buga</h4>
+                            <p>Parada programada para descanso y verificación de carga</p>
+                            <div class="checkpoint-meta">
+                                <span class="checkpoint-time">
+                                    <i class="fas fa-clock"></i>
+                                    30 min de pausa
+                                </span>
+                                <span class="checkpoint-location">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    Estación de Servicio Terpel
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="progress-load-footer">
+                    <div class="load-actions-footer">
+                        <button class="action-btn-text">
+                            <i class="fas fa-camera"></i>
+                            Ver Fotos de Carga
+                        </button>
+                        <button class="action-btn-text primary">
+                            <i class="fas fa-bell"></i>
+                            Notificar Reanudación
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions Panel -->
+    <div class="quick-actions-panel">
+        <div class="panel-header">
+            <h3>Acciones Rápidas</h3>
+        </div>
+        <div class="actions-grid">
+            <button class="quick-action-btn">
+                <i class="fas fa-download"></i>
+                <span>Descargar Reportes</span>
+            </button>
+            <button class="quick-action-btn">
+                <i class="fas fa-bell"></i>
+                <span>Configurar Alertas</span>
+            </button>
+            <button class="quick-action-btn">
+                <i class="fas fa-share-alt"></i>
+                <span>Compartir Seguimiento</span>
+            </button>
+            <button class="quick-action-btn">
+                <i class="fas fa-history"></i>
+                <span>Historial Completo</span>
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/in_progress_loads.js') }}"></script>
+{% endblock %}

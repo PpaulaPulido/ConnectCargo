@@ -1,0 +1,881 @@
+/* ESTILOS ESPECÍFICOS PARA PERFIL DE EMPRESA */
+/* No interfieren con base_company.css */
+
+.profile-company-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+/* Header del Perfil */
+.profile-company-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+    padding: 1.5rem 0;
+    border-bottom: 1px solid var(--border-light);
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.profile-company-header-content {
+    flex: 1;
+    min-width: 300px;
+}
+
+.profile-company-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+}
+
+.profile-company-subtitle {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    line-height: 1.4;
+}
+
+.profile-verification-badge {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    background: var(--accent-light);
+    border: 1px solid var(--accent-primary);
+    border-radius: var(--border-radius);
+    min-width: 280px;
+}
+
+.profile-badge-icon {
+    width: 50px;
+    height: 50px;
+    background: var(--accent-primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.25rem;
+}
+
+.profile-badge-info {
+    flex: 1;
+}
+
+.profile-badge-status {
+    display: block;
+    font-weight: 600;
+    color: var(--accent-primary);
+    margin-bottom: 0.25rem;
+}
+
+.profile-badge-desc {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.3;
+}
+
+/* Layout Principal */
+.profile-company-content {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+/* Sidebar del Perfil */
+.profile-company-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.profile-company-nav {
+    background: var(--bg-main);
+    border: 1px solid var(--border-light);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+}
+
+.profile-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1.25rem;
+    text-decoration: none;
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--border-light);
+    transition: var(--transition);
+    font-weight: 500;
+}
+
+.profile-nav-item:last-child {
+    border-bottom: none;
+}
+
+.profile-nav-item:hover {
+    background: var(--bg-gray);
+    color: var(--accent-primary);
+}
+
+.profile-nav-item.active {
+    background: var(--accent-light);
+    color: var(--accent-primary);
+    border-left: 4px solid var(--accent-primary);
+}
+
+.profile-nav-item i {
+    width: 20px;
+    text-align: center;
+    font-size: 1.1rem;
+}
+
+/* Progress Card */
+.profile-progress-card {
+    background: var(--bg-main);
+    border: 1px solid var(--border-light);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+}
+
+.profile-progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.profile-progress-header h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.profile-progress-percent {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--accent-primary);
+}
+
+.profile-progress-bar {
+    height: 8px;
+    background: var(--border-light);
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    overflow: hidden;
+}
+
+.profile-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-primary), var(--accent-hover));
+    border-radius: 4px;
+    transition: width 0.5s ease;
+}
+
+.profile-progress-stats {
+    margin-bottom: 1rem;
+}
+
+.profile-stat {
+    text-align: center;
+}
+
+.profile-stat-number {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+}
+
+.profile-stat-label {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.profile-progress-tips {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    background: var(--accent-light);
+    border-radius: 8px;
+    font-size: 0.85rem;
+    color: var(--accent-primary);
+}
+
+.profile-progress-tips i {
+    font-size: 1rem;
+}
+
+/* Contenido Principal del Perfil */
+.profile-company-main {
+    min-height: 600px;
+}
+
+.profile-tab-content {
+    display: none;
+}
+
+.profile-tab-content.active {
+    display: block;
+    animation: profileFadeIn 0.5s ease;
+}
+
+@keyframes profileFadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.profile-tab-header {
+    margin-bottom: 2rem;
+}
+
+.profile-tab-header h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.profile-tab-header p {
+    color: var(--text-secondary);
+    font-size: 1rem;
+}
+
+/* Formularios del Perfil */
+.profile-company-form {
+    background: var(--bg-main);
+    border-radius: var(--border-radius);
+}
+
+.profile-form-section {
+    margin-bottom: 2.5rem;
+    padding: 1.5rem;
+    background: var(--bg-main);
+    border: 1px solid var(--border-light);
+    border-radius: var(--border-radius);
+}
+
+.profile-section-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid var(--accent-light);
+}
+
+.profile-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.profile-form-group {
+    margin-bottom: 1.5rem;
+}
+
+.profile-form-group label {
+    display: block;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.profile-form-input,
+.profile-form-select,
+.profile-form-textarea {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    border: 1px solid var(--border-light);
+    border-radius: var(--border-radius);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    transition: var(--transition);
+    background: var(--bg-main);
+}
+
+.profile-form-input:focus,
+.profile-form-select:focus,
+.profile-form-textarea:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 3px rgba(242, 140, 40, 0.1);
+}
+
+.profile-form-textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.profile-form-help {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-top: 0.5rem;
+}
+
+/* Checkbox Grid del Perfil */
+.profile-checkbox-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+}
+
+.profile-checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    font-weight: 500;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+}
+
+.profile-checkbox-label input[type="checkbox"] {
+    display: none;
+}
+
+.profile-checkmark {
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--border-light);
+    border-radius: 4px;
+    position: relative;
+    transition: var(--transition);
+}
+
+.profile-checkbox-label input[type="checkbox"]:checked + .profile-checkmark {
+    background: var(--accent-primary);
+    border-color: var(--accent-primary);
+}
+
+.profile-checkbox-label input[type="checkbox"]:checked + .profile-checkmark::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 0.7rem;
+    font-weight: bold;
+}
+
+/* Document Upload del Perfil */
+.profile-document-upload {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.profile-upload-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem;
+    background: var(--bg-gray);
+    border: 2px dashed var(--border-light);
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+}
+
+.profile-upload-card:hover {
+    border-color: var(--accent-primary);
+    background: var(--accent-light);
+}
+
+.profile-upload-icon {
+    width: 50px;
+    height: 50px;
+    background: var(--accent-primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.25rem;
+}
+
+.profile-upload-info {
+    flex: 1;
+}
+
+.profile-upload-info h4 {
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+}
+
+.profile-upload-info p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
+}
+
+.profile-file-requirements {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.profile-upload-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    background: var(--accent-primary);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.profile-upload-btn:hover {
+    background: var(--accent-hover);
+    transform: translateY(-2px);
+}
+
+/* Documents Grid del Perfil */
+.profile-documents-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.profile-document-card {
+    background: var(--bg-main);
+    border: 1px solid var(--border-light);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    transition: var(--transition);
+}
+
+.profile-document-card.required {
+    border-left: 4px solid var(--accent-primary);
+}
+
+.profile-document-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-hover);
+}
+
+.profile-doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.profile-doc-icon {
+    width: 50px;
+    height: 50px;
+    background: var(--accent-light);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent-primary);
+    font-size: 1.25rem;
+}
+
+.profile-doc-status {
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.profile-doc-status.pending {
+    background: #FEF3E6;
+    color: #F59E0B;
+}
+
+.profile-doc-status.optional {
+    background: #EFF6FF;
+    color: #3B82F6;
+}
+
+.profile-doc-content h4 {
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.profile-doc-content p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+.profile-doc-requirements {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin-bottom: 1.5rem;
+}
+
+.profile-req-item {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.profile-doc-action {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    border: none;
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.profile-btn-primary {
+    background: var(--accent-primary);
+    color: white;
+}
+
+.profile-btn-primary:hover {
+    background: var(--accent-hover);
+}
+
+.profile-btn-secondary {
+    background: var(--bg-gray);
+    color: var(--text-primary);
+    border: 1px solid var(--border-light);
+}
+
+.profile-btn-secondary:hover {
+    background: var(--border-light);
+}
+
+/* Verification Process del Perfil */
+.profile-verification-process {
+    background: var(--bg-main);
+    border: 1px solid var(--border-light);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+}
+
+.profile-verification-process h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 1.5rem;
+}
+
+.profile-process-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.profile-process-step {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+}
+
+.profile-process-step.completed {
+    background: #F0FDF4;
+    border: 1px solid #BBF7D0;
+}
+
+.profile-process-step.current {
+    background: var(--accent-light);
+    border: 1px solid var(--accent-primary);
+}
+
+.profile-process-step:not(.completed):not(.current) {
+    background: var(--bg-gray);
+    border: 1px solid var(--border-light);
+}
+
+.profile-step-number {
+    width: 40px;
+    height: 40px;
+    background: var(--text-muted);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.profile-process-step.completed .profile-step-number {
+    background: #10B981;
+}
+
+.profile-process-step.current .profile-step-number {
+    background: var(--accent-primary);
+}
+
+.profile-step-info h4 {
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+}
+
+.profile-step-info p {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+/* Security del Perfil */
+.profile-security-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.profile-security-card {
+    background: var(--bg-main);
+    border: 1px solid var(--border-light);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+}
+
+.profile-security-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.profile-security-header i {
+    width: 40px;
+    height: 40px;
+    background: var(--accent-light);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent-primary);
+    font-size: 1.1rem;
+}
+
+.profile-security-header h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+/* Notifications del Perfil */
+.profile-notifications-settings {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.profile-switch-label {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.profile-switch-label input[type="checkbox"] {
+    display: none;
+}
+
+.profile-slider {
+    width: 50px;
+    height: 24px;
+    background: var(--border-light);
+    border-radius: 12px;
+    position: relative;
+    transition: var(--transition);
+}
+
+.profile-slider::before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 20px;
+    height: 20px;
+    background: white;
+    border-radius: 50%;
+    transition: var(--transition);
+}
+
+.profile-switch-label input[type="checkbox"]:checked + .profile-slider {
+    background: var(--accent-primary);
+}
+
+.profile-switch-label input[type="checkbox"]:checked + .profile-slider::before {
+    transform: translateX(26px);
+}
+
+/* Session Info del Perfil */
+.profile-session-info {
+    margin-bottom: 1.5rem;
+}
+
+.profile-session-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.profile-session-item:last-child {
+    border-bottom: none;
+}
+
+.profile-session-label {
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.profile-session-value {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+/* Form Actions del Perfil */
+.profile-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-light);
+}
+
+/* Botones del Perfil */
+.profile-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.875rem 1.5rem;
+    border: none;
+    border-radius: var(--border-radius);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    text-decoration: none;
+}
+
+.profile-btn-primary {
+    background: var(--accent-primary);
+    color: white;
+}
+
+.profile-btn-primary:hover {
+    background: var(--accent-hover);
+    transform: translateY(-2px);
+}
+
+.profile-btn-secondary {
+    background: var(--bg-gray);
+    color: var(--text-primary);
+    border: 1px solid var(--border-light);
+}
+
+.profile-btn-secondary:hover {
+    background: var(--border-light);
+    transform: translateY(-2px);
+}
+
+/* Responsive del Perfil */
+@media (max-width: 1024px) {
+    .profile-company-content {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .profile-company-sidebar {
+        order: 2;
+    }
+    
+    .profile-company-main {
+        order: 1;
+    }
+}
+
+@media (max-width: 768px) {
+    .profile-company-header {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .profile-verification-badge {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .profile-form-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .profile-documents-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .profile-checkbox-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .profile-upload-card {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .profile-form-actions {
+        flex-direction: column;
+    }
+    
+    .profile-btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .profile-company-container {
+        padding: 0 0.5rem;
+    }
+    
+    .profile-company-title {
+        font-size: 1.5rem;
+    }
+    
+    .profile-form-section {
+        padding: 1rem;
+    }
+    
+    .profile-security-card {
+        padding: 1rem;
+    }
+    
+    .profile-process-step {
+        flex-direction: column;
+        text-align: center;
+    }
+}

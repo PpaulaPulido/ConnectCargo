@@ -1,0 +1,541 @@
+{% extends "/companies/base_company.html" %}
+
+{% block title %}Cargas Publicadas - ConnectCargo{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/published_loads.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="published-loads-container">
+    <!-- Header -->
+    <div class="published-loads-header">
+        <div class="published-loads-header-content">
+            <h1 class="published-loads-title">Cargas Publicadas</h1>
+            <p class="published-loads-subtitle">Gestiona y da seguimiento a tus cargas publicadas</p>
+        </div>
+        <div class="published-loads-actions">
+            <a href="{{ url_for('companies.publish_load') }}" class="publish-new-btn">
+                <i class="fas fa-plus-circle"></i>
+                Publicar Nueva Carga
+            </a>
+        </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="loads-stats">
+        <div class="stat-card">
+            <div class="stat-icon active">
+                <i class="fas fa-clock"></i>
+            </div>
+            <div class="stat-info">
+                <span class="stat-number">5</span>
+                <span class="stat-label">Pendientes</span>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon quotes">
+                <i class="fas fa-comments"></i>
+            </div>
+            <div class="stat-info">
+                <span class="stat-number">12</span>
+                <span class="stat-label">En Cotización</span>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon assigned">
+                <i class="fas fa-truck-loading"></i>
+            </div>
+            <div class="stat-info">
+                <span class="stat-number">3</span>
+                <span class="stat-label">Asignadas</span>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon completed">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="stat-info">
+                <span class="stat-number">47</span>
+                <span class="stat-label">Completadas</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filtros y Búsqueda -->
+    <div class="loads-filters-section">
+        <div class="filters-row">
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" class="search-input" placeholder="Buscar cargas por referencia, origen, destino...">
+            </div>
+            
+            <div class="filter-controls">
+                <select class="filter-select" id="statusFilter">
+                    <option value="">Todos los estados</option>
+                    <option value="pending">Pendientes</option>
+                    <option value="quotes">En Cotización</option>
+                    <option value="assigned">Asignadas</option>
+                    <option value="in_progress">En Curso</option>
+                    <option value="completed">Completadas</option>
+                    <option value="cancelled">Canceladas</option>
+                </select>
+
+                <select class="filter-select" id="dateFilter">
+                    <option value="">Cualquier fecha</option>
+                    <option value="today">Hoy</option>
+                    <option value="week">Esta semana</option>
+                    <option value="month">Este mes</option>
+                    <option value="last_month">Mes anterior</option>
+                </select>
+
+                <button class="filter-btn">
+                    <i class="fas fa-filter"></i>
+                    Filtros
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lista de Cargas -->
+    <div class="loads-list-section">
+        <div class="loads-list-header">
+            <h2>Cargas Recientes</h2>
+            <span class="loads-count">Mostrando 8 cargas</span>
+        </div>
+
+        <div class="loads-list">
+            <!-- Carga 1 - Pendiente -->
+            <div class="load-card status-pending">
+                <div class="load-card-header">
+                    <div class="load-ref">
+                        <span class="ref-badge">REF</span>
+                        <span class="ref-number">#CC-2024-001</span>
+                        <span class="load-priority high">
+                            <i class="fas fa-exclamation-circle"></i>
+                            Urgente
+                        </span>
+                    </div>
+                    <div class="load-actions">
+                        <button class="action-btn" title="Editar">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="action-btn" title="Duplicar">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                        <button class="action-btn danger" title="Cancelar">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="load-card-content">
+                    <div class="load-route">
+                        <div class="route-point origin">
+                            <div class="point-marker"></div>
+                            <div class="point-info">
+                                <span class="point-city">Bogotá D.C.</span>
+                                <span class="point-address">Cra 45 #26-85, Bodega 12</span>
+                                <span class="point-date">15 Dic, 8:00 AM</span>
+                            </div>
+                        </div>
+                        <div class="route-line"></div>
+                        <div class="route-point destination">
+                            <div class="point-marker"></div>
+                            <div class="point-info">
+                                <span class="point-city">Medellín</span>
+                                <span class="point-address">Cl 33 #45-23, Zona Industrial</span>
+                                <span class="point-date">16 Dic, 2:00 PM</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="load-details">
+                        <div class="detail-item">
+                            <i class="fas fa-box"></i>
+                            <span>Carga General - 1,500 kg</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-truck"></i>
+                            <span>Camiones 5T-10T</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-money-bill-wave"></i>
+                            <span>Presupuesto: $1,200,000 COP</span>
+                        </div>
+                    </div>
+
+                    <div class="load-meta">
+                        <div class="meta-item">
+                            <span class="meta-label">Publicado:</span>
+                            <span class="meta-value">Hace 2 horas</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Cotizaciones:</span>
+                            <span class="meta-value">0 recibidas</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Vence:</span>
+                            <span class="meta-value">En 2 días</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="load-card-footer">
+                    <div class="load-status">
+                        <span class="status-badge pending">
+                            <i class="fas fa-clock"></i>
+                            Pendiente
+                        </span>
+                    </div>
+                    <div class="load-actions-footer">
+                        <button class="action-btn-text">
+                            <i class="fas fa-eye"></i>
+                            Ver Detalles
+                        </button>
+                        <button class="action-btn-text primary">
+                            <i class="fas fa-share-alt"></i>
+                            Compartir
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Carga 2 - En Cotización -->
+            <div class="load-card status-quotes">
+                <div class="load-card-header">
+                    <div class="load-ref">
+                        <span class="ref-badge">REF</span>
+                        <span class="ref-number">#CC-2024-002</span>
+                    </div>
+                    <div class="load-actions">
+                        <button class="action-btn" title="Editar">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="action-btn" title="Duplicar">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="load-card-content">
+                    <div class="load-route">
+                        <div class="route-point origin">
+                            <div class="point-marker"></div>
+                            <div class="point-info">
+                                <span class="point-city">Cali</span>
+                                <span class="point-address">Av 4N #15-45, Centro</span>
+                                <span class="point-date">18 Dic, 9:00 AM</span>
+                            </div>
+                        </div>
+                        <div class="route-line"></div>
+                        <div class="route-point destination">
+                            <div class="point-marker"></div>
+                            <div class="point-info">
+                                <span class="point-city">Barranquilla</span>
+                                <span class="point-address">Cra 54 #68-90, Puerto</span>
+                                <span class="point-date">19 Dic, 3:00 PM</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="load-details">
+                        <div class="detail-item">
+                            <i class="fas fa-snowflake"></i>
+                            <span>Carga Refrigerada - 800 kg</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-truck"></i>
+                            <span>Camiones Refrigerados 3.5T</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-money-bill-wave"></i>
+                            <span>Presupuesto: $850,000 COP</span>
+                        </div>
+                    </div>
+
+                    <div class="quotes-info">
+                        <div class="quotes-count">
+                            <i class="fas fa-comments"></i>
+                            <span>5 cotizaciones recibidas</span>
+                        </div>
+                        <div class="best-quote">
+                            <span class="quote-label">Mejor oferta:</span>
+                            <span class="quote-amount">$780,000 COP</span>
+                        </div>
+                    </div>
+
+                    <div class="load-meta">
+                        <div class="meta-item">
+                            <span class="meta-label">Publicado:</span>
+                            <span class="meta-value">Hace 1 día</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Vence:</span>
+                            <span class="meta-value">En 3 días</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="load-card-footer">
+                    <div class="load-status">
+                        <span class="status-badge quotes">
+                            <i class="fas fa-comments"></i>
+                            En Cotización
+                        </span>
+                    </div>
+                    <div class="load-actions-footer">
+                        <button class="action-btn-text">
+                            <i class="fas fa-eye"></i>
+                            Ver Detalles
+                        </button>
+                        <button class="action-btn-text primary">
+                            <i class="fas fa-handshake"></i>
+                            Ver Cotizaciones
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Carga 3 - Asignada -->
+            <div class="load-card status-assigned">
+                <div class="load-card-header">
+                    <div class="load-ref">
+                        <span class="ref-badge">REF</span>
+                        <span class="ref-number">#CC-2024-003</span>
+                    </div>
+                    <div class="load-actions">
+                        <button class="action-btn" title="Seguimiento">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </button>
+                        <button class="action-btn" title="Contactar">
+                            <i class="fas fa-comment"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="load-card-content">
+                    <div class="load-route">
+                        <div class="route-point origin">
+                            <div class="point-marker"></div>
+                            <div class="point-info">
+                                <span class="point-city">Medellín</span>
+                                <span class="point-address">Cl 10 #35-24, Bodeguita</span>
+                                <span class="point-date">20 Dic, 10:00 AM</span>
+                            </div>
+                        </div>
+                        <div class="route-line"></div>
+                        <div class="route-point destination">
+                            <div class="point-marker"></div>
+                            <div class="point-info">
+                                <span class="point-city">Bucaramanga</span>
+                                <span class="point-address">Cra 22 #45-67, Norte</span>
+                                <span class="point-date">20 Dic, 6:00 PM</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="load-details">
+                        <div class="detail-item">
+                            <i class="fas fa-box"></i>
+                            <span>Paquetería - 250 kg</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-truck"></i>
+                            <span>Van/Camión 3.5T</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-money-bill-wave"></i>
+                            <span>Precio acordado: $450,000 COP</span>
+                        </div>
+                    </div>
+
+                    <div class="driver-assigned">
+                        <div class="driver-info">
+                            <div class="driver-avatar">
+                                <img src="{{ url_for('static', filename='images/driver-2.jpg') }}" alt="María González">
+                            </div>
+                            <div class="driver-details">
+                                <span class="driver-name">María González</span>
+                                <span class="driver-rating">
+                                    <i class="fas fa-star"></i> 5.0 (89)
+                                </span>
+                            </div>
+                        </div>
+                        <div class="assignment-time">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Asignada hace 4 horas</span>
+                        </div>
+                    </div>
+
+                    <div class="load-meta">
+                        <div class="meta-item">
+                            <span class="meta-label">Recogida:</span>
+                            <span class="meta-value">Mañana, 10:00 AM</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Entrega estimada:</span>
+                            <span class="meta-value">Mañana, 6:00 PM</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="load-card-footer">
+                    <div class="load-status">
+                        <span class="status-badge assigned">
+                            <i class="fas fa-truck-loading"></i>
+                            Asignada
+                        </span>
+                    </div>
+                    <div class="load-actions-footer">
+                        <button class="action-btn-text">
+                            <i class="fas fa-eye"></i>
+                            Ver Detalles
+                        </button>
+                        <button class="action-btn-text primary">
+                            <i class="fas fa-map-marker-alt"></i>
+                            Seguimiento
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Carga 4 - En Curso -->
+            <div class="load-card status-in-progress">
+                <div class="load-card-header">
+                    <div class="load-ref">
+                        <span class="ref-badge">REF</span>
+                        <span class="ref-number">#CC-2024-004</span>
+                    </div>
+                    <div class="load-actions">
+                        <button class="action-btn" title="Seguimiento en vivo">
+                            <i class="fas fa-satellite-dish"></i>
+                        </button>
+                        <button class="action-btn" title="Contactar">
+                            <i class="fas fa-comment"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="load-card-content">
+                    <div class="load-route">
+                        <div class="route-point origin">
+                            <div class="point-marker completed"></div>
+                            <div class="point-info">
+                                <span class="point-city">Bogotá D.C.</span>
+                                <span class="point-address">Cra 68 #45-23, Fontibón</span>
+                                <span class="point-date completed">Hoy, 8:30 AM ✓</span>
+                            </div>
+                        </div>
+                        <div class="route-line in-progress"></div>
+                        <div class="route-point destination">
+                            <div class="point-marker"></div>
+                            <div class="point-info">
+                                <span class="point-city">Ibagué</span>
+                                <span class="point-address">Cl 19 #42-15, Centro</span>
+                                <span class="point-date">Hoy, 2:00 PM</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="load-details">
+                        <div class="detail-item">
+                            <i class="fas fa-box"></i>
+                            <span>Carga General - 2,800 kg</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-truck"></i>
+                            <span>Camiones 10T</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-money-bill-wave"></i>
+                            <span>Precio acordado: $1,500,000 COP</span>
+                        </div>
+                    </div>
+
+                    <div class="driver-assigned">
+                        <div class="driver-info">
+                            <div class="driver-avatar">
+                                <img src="{{ url_for('static', filename='images/driver-1.jpg') }}" alt="Carlos Rodríguez">
+                            </div>
+                            <div class="driver-details">
+                                <span class="driver-name">Carlos Rodríguez</span>
+                                <span class="driver-rating">
+                                    <i class="fas fa-star"></i> 4.8 (142)
+                                </span>
+                            </div>
+                        </div>
+                        <div class="tracking-info">
+                            <div class="location-status">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>En ruta - 45% completado</span>
+                            </div>
+                            <div class="eta">
+                                <i class="fas fa-clock"></i>
+                                <span>ETA: 1.5 horas</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 45%"></div>
+                    </div>
+                </div>
+
+                <div class="load-card-footer">
+                    <div class="load-status">
+                        <span class="status-badge in-progress">
+                            <i class="fas fa-shipping-fast"></i>
+                            En Curso
+                        </span>
+                    </div>
+                    <div class="load-actions-footer">
+                        <button class="action-btn-text">
+                            <i class="fas fa-eye"></i>
+                            Ver Detalles
+                        </button>
+                        <button class="action-btn-text primary">
+                            <i class="fas fa-satellite-dish"></i>
+                            Seguimiento Live
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Paginación -->
+        <div class="loads-pagination">
+            <button class="pagination-btn disabled">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button class="pagination-btn active">1</button>
+            <button class="pagination-btn">2</button>
+            <button class="pagination-btn">3</button>
+            <span class="pagination-ellipsis">...</span>
+            <button class="pagination-btn">8</button>
+            <button class="pagination-btn">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Empty State (comentado por ahora) -->
+    <!--
+    <div class="empty-state">
+        <div class="empty-icon">
+            <i class="fas fa-box-open"></i>
+        </div>
+        <h3>No tienes cargas publicadas</h3>
+        <p>Comienza publicando tu primera carga para encontrar transportistas</p>
+        <a href="{{ url_for('companies.publish_load') }}" class="publish-new-btn large">
+            <i class="fas fa-plus-circle"></i>
+            Publicar Mi Primera Carga
+        </a>
+    </div>
+    -->
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/published_loads.js') }}"></script>
+{% endblock %}

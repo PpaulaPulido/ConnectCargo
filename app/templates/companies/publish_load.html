@@ -1,0 +1,551 @@
+{% extends "/companies/base_company.html" %}
+
+{% block title %}Publicar Carga - ConnectCargo{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/publish_load.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="publish-load-container">
+    <!-- Header -->
+    <div class="publish-load-header">
+        <div class="publish-load-header-content">
+            <h1 class="publish-load-title">Publicar Nueva Carga</h1>
+            <p class="publish-load-subtitle">Completa la información de tu envío para encontrar los mejores transportistas</p>
+        </div>
+        <div class="publish-load-steps">
+            <div class="publish-step active">
+                <div class="step-number">1</div>
+                <span class="step-label">Información Básica</span>
+            </div>
+            <div class="publish-step">
+                <div class="step-number">2</div>
+                <span class="step-label">Detalles de Carga</span>
+            </div>
+            <div class="publish-step">
+                <div class="step-number">3</div>
+                <span class="step-label">Requisitos</span>
+            </div>
+            <div class="publish-step">
+                <div class="step-number">4</div>
+                <span class="step-label">Confirmación</span>
+            </div>
+        </div>
+    </div>
+
+    <form class="publish-load-form" id="publishLoadForm">
+        <!-- Paso 1: Información Básica -->
+        <div class="publish-form-step active" data-step="1">
+            <div class="step-header">
+                <h2>Información Básica del Envío</h2>
+                <p>Datos esenciales sobre origen, destino y fechas</p>
+            </div>
+
+            <div class="publish-form-section">
+                <h3 class="publish-section-title">Origen y Destino</h3>
+                
+                <div class="publish-form-grid">
+                    <div class="publish-form-group">
+                        <label for="originCity">Ciudad de Origen *</label>
+                        <select id="originCity" class="publish-form-select" required>
+                            <option value="">Seleccionar ciudad</option>
+                            <option value="bogota">Bogotá D.C.</option>
+                            <option value="medellin">Medellín</option>
+                            <option value="cali">Cali</option>
+                            <option value="barranquilla">Barranquilla</option>
+                            <option value="cartagena">Cartagena</option>
+                            <option value="bucaramanga">Bucaramanga</option>
+                            <option value="cucuta">Cúcuta</option>
+                            <option value="pereira">Pereira</option>
+                            <option value="manizales">Manizales</option>
+                            <option value="armenia">Armenia</option>
+                        </select>
+                    </div>
+
+                    <div class="publish-form-group">
+                        <label for="destinationCity">Ciudad de Destino *</label>
+                        <select id="destinationCity" class="publish-form-select" required>
+                            <option value="">Seleccionar ciudad</option>
+                            <option value="bogota">Bogotá D.C.</option>
+                            <option value="medellin">Medellín</option>
+                            <option value="cali">Cali</option>
+                            <option value="barranquilla">Barranquilla</option>
+                            <option value="cartagena">Cartagena</option>
+                            <option value="bucaramanga">Bucaramanga</option>
+                            <option value="cucuta">Cúcuta</option>
+                            <option value="pereira">Pereira</option>
+                            <option value="manizales">Manizales</option>
+                            <option value="armenia">Armenia</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="publish-form-grid">
+                    <div class="publish-form-group">
+                        <label for="originAddress">Dirección de Origen *</label>
+                        <input type="text" id="originAddress" class="publish-form-input" 
+                               placeholder="Ej: Calle 123 #45-67" required>
+                    </div>
+
+                    <div class="publish-form-group">
+                        <label for="destinationAddress">Dirección de Destino *</label>
+                        <input type="text" id="destinationAddress" class="publish-form-input" 
+                               placeholder="Ej: Avenida Principal #89-10" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="publish-form-section">
+                <h3 class="publish-section-title">Fechas y Horarios</h3>
+                
+                <div class="publish-form-grid">
+                    <div class="publish-form-group">
+                        <label for="pickupDate">Fecha de Recolección *</label>
+                        <input type="date" id="pickupDate" class="publish-form-input" required>
+                    </div>
+
+                    <div class="publish-form-group">
+                        <label for="deliveryDate">Fecha de Entrega *</label>
+                        <input type="date" id="deliveryDate" class="publish-form-input" required>
+                    </div>
+                </div>
+
+                <div class="publish-form-grid">
+                    <div class="publish-form-group">
+                        <label for="pickupTime">Hora de Recolección</label>
+                        <select id="pickupTime" class="publish-form-select">
+                            <option value="">Seleccionar hora</option>
+                            <option value="06:00">6:00 AM</option>
+                            <option value="07:00">7:00 AM</option>
+                            <option value="08:00">8:00 AM</option>
+                            <option value="09:00">9:00 AM</option>
+                            <option value="10:00">10:00 AM</option>
+                            <option value="11:00">11:00 AM</option>
+                            <option value="12:00">12:00 PM</option>
+                            <option value="13:00">1:00 PM</option>
+                            <option value="14:00">2:00 PM</option>
+                            <option value="15:00">3:00 PM</option>
+                            <option value="16:00">4:00 PM</option>
+                            <option value="17:00">5:00 PM</option>
+                        </select>
+                    </div>
+
+                    <div class="publish-form-group">
+                        <label for="deliveryTime">Hora de Entrega</label>
+                        <select id="deliveryTime" class="publish-form-select">
+                            <option value="">Seleccionar hora</option>
+                            <option value="08:00">8:00 AM</option>
+                            <option value="09:00">9:00 AM</option>
+                            <option value="10:00">10:00 AM</option>
+                            <option value="11:00">11:00 AM</option>
+                            <option value="12:00">12:00 PM</option>
+                            <option value="13:00">1:00 PM</option>
+                            <option value="14:00">2:00 PM</option>
+                            <option value="15:00">3:00 PM</option>
+                            <option value="16:00">4:00 PM</option>
+                            <option value="17:00">5:00 PM</option>
+                            <option value="18:00">6:00 PM</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="publish-form-actions">
+                <button type="button" class="publish-btn publish-btn-secondary" onclick="window.history.back()">
+                    <i class="fas fa-arrow-left"></i>
+                    Cancelar
+                </button>
+                <button type="button" class="publish-btn publish-btn-primary" onclick="nextStep(2)">
+                    Siguiente: Detalles de Carga
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Paso 2: Detalles de Carga -->
+        <div class="publish-form-step" data-step="2">
+            <div class="step-header">
+                <h2>Detalles de la Carga</h2>
+                <p>Especificaciones técnicas y características de tu mercancía</p>
+            </div>
+
+            <div class="publish-form-section">
+                <h3 class="publish-section-title">Tipo de Carga</h3>
+                
+                <div class="publish-form-group">
+                    <label for="cargoType">Tipo de Mercancía *</label>
+                    <select id="cargoType" class="publish-form-select" required>
+                        <option value="">Seleccionar tipo</option>
+                        <option value="general">Carga General</option>
+                        <option value="refrigerated">Refrigerada</option>
+                        <option value="dangerous">Mercancía Peligrosa</option>
+                        <option value="fragile">Frágil</option>
+                        <option value="oversized">Dimensional/Oversize</option>
+                        <option value="livestock">Carga Viva</option>
+                        <option value="liquid">Líquida a Granel</option>
+                        <option value="dry_bulk">Seca a Granel</option>
+                    </select>
+                </div>
+
+                <div class="publish-form-group">
+                    <label>Características Especiales</label>
+                    <div class="publish-checkbox-grid">
+                        <label class="publish-checkbox-label">
+                            <input type="checkbox" name="specialFeatures" value="stackable">
+                            <span class="publish-checkmark"></span>
+                            Apilable
+                        </label>
+                        <label class="publish-checkbox-label">
+                            <input type="checkbox" name="specialFeatures" value="palletized">
+                            <span class="publish-checkmark"></span>
+                            Paletizada
+                        </label>
+                        <label class="publish-checkbox-label">
+                            <input type="checkbox" name="specialFeatures" value="hazardous">
+                            <span class="publish-checkmark"></span>
+                            Material Peligroso
+                        </label>
+                        <label class="publish-checkbox-label">
+                            <input type="checkbox" name="specialFeatures" value="temperature">
+                            <span class="publish-checkmark"></span>
+                            Control de Temperatura
+                        </label>
+                        <label class="publish-checkbox-label">
+                            <input type="checkbox" name="specialFeatures" value="fragile">
+                            <span class="publish-checkmark"></span>
+                            Frágil/Manejo Especial
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="publish-form-section">
+                <h3 class="publish-section-title">Dimensiones y Peso</h3>
+                
+                <div class="publish-form-grid">
+                    <div class="publish-form-group">
+                        <label for="totalWeight">Peso Total (kg) *</label>
+                        <input type="number" id="totalWeight" class="publish-form-input" 
+                               placeholder="Ej: 1000" min="1" required>
+                    </div>
+
+                    <div class="publish-form-group">
+                        <label for="volume">Volumen (m³)</label>
+                        <input type="number" id="volume" class="publish-form-input" 
+                               placeholder="Ej: 5.2" step="0.1" min="0.1">
+                    </div>
+                </div>
+
+                <div class="publish-form-grid">
+                    <div class="publish-form-group">
+                        <label for="length">Largo (metros)</label>
+                        <input type="number" id="length" class="publish-form-input" 
+                               placeholder="Ej: 2.5" step="0.1" min="0.1">
+                    </div>
+
+                    <div class="publish-form-group">
+                        <label for="width">Ancho (metros)</label>
+                        <input type="number" id="width" class="publish-form-input" 
+                               placeholder="Ej: 1.8" step="0.1" min="0.1">
+                    </div>
+
+                    <div class="publish-form-group">
+                        <label for="height">Alto (metros)</label>
+                        <input type="number" id="height" class="publish-form-input" 
+                               placeholder="Ej: 1.2" step="0.1" min="0.1">
+                    </div>
+                </div>
+
+                <div class="publish-form-group">
+                    <label for="packagingType">Tipo de Embalaje</label>
+                    <select id="packagingType" class="publish-form-select">
+                        <option value="">Seleccionar tipo</option>
+                        <option value="boxes">Cajas</option>
+                        <option value="pallets">Tarimas/Pallets</option>
+                        <option value="bulk">A Granel</option>
+                        <option value="containers">Contenedores</option>
+                        <option value="crates">Jaulas/Estibas</option>
+                        <option value="bags">Sacos/Bultos</option>
+                        <option value="drums">Tambores</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="publish-form-section">
+                <h3 class="publish-section-title">Descripción Adicional</h3>
+                
+                <div class="publish-form-group">
+                    <label for="cargoDescription">Descripción de la Carga</label>
+                    <textarea id="cargoDescription" class="publish-form-textarea" 
+                              placeholder="Describe detalladamente tu mercancía, materiales, condiciones especiales, etc..."
+                              rows="4"></textarea>
+                    <span class="publish-form-help">Esta información ayuda a los transportistas a prepararse adecuadamente</span>
+                </div>
+            </div>
+
+            <div class="publish-form-actions">
+                <button type="button" class="publish-btn publish-btn-secondary" onclick="previousStep(1)">
+                    <i class="fas fa-arrow-left"></i>
+                    Anterior
+                </button>
+                <button type="button" class="publish-btn publish-btn-primary" onclick="nextStep(3)">
+                    Siguiente: Requisitos
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Paso 3: Requisitos -->
+        <div class="publish-form-step" data-step="3">
+            <div class="step-header">
+                <h2>Requisitos del Transporte</h2>
+                <p>Especifica tus necesidades de vehículo y condiciones especiales</p>
+            </div>
+
+            <div class="publish-form-section">
+                <h3 class="publish-section-title">Tipo de Vehículo</h3>
+                
+                <div class="publish-form-group">
+                    <label for="vehicleType">Vehículo Requerido *</label>
+                    <select id="vehicleType" class="publish-form-select" required>
+                        <option value="">Seleccionar vehículo</option>
+                        <option value="pickup">Camioneta Pickup</option>
+                        <option value="van">Van/Camión</option>
+                        <option value="truck_3.5t">Camión 3.5 Toneladas</option>
+                        <option value="truck_5t">Camión 5 Toneladas</option>
+                        <option value="truck_10t">Camión 10 Toneladas</option>
+                        <option value="tractor_trailer">Tractocamión</option>
+                        <option value="refrigerated">Refrigerado</option>
+                        <option value="tanker">Tanque</option>
+                        <option value="flatbed">Plataforma</option>
+                        <option value="lowboy">Lowboy/Especial</option>
+                    </select>
+                </div>
+
+                <div class="publish-form-group">
+                    <label>Equipamiento Requerido</label>
+                    <div class="publish-checkbox-grid">
+                        <label class="publish-checkbox-label">
+                            <input type="checkbox" name="equipment" value="liftgate">
+                            <span class="publish-checkmark"></span>
+                            Plataforma Elevadora
+                        </label>
+                        <label class="publish-checkbox-label">
+                            <input type="checkbox" name="equipment" value="pallet_jack">
+                            <span class="publish-checkmark"></span>
+                            Montacargas/Patín
+                        </label>
+                        <label class="publish-checkbox-label">
+                            <input type="checkbox" name="equipment" value="straps">
+                            <span class="publish-checkmark"></span>
+                            Cintas de Amarre
+                        </label>
+                        <label class="publish-checkbox-label">
+                            <input type="checkbox" name="equipment" value="tarps">
+                            <span class="publish-checkmark"></span>
+                            Lonas de Protección
+                        </label>
+                        <label class="publish-checkbox-label">
+                            <input type="checkbox" name="equipment" value="temperature_control">
+                            <span class="publish-checkmark"></span>
+                            Control de Temperatura
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="publish-form-section">
+                <h3 class="publish-section-title">Requisitos del Conductor</h3>
+                
+                <div class="publish-form-group">
+                    <label for="driverExperience">Experiencia Mínima del Conductor</label>
+                    <select id="driverExperience" class="publish-form-select">
+                        <option value="">Sin requisito específico</option>
+                        <option value="1">Mínimo 1 año</option>
+                        <option value="3">Mínimo 3 años</option>
+                        <option value="5">Mínimo 5 años</option>
+                        <option value="10">Más de 10 años</option>
+                    </select>
+                </div>
+
+                <div class="publish-form-group">
+                    <label>Certificaciones Requeridas</label>
+                    <div class="publish-checkbox-grid">
+                        <label class="publish-checkbox-label">
+                            <input type="checkbox" name="certifications" value="dangerous_goods">
+                            <span class="publish-checkmark"></span>
+                            Mercancía Peligrosa
+                        </label>
+                        <label class="publish-checkbox-label">
+                            <input type="checkbox" name="certifications" value="refrigerated">
+                            <span class="publish-checkmark"></span>
+                            Carga Refrigerada
+                        </label>
+                        <label class="publish-checkbox-label">
+                            <input type="checkbox" name="certifications" value="oversized">
+                            <span class="publish-checkmark"></span>
+                            Carga Dimensional
+                        </label>
+                        <label class="publish-checkbox-label">
+                            <input type="checkbox" name="certifications" value="first_aid">
+                            <span class="publish-checkmark"></span>
+                            Primeros Auxilios
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="publish-form-section">
+                <h3 class="publish-section-title">Presupuesto y Condiciones</h3>
+                
+                <div class="publish-form-grid">
+                    <div class="publish-form-group">
+                        <label for="budget">Presupuesto Estimado (COP)</label>
+                        <input type="number" id="budget" class="publish-form-input" 
+                               placeholder="Ej: 500000" min="0">
+                        <span class="publish-form-help">Este valor es referencial para los transportistas</span>
+                    </div>
+
+                    <div class="publish-form-group">
+                        <label for="paymentMethod">Método de Pago Preferido</label>
+                        <select id="paymentMethod" class="publish-form-select">
+                            <option value="">Seleccionar método</option>
+                            <option value="cash">Efectivo</option>
+                            <option value="transfer">Transferencia Bancaria</option>
+                            <option value="credit">Crédito 30 días</option>
+                            <option value="platform">Pago por Plataforma</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="publish-form-group">
+                    <label for="specialInstructions">Instrucciones Especiales</label>
+                    <textarea id="specialInstructions" class="publish-form-textarea" 
+                              placeholder="Instrucciones adicionales para el transportista..."
+                              rows="3"></textarea>
+                </div>
+            </div>
+
+            <div class="publish-form-actions">
+                <button type="button" class="publish-btn publish-btn-secondary" onclick="previousStep(2)">
+                    <i class="fas fa-arrow-left"></i>
+                    Anterior
+                </button>
+                <button type="button" class="publish-btn publish-btn-primary" onclick="nextStep(4)">
+                    Siguiente: Confirmación
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Paso 4: Confirmación -->
+        <div class="publish-form-step" data-step="4">
+            <div class="step-header">
+                <h2>Confirmación de Publicación</h2>
+                <p>Revisa toda la información antes de publicar tu carga</p>
+            </div>
+
+            <div class="confirmation-summary">
+                <div class="summary-section">
+                    <h3 class="summary-title">
+                        <i class="fas fa-map-marker-alt"></i>
+                        Información de Ruta
+                    </h3>
+                    <div class="summary-content">
+                        <div class="summary-item">
+                            <span class="summary-label">Origen:</span>
+                            <span class="summary-value" id="confirmOrigin">-</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">Destino:</span>
+                            <span class="summary-value" id="confirmDestination">-</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">Fechas:</span>
+                            <span class="summary-value" id="confirmDates">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="summary-section">
+                    <h3 class="summary-title">
+                        <i class="fas fa-box"></i>
+                        Detalles de Carga
+                    </h3>
+                    <div class="summary-content">
+                        <div class="summary-item">
+                            <span class="summary-label">Tipo:</span>
+                            <span class="summary-value" id="confirmCargoType">-</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">Peso:</span>
+                            <span class="summary-value" id="confirmWeight">-</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">Dimensiones:</span>
+                            <span class="summary-value" id="confirmDimensions">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="summary-section">
+                    <h3 class="summary-title">
+                        <i class="fas fa-truck"></i>
+                        Requisitos
+                    </h3>
+                    <div class="summary-content">
+                        <div class="summary-item">
+                            <span class="summary-label">Vehículo:</span>
+                            <span class="summary-value" id="confirmVehicle">-</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">Presupuesto:</span>
+                            <span class="summary-value" id="confirmBudget">-</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">Equipamiento:</span>
+                            <span class="summary-value" id="confirmEquipment">-</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="publish-form-section">
+                <div class="publish-form-group">
+                    <label class="publish-checkbox-label">
+                        <input type="checkbox" id="termsAcceptance" required>
+                        <span class="publish-checkmark"></span>
+                        Acepto los <a href="#" class="text-link">términos y condiciones</a> y confirmo que toda la información proporcionada es verídica
+                    </label>
+                </div>
+
+                <div class="commission-notice">
+                    <div class="commission-icon">
+                        <i class="fas fa-info-circle"></i>
+                    </div>
+                    <div class="commission-info">
+                        <h4>Comisión de la Plataforma</h4>
+                        <p>Por esta publicación se aplicará una comisión del 5% sobre el valor final del servicio. Esta comisión incluye garantía de pago, soporte y seguimiento del envío.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="publish-form-actions">
+                <button type="button" class="publish-btn publish-btn-secondary" onclick="previousStep(3)">
+                    <i class="fas fa-arrow-left"></i>
+                    Anterior
+                </button>
+                <button type="submit" class="publish-btn publish-btn-success">
+                    <i class="fas fa-rocket"></i>
+                    Publicar Carga
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/publish_load.js') }}"></script>
+{% endblock %}

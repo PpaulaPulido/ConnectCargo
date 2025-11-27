@@ -1,0 +1,598 @@
+{% extends "/companies/base_company.html" %}
+
+{% block title %}Estadísticas - ConnectCargo{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/statistics_company.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="statistics-company-container">
+    <!-- Header -->
+    <div class="statistics-company-header">
+        <div class="statistics-company-header-content">
+            <h1 class="statistics-company-title">Estadísticas y Métricas</h1>
+            <p class="statistics-company-subtitle">Analiza el desempeño y eficiencia de tu operación logística</p>
+        </div>
+        <div class="statistics-company-header-actions">
+            <div class="statistics-period-selector">
+                <select class="statistics-period-select" id="periodSelect">
+                    <option value="today">Hoy</option>
+                    <option value="week">Esta Semana</option>
+                    <option value="month" selected>Este Mes</option>
+                    <option value="quarter">Este Trimestre</option>
+                    <option value="year">Este Año</option>
+                    <option value="custom">Personalizado</option>
+                </select>
+            </div>
+            <button class="statistics-btn statistics-btn-secondary" id="exportStats">
+                <i class="fas fa-download"></i>
+                Exportar Reporte
+            </button>
+            <button class="statistics-btn statistics-btn-primary" id="refreshStats">
+                <i class="fas fa-sync-alt"></i>
+                Actualizar
+            </button>
+        </div>
+    </div>
+
+    <!-- Resumen de Métricas Principales -->
+    <div class="statistics-kpi-grid">
+        <div class="statistics-kpi-card">
+            <div class="statistics-kpi-icon statistics-primary">
+                <i class="fas fa-shipping-fast"></i>
+            </div>
+            <div class="statistics-kpi-content">
+                <span class="statistics-kpi-value">247</span>
+                <span class="statistics-kpi-label">Total de Envíos</span>
+                <div class="statistics-kpi-trend statistics-trend-up">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>12% vs mes anterior</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="statistics-kpi-card">
+            <div class="statistics-kpi-icon statistics-success">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="statistics-kpi-content">
+                <span class="statistics-kpi-value">98.3%</span>
+                <span class="statistics-kpi-label">Tasa de Éxito</span>
+                <div class="statistics-kpi-trend statistics-trend-up">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>2.1% vs mes anterior</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="statistics-kpi-card">
+            <div class="statistics-kpi-icon statistics-warning">
+                <i class="fas fa-clock"></i>
+            </div>
+            <div class="statistics-kpi-content">
+                <span class="statistics-kpi-value">1.7%</span>
+                <span class="statistics-kpi-label">Tasa de Retraso</span>
+                <div class="statistics-kpi-trend statistics-trend-down">
+                    <i class="fas fa-arrow-down"></i>
+                    <span>0.8% vs mes anterior</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="statistics-kpi-card">
+            <div class="statistics-kpi-icon statistics-info">
+                <i class="fas fa-money-bill-wave"></i>
+            </div>
+            <div class="statistics-kpi-content">
+                <span class="statistics-kpi-value">$42.5M</span>
+                <span class="statistics-kpi-label">Ahorro Total</span>
+                <div class="statistics-kpi-trend statistics-trend-up">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>15% vs mes anterior</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gráficos y Visualizaciones -->
+    <div class="statistics-charts-grid">
+        <!-- Gráfico de Volumen de Envíos -->
+        <div class="statistics-chart-card statistics-chart-large">
+            <div class="statistics-chart-header">
+                <h3>Volumen de Envíos Mensual</h3>
+                <div class="statistics-chart-actions">
+                    <button class="statistics-chart-action active" data-chart="volume">Volumen</button>
+                    <button class="statistics-chart-action" data-chart="revenue">Ingresos</button>
+                </div>
+            </div>
+            <div class="statistics-chart-container">
+                <div class="statistics-chart-placeholder">
+                    <div class="statistics-chart-bars">
+                        <div class="statistics-chart-bar" style="height: 70%;" data-month="Ene" data-value="85"></div>
+                        <div class="statistics-chart-bar" style="height: 85%;" data-month="Feb" data-value="102"></div>
+                        <div class="statistics-chart-bar" style="height: 60%;" data-month="Mar" data-value="72"></div>
+                        <div class="statistics-chart-bar" style="height: 90%;" data-month="Abr" data-value="108"></div>
+                        <div class="statistics-chart-bar" style="height: 95%;" data-month="May" data-value="114"></div>
+                        <div class="statistics-chart-bar" style="height: 100%;" data-month="Jun" data-value="120"></div>
+                        <div class="statistics-chart-bar" style="height: 88%;" data-month="Jul" data-value="106"></div>
+                        <div class="statistics-chart-bar" style="height: 92%;" data-month="Ago" data-value="110"></div>
+                        <div class="statistics-chart-bar" style="height: 85%;" data-month="Sep" data-value="102"></div>
+                        <div class="statistics-chart-bar" style="height: 78%;" data-month="Oct" data-value="94"></div>
+                        <div class="statistics-chart-bar" style="height: 82%;" data-month="Nov" data-value="98"></div>
+                        <div class="statistics-chart-bar" style="height: 75%;" data-month="Dic" data-value="90"></div>
+                    </div>
+                    <div class="statistics-chart-labels">
+                        <span>Ene</span><span>Feb</span><span>Mar</span><span>Abr</span><span>May</span><span>Jun</span>
+                        <span>Jul</span><span>Ago</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dic</span>
+                    </div>
+                </div>
+            </div>
+            <div class="statistics-chart-footer">
+                <div class="statistics-chart-legend">
+                    <div class="statistics-legend-item">
+                        <span class="statistics-legend-color statistics-primary"></span>
+                        <span>Envíos Completados</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Métricas de Desempeño -->
+        <div class="statistics-chart-card">
+            <div class="statistics-chart-header">
+                <h3>Desempeño por Ruta</h3>
+            </div>
+            <div class="statistics-performance-list">
+                <div class="statistics-performance-item">
+                    <div class="statistics-route-info">
+                        <span class="statistics-route-name">Bogotá - Medellín</span>
+                        <span class="statistics-route-distance">415 km</span>
+                    </div>
+                    <div class="statistics-route-stats">
+                        <div class="statistics-route-metric">
+                            <span class="statistics-metric-value">96.5%</span>
+                            <span class="statistics-metric-label">Éxito</span>
+                        </div>
+                        <div class="statistics-route-metric">
+                            <span class="statistics-metric-value">18h</span>
+                            <span class="statistics-metric-label">Promedio</span>
+                        </div>
+                        <div class="statistics-route-metric">
+                            <span class="statistics-metric-value">48</span>
+                            <span class="statistics-metric-label">Viajes</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="statistics-performance-item">
+                    <div class="statistics-route-info">
+                        <span class="statistics-route-name">Cali - Barranquilla</span>
+                        <span class="statistics-route-distance">1,150 km</span>
+                    </div>
+                    <div class="statistics-route-stats">
+                        <div class="statistics-route-metric">
+                            <span class="statistics-metric-value">94.2%</span>
+                            <span class="statistics-metric-label">Éxito</span>
+                        </div>
+                        <div class="statistics-route-metric">
+                            <span class="statistics-metric-value">32h</span>
+                            <span class="statistics-metric-label">Promedio</span>
+                        </div>
+                        <div class="statistics-route-metric">
+                            <span class="statistics-metric-value">24</span>
+                            <span class="statistics-metric-label">Viajes</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="statistics-performance-item">
+                    <div class="statistics-route-info">
+                        <span class="statistics-route-name">Medellín - Cartagena</span>
+                        <span class="statistics-route-distance">685 km</span>
+                    </div>
+                    <div class="statistics-route-stats">
+                        <div class="statistics-route-metric">
+                            <span class="statistics-metric-value">97.8%</span>
+                            <span class="statistics-metric-label">Éxito</span>
+                        </div>
+                        <div class="statistics-route-metric">
+                            <span class="statistics-metric-value">22h</span>
+                            <span class="statistics-metric-label">Promedio</span>
+                        </div>
+                        <div class="statistics-route-metric">
+                            <span class="statistics-metric-value">36</span>
+                            <span class="statistics-metric-label">Viajes</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="statistics-performance-item">
+                    <div class="statistics-route-info">
+                        <span class="statistics-route-name">Bucaramanga - Bogotá</span>
+                        <span class="statistics-route-distance">410 km</span>
+                    </div>
+                    <div class="statistics-route-stats">
+                        <div class="statistics-route-metric">
+                            <span class="statistics-metric-value">99.1%</span>
+                            <span class="statistics-metric-label">Éxito</span>
+                        </div>
+                        <div class="statistics-route-metric">
+                            <span class="statistics-metric-value">8h</span>
+                            <span class="statistics-metric-label">Promedio</span>
+                        </div>
+                        <div class="statistics-route-metric">
+                            <span class="statistics-metric-value">62</span>
+                            <span class="statistics-metric-label">Viajes</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Distribución por Tipo de Carga -->
+        <div class="statistics-chart-card">
+            <div class="statistics-chart-header">
+                <h3>Distribución por Tipo de Carga</h3>
+            </div>
+            <div class="statistics-donut-chart">
+                <div class="statistics-donut-container">
+                    <div class="statistics-donut-segment statistics-segment-1" style="--percentage: 35;">
+                        <div class="statistics-donut-center">
+                            <span class="statistics-donut-value">100%</span>
+                            <span class="statistics-donut-label">Total</span>
+                        </div>
+                    </div>
+                    <div class="statistics-donut-segment statistics-segment-2" style="--percentage: 25;"></div>
+                    <div class="statistics-donut-segment statistics-segment-3" style="--percentage: 20;"></div>
+                    <div class="statistics-donut-segment statistics-segment-4" style="--percentage: 15;"></div>
+                    <div class="statistics-donut-segment statistics-segment-5" style="--percentage: 5;"></div>
+                </div>
+                <div class="statistics-donut-legend">
+                    <div class="statistics-legend-item">
+                        <span class="statistics-legend-color statistics-segment-1"></span>
+                        <span>Mercancía General (35%)</span>
+                    </div>
+                    <div class="statistics-legend-item">
+                        <span class="statistics-legend-color statistics-segment-2"></span>
+                        <span>Alimentos (25%)</span>
+                    </div>
+                    <div class="statistics-legend-item">
+                        <span class="statistics-legend-color statistics-segment-3"></span>
+                        <span>Electrónicos (20%)</span>
+                    </div>
+                    <div class="statistics-legend-item">
+                        <span class="statistics-legend-color statistics-segment-4"></span>
+                        <span>Textiles (15%)</span>
+                    </div>
+                    <div class="statistics-legend-item">
+                        <span class="statistics-legend-color statistics-segment-5"></span>
+                        <span>Otros (5%)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Eficiencia de Costos -->
+        <div class="statistics-chart-card">
+            <div class="statistics-chart-header">
+                <h3>Eficiencia de Costos</h3>
+            </div>
+            <div class="statistics-efficiency-metrics">
+                <div class="statistics-efficiency-item">
+                    <div class="statistics-efficiency-icon statistics-success">
+                        <i class="fas fa-piggy-bank"></i>
+                    </div>
+                    <div class="statistics-efficiency-content">
+                        <span class="statistics-efficiency-value">$4.2M</span>
+                        <span class="statistics-efficiency-label">Ahorro Mensual</span>
+                        <div class="statistics-efficiency-trend statistics-trend-up">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>+12% vs anterior</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="statistics-efficiency-item">
+                    <div class="statistics-efficiency-icon statistics-primary">
+                        <i class="fas fa-gas-pump"></i>
+                    </div>
+                    <div class="statistics-efficiency-content">
+                        <span class="statistics-efficiency-value">18%</span>
+                        <span class="statistics-efficiency-label">Reducción Combustible</span>
+                        <div class="statistics-efficiency-trend statistics-trend-up">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>+5% vs anterior</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="statistics-efficiency-item">
+                    <div class="statistics-efficiency-icon statistics-info">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="statistics-efficiency-content">
+                        <span class="statistics-efficiency-value">32%</span>
+                        <span class="statistics-efficiency-label">Optimización Tiempos</span>
+                        <div class="statistics-efficiency-trend statistics-trend-up">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>+8% vs anterior</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Métricas Detalladas -->
+    <div class="statistics-detailed-metrics">
+        <div class="statistics-metrics-header">
+            <h2>Métricas Detalladas de Desempeño</h2>
+            <button class="statistics-btn statistics-btn-outline" id="toggleMetrics">
+                <i class="fas fa-chart-bar"></i>
+                Ver Todas las Métricas
+            </button>
+        </div>
+
+        <div class="statistics-metrics-grid">
+            <div class="statistics-metric-card">
+                <div class="statistics-metric-header">
+                    <h4>Tiempos de Entrega</h4>
+                    <i class="fas fa-clock statistics-metric-icon"></i>
+                </div>
+                <div class="statistics-metric-content">
+                    <div class="statistics-metric-item">
+                        <span class="statistics-metric-name">Promedio General</span>
+                        <span class="statistics-metric-value">18.5h</span>
+                    </div>
+                    <div class="statistics-metric-item">
+                        <span class="statistics-metric-name">Más Rápido</span>
+                        <span class="statistics-metric-value statistics-success">4.2h</span>
+                    </div>
+                    <div class="statistics-metric-item">
+                        <span class="statistics-metric-name">Más Lento</span>
+                        <span class="statistics-metric-value statistics-warning">42.8h</span>
+                    </div>
+                    <div class="statistics-metric-item">
+                        <span class="statistics-metric-name">Desviación Estándar</span>
+                        <span class="statistics-metric-value">6.3h</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="statistics-metric-card">
+                <div class="statistics-metric-header">
+                    <h4>Calificaciones</h4>
+                    <i class="fas fa-star statistics-metric-icon"></i>
+                </div>
+                <div class="statistics-metric-content">
+                    <div class="statistics-metric-item">
+                        <span class="statistics-metric-name">Promedio General</span>
+                        <span class="statistics-metric-value">4.7/5.0</span>
+                    </div>
+                    <div class="statistics-metric-item">
+                        <span class="statistics-metric-name">5 Estrellas</span>
+                        <span class="statistics-metric-value">68%</span>
+                    </div>
+                    <div class="statistics-metric-item">
+                        <span class="statistics-metric-name">4 Estrellas</span>
+                        <span class="statistics-metric-value">25%</span>
+                    </div>
+                    <div class="statistics-metric-item">
+                        <span class="statistics-metric-name">≤ 3 Estrellas</span>
+                        <span class="statistics-metric-value statistics-warning">7%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="statistics-metric-card">
+                <div class="statistics-metric-header">
+                    <h4>Transportistas</h4>
+                    <i class="fas fa-truck statistics-metric-icon"></i>
+                </div>
+                <div class="statistics-metric-content">
+                    <div class="statistics-metric-item">
+                        <span class="statistics-metric-name">Activos</span>
+                        <span class="statistics-metric-value">24</span>
+                    </div>
+                    <div class="statistics-metric-item">
+                        <span class="statistics-metric-name">Verificados</span>
+                        <span class="statistics-metric-value statistics-success">22</span>
+                    </div>
+                    <div class="statistics-metric-item">
+                        <span class="statistics-metric-name">Premium</span>
+                        <span class="statistics-metric-value statistics-premium">8</span>
+                    </div>
+                    <div class="statistics-metric-item">
+                        <span class="statistics-metric-name">Nuevos este mes</span>
+                        <span class="statistics-metric-value">3</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="statistics-metric-card">
+                <div class="statistics-metric-header">
+                    <h4>Facturación</h4>
+                    <i class="fas fa-receipt statistics-metric-icon"></i>
+                </div>
+                <div class="statistics-metric-content">
+                    <div class="statistics-metric-item">
+                        <span class="statistics-metric-name">Total Mensual</span>
+                        <span class="statistics-metric-value">$12.4M</span>
+                    </div>
+                    <div class="statistics-metric-item">
+                        <span class="statistics-metric-name">Costo Promedio/Envío</span>
+                        <span class="statistics-metric-value">$50,200</span>
+                    </div>
+                    <div class="statistics-metric-item">
+                        <span class="statistics-metric-name">Facturas Pagadas</span>
+                        <span class="statistics-metric-value statistics-success">98%</span>
+                    </div>
+                    <div class="statistics-metric-item">
+                        <span class="statistics-metric-name">Ahorro vs Mercado</span>
+                        <span class="statistics-metric-value statistics-success">22%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Insights y Recomendaciones -->
+    <div class="statistics-insights">
+        <div class="statistics-insights-header">
+            <h2>Insights y Recomendaciones</h2>
+            <div class="statistics-insights-actions">
+                <button class="statistics-btn statistics-btn-outline">
+                    <i class="fas fa-lightbulb"></i>
+                    Generar Reporte IA
+                </button>
+            </div>
+        </div>
+
+        <div class="statistics-insights-grid">
+            <div class="statistics-insight-card statistics-insight-positive">
+                <div class="statistics-insight-icon">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <div class="statistics-insight-content">
+                    <h4>¡Excelente Desempeño!</h4>
+                    <p>Tu tasa de éxito del 98.3% supera el promedio de la industria (95%). Mantén este nivel de calidad en tus envíos.</p>
+                    <div class="statistics-insight-metric">
+                        <span class="statistics-insight-value">+3.3%</span>
+                        <span class="statistics-insight-label">Sobre el promedio</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="statistics-insight-card statistics-insight-warning">
+                <div class="statistics-insight-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div class="statistics-insight-content">
+                    <h4>Oportunidad de Mejora</h4>
+                    <p>La ruta Cali - Barranquilla tiene un 5.8% de tasa de retraso. Considera trabajar con transportistas especializados en esta ruta.</p>
+                    <div class="statistics-insight-metric">
+                        <span class="statistics-insight-value">-1.5%</span>
+                        <span class="statistics-insight-label">vs rutas principales</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="statistics-insight-card statistics-insight-info">
+                <div class="statistics-insight-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="statistics-insight-content">
+                    <h4>Tendencia Positiva</h4>
+                    <p>El ahorro en costos ha aumentado un 15% este mes. Continúa optimizando las rutas y negociando con transportistas.</p>
+                    <div class="statistics-insight-metric">
+                        <span class="statistics-insight-value">+$550K</span>
+                        <span class="statistics-insight-label">vs mes anterior</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="statistics-insight-card statistics-insight-success">
+                <div class="statistics-insight-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="statistics-insight-content">
+                    <h4>Base de Transportistas Sólida</h4>
+                    <p>Has trabajado con 24 transportistas este mes, 92% de ellos verificados. Esta diversificación reduce riesgos.</p>
+                    <div class="statistics-insight-metric">
+                        <span class="statistics-insight-value">+3</span>
+                        <span class="statistics-insight-label">nuevos este mes</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Exportación -->
+<div class="statistics-modal" id="exportModal">
+    <div class="statistics-modal-content">
+        <div class="statistics-modal-header">
+            <h3>Exportar Reporte de Estadísticas</h3>
+            <button class="statistics-modal-close" id="exportModalClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="statistics-modal-body">
+            <div class="statistics-export-options">
+                <div class="statistics-export-format">
+                    <h4>Formato de Exportación</h4>
+                    <div class="statistics-format-options">
+                        <label class="statistics-format-option">
+                            <input type="radio" name="exportFormat" value="pdf" checked>
+                            <span class="statistics-format-check"></span>
+                            <i class="fas fa-file-pdf"></i>
+                            <span>PDF</span>
+                        </label>
+                        <label class="statistics-format-option">
+                            <input type="radio" name="exportFormat" value="excel">
+                            <span class="statistics-format-check"></span>
+                            <i class="fas fa-file-excel"></i>
+                            <span>Excel</span>
+                        </label>
+                        <label class="statistics-format-option">
+                            <input type="radio" name="exportFormat" value="csv">
+                            <span class="statistics-format-check"></span>
+                            <i class="fas fa-file-csv"></i>
+                            <span>CSV</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="statistics-export-period">
+                    <h4>Periodo del Reporte</h4>
+                    <select class="statistics-form-select" id="exportPeriod">
+                        <option value="month">Este Mes</option>
+                        <option value="last_month">Mes Anterior</option>
+                        <option value="quarter">Este Trimestre</option>
+                        <option value="year">Este Año</option>
+                        <option value="all_time">Todo el Tiempo</option>
+                    </select>
+                </div>
+
+                <div class="statistics-export-sections">
+                    <h4>Secciones a Incluir</h4>
+                    <div class="statistics-section-options">
+                        <label class="statistics-section-option">
+                            <input type="checkbox" checked>
+                            <span class="statistics-section-check"></span>
+                            <span>Métricas Principales</span>
+                        </label>
+                        <label class="statistics-section-option">
+                            <input type="checkbox" checked>
+                            <span class="statistics-section-check"></span>
+                            <span>Gráficos y Tendencias</span>
+                        </label>
+                        <label class="statistics-section-option">
+                            <input type="checkbox" checked>
+                            <span class="statistics-section-check"></span>
+                            <span>Métricas Detalladas</span>
+                        </label>
+                        <label class="statistics-section-option">
+                            <input type="checkbox">
+                            <span class="statistics-section-check"></span>
+                            <span>Insights y Recomendaciones</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="statistics-modal-footer">
+            <button class="statistics-btn statistics-btn-secondary" id="exportCancel">Cancelar</button>
+            <button class="statistics-btn statistics-btn-primary" id="exportConfirm">
+                <i class="fas fa-download"></i>
+                Descargar Reporte
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/statistics_company.js') }}"></script>
+{% endblock %}

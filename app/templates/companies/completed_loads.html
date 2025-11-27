@@ -1,0 +1,553 @@
+{% extends "/companies/base_company.html" %}
+
+{% block title %}Cargas Completadas - ConnectCargo{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/completed_loads.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="completed-loads-container">
+    <!-- Header -->
+    <div class="completed-loads-header">
+        <div class="completed-loads-header-content">
+            <h1 class="completed-loads-title">Cargas Completadas</h1>
+            <p class="completed-loads-subtitle">Historial de envíos finalizados y calificaciones</p>
+        </div>
+        <div class="header-actions">
+            <button class="export-btn">
+                <i class="fas fa-download"></i>
+                Exportar Reporte
+            </button>
+        </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="completion-stats">
+        <div class="completion-stat-card">
+            <div class="completion-stat-icon total">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="completion-stat-info">
+                <span class="completion-stat-number">247</span>
+                <span class="completion-stat-label">Total Completadas</span>
+            </div>
+        </div>
+        <div class="completion-stat-card">
+            <div class="completion-stat-icon success">
+                <i class="fas fa-trophy"></i>
+            </div>
+            <div class="completion-stat-info">
+                <span class="completion-stat-number">98.3%</span>
+                <span class="completion-stat-label">Tasa de Éxito</span>
+            </div>
+        </div>
+        <div class="completion-stat-card">
+            <div class="completion-stat-icon rating">
+                <i class="fas fa-star"></i>
+            </div>
+            <div class="completion-stat-info">
+                <span class="completion-stat-number">4.7</span>
+                <span class="completion-stat-label">Rating Promedio</span>
+            </div>
+        </div>
+        <div class="completion-stat-card">
+            <div class="completion-stat-icon savings">
+                <i class="fas fa-piggy-bank"></i>
+            </div>
+            <div class="completion-stat-info">
+                <span class="completion-stat-number">$4.2M</span>
+                <span class="completion-stat-label">Ahorro Total</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filtros y Búsqueda -->
+    <div class="completed-filters-section">
+        <div class="filters-row">
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" class="search-input" placeholder="Buscar por referencia, conductor, ruta...">
+            </div>
+            
+            <div class="filter-controls">
+                <select class="filter-select" id="timeFilter">
+                    <option value="">Todo el tiempo</option>
+                    <option value="today">Hoy</option>
+                    <option value="week">Esta semana</option>
+                    <option value="month">Este mes</option>
+                    <option value="last_month">Mes anterior</option>
+                    <option value="quarter">Este trimestre</option>
+                </select>
+
+                <select class="filter-select" id="ratingFilter">
+                    <option value="">Todas las calificaciones</option>
+                    <option value="5">⭐ 5 Estrellas</option>
+                    <option value="4">⭐ 4+ Estrellas</option>
+                    <option value="3">⭐ 3+ Estrellas</option>
+                </select>
+
+                <select class="filter-select" id="driverFilter">
+                    <option value="">Todos los conductores</option>
+                    <option value="carlos">Carlos Rodríguez</option>
+                    <option value="maria">María González</option>
+                    <option value="javier">Javier López</option>
+                    <option value="ana">Ana Martínez</option>
+                </select>
+
+                <button class="filter-btn">
+                    <i class="fas fa-filter"></i>
+                    Más Filtros
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lista de Cargas Completadas -->
+    <div class="completed-list-section">
+        <div class="section-header">
+            <h2>Historial Reciente</h2>
+            <span class="results-count">Mostrando 6 de 247 cargas completadas</span>
+        </div>
+
+        <div class="completed-list">
+            <!-- Carga 1 - Completada con Rating -->
+            <div class="completed-load-card rated">
+                <div class="completed-load-header">
+                    <div class="load-ref">
+                        <span class="ref-badge">REF</span>
+                        <span class="ref-number">#CC-2024-007</span>
+                        <span class="completion-badge success">
+                            <i class="fas fa-check"></i>
+                            Entregado a tiempo
+                        </span>
+                    </div>
+                    <div class="load-meta-completed">
+                        <span class="completion-date">Completado: Hoy, 2:15 PM</span>
+                        <span class="completion-duration">Duración: 5h 45min</span>
+                    </div>
+                </div>
+
+                <div class="completed-load-content">
+                    <!-- Ruta Completada -->
+                    <div class="completed-route">
+                        <div class="route-point completed">
+                            <div class="point-marker"></div>
+                            <div class="point-info">
+                                <span class="point-city">Bogotá D.C.</span>
+                                <span class="point-time">Recogido: 8:30 AM</span>
+                            </div>
+                        </div>
+                        <div class="route-point completed">
+                            <div class="point-marker"></div>
+                            <div class="point-info">
+                                <span class="point-city">Ibagué</span>
+                                <span class="point-time">Entregado: 2:15 PM</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Información del Conductor -->
+                    <div class="completed-driver-info">
+                        <div class="driver-profile-completed">
+                            <div class="driver-avatar">
+                                <img src="{{ url_for('static', filename='images/driver-1.jpg') }}" alt="Carlos Rodríguez">
+                            </div>
+                            <div class="driver-details">
+                                <h4 class="driver-name">Carlos Rodríguez</h4>
+                                <div class="driver-stats">
+                                    <span class="driver-rating">
+                                        <i class="fas fa-star"></i> 4.8 (142)
+                                    </span>
+                                    <span class="driver-trips">
+                                        <i class="fas fa-road"></i> 348 viajes
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="trip-details">
+                            <div class="trip-item">
+                                <i class="fas fa-road"></i>
+                                <span>Distancia: 285 km</span>
+                            </div>
+                            <div class="trip-item">
+                                <i class="fas fa-clock"></i>
+                                <span>Tiempo real: 5h 45min</span>
+                            </div>
+                            <div class="trip-item">
+                                <i class="fas fa-money-bill-wave"></i>
+                                <span>Precio final: $1,450,000 COP</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Rating y Reseña -->
+                    <div class="rating-section">
+                        <div class="rating-header">
+                            <h4>Tu Calificación</h4>
+                            <span class="rating-date">Calificado el 15 Dic, 2024</span>
+                        </div>
+                        <div class="rating-content">
+                            <div class="star-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                                <span class="rating-value">4.5</span>
+                            </div>
+                            <div class="review-text">
+                                <p>"Excelente servicio. Carlos fue muy puntual y cuidadoso con la carga. La comunicación fue constante durante todo el viaje."</p>
+                            </div>
+                            <div class="rating-tags">
+                                <span class="rating-tag">Puntual</span>
+                                <span class="rating-tag">Comunicativo</span>
+                                <span class="rating-tag">Cuidadoso</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Documentos -->
+                    <div class="documents-section">
+                        <h4>Documentos del Viaje</h4>
+                        <div class="documents-list">
+                            <div class="document-item">
+                                <i class="fas fa-file-invoice"></i>
+                                <span>Factura electrónica</span>
+                                <button class="document-download">
+                                    <i class="fas fa-download"></i>
+                                </button>
+                            </div>
+                            <div class="document-item">
+                                <i class="fas fa-receipt"></i>
+                                <span>Recibo de pago</span>
+                                <button class="document-download">
+                                    <i class="fas fa-download"></i>
+                                </button>
+                            </div>
+                            <div class="document-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Confirmación de entrega</span>
+                                <button class="document-download">
+                                    <i class="fas fa-download"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="completed-load-footer">
+                    <div class="load-actions-completed">
+                        <button class="action-btn-text">
+                            <i class="fas fa-redo"></i>
+                            Repetir Envío
+                        </button>
+                        <button class="action-btn-text">
+                            <i class="fas fa-heart"></i>
+                            Guardar Conductor
+                        </button>
+                        <button class="action-btn-text primary">
+                            <i class="fas fa-download"></i>
+                            Descargar Todo
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Carga 2 - Completada sin Rating -->
+            <div class="completed-load-card not-rated">
+                <div class="completed-load-header">
+                    <div class="load-ref">
+                        <span class="ref-badge">REF</span>
+                        <span class="ref-number">#CC-2024-008</span>
+                        <span class="completion-badge success">
+                            <i class="fas fa-check"></i>
+                            Entregado a tiempo
+                        </span>
+                    </div>
+                    <div class="load-meta-completed">
+                        <span class="completion-date">Completado: Ayer, 6:30 PM</span>
+                        <span class="completion-duration">Duración: 7h 15min</span>
+                    </div>
+                </div>
+
+                <div class="completed-load-content">
+                    <!-- Ruta Completada -->
+                    <div class="completed-route">
+                        <div class="route-point completed">
+                            <div class="point-marker"></div>
+                            <div class="point-info">
+                                <span class="point-city">Medellín</span>
+                                <span class="point-time">Recogido: 11:15 AM</span>
+                            </div>
+                        </div>
+                        <div class="route-point completed">
+                            <div class="point-marker"></div>
+                            <div class="point-info">
+                                <span class="point-city">Bucaramanga</span>
+                                <span class="point-time">Entregado: 6:30 PM</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Información del Conductor -->
+                    <div class="completed-driver-info">
+                        <div class="driver-profile-completed">
+                            <div class="driver-avatar">
+                                <img src="{{ url_for('static', filename='images/driver-2.jpg') }}" alt="María González">
+                            </div>
+                            <div class="driver-details">
+                                <h4 class="driver-name">María González</h4>
+                                <div class="driver-stats">
+                                    <span class="driver-rating">
+                                        <i class="fas fa-star"></i> 5.0 (89)
+                                    </span>
+                                    <span class="driver-trips">
+                                        <i class="fas fa-road"></i> 214 viajes
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="trip-details">
+                            <div class="trip-item">
+                                <i class="fas fa-road"></i>
+                                <span>Distancia: 410 km</span>
+                            </div>
+                            <div class="trip-item">
+                                <i class="fas fa-clock"></i>
+                                <span>Tiempo real: 7h 15min</span>
+                            </div>
+                            <div class="trip-item">
+                                <i class="fas fa-money-bill-wave"></i>
+                                <span>Precio final: $780,000 COP</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Solicitud de Rating -->
+                    <div class="rating-prompt">
+                        <div class="prompt-header">
+                            <i class="fas fa-star"></i>
+                            <h4>Califica este servicio</h4>
+                        </div>
+                        <p>Tu opinión ayuda a mejorar nuestra comunidad de transportistas</p>
+                        <div class="rating-stars-input">
+                            <div class="stars-container">
+                                <i class="far fa-star" data-rating="1"></i>
+                                <i class="far fa-star" data-rating="2"></i>
+                                <i class="far fa-star" data-rating="3"></i>
+                                <i class="far fa-star" data-rating="4"></i>
+                                <i class="far fa-star" data-rating="5"></i>
+                            </div>
+                            <span class="rating-text">Selecciona una calificación</span>
+                        </div>
+                        <div class="prompt-actions">
+                            <button class="prompt-btn secondary">
+                                Recordarme después
+                            </button>
+                            <button class="prompt-btn primary" disabled>
+                                Enviar Calificación
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="completed-load-footer">
+                    <div class="load-actions-completed">
+                        <button class="action-btn-text">
+                            <i class="fas fa-redo"></i>
+                            Repetir Envío
+                        </button>
+                        <button class="action-btn-text">
+                            <i class="fas fa-heart"></i>
+                            Guardar Conductor
+                        </button>
+                        <button class="action-btn-text">
+                            <i class="fas fa-download"></i>
+                            Documentos
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Carga 3 - Completada con Retraso Menor -->
+            <div class="completed-load-card rated">
+                <div class="completed-load-header">
+                    <div class="load-ref">
+                        <span class="ref-badge">REF</span>
+                        <span class="ref-number">#CC-2024-009</span>
+                        <span class="completion-badge warning">
+                            <i class="fas fa-clock"></i>
+                            Retraso menor (45 min)
+                        </span>
+                    </div>
+                    <div class="load-meta-completed">
+                        <span class="completion-date">Completado: 14 Dic, 4:45 PM</span>
+                        <span class="completion-duration">Duración: 9h 30min</span>
+                    </div>
+                </div>
+
+                <div class="completed-load-content">
+                    <!-- Ruta Completada -->
+                    <div class="completed-route">
+                        <div class="route-point completed">
+                            <div class="point-marker"></div>
+                            <div class="point-info">
+                                <span class="point-city">Cali</span>
+                                <span class="point-time">Recogido: 7:15 AM</span>
+                            </div>
+                        </div>
+                        <div class="route-point completed">
+                            <div class="point-marker"></div>
+                            <div class="point-info">
+                                <span class="point-city">Barranquilla</span>
+                                <span class="point-time">Entregado: 4:45 PM</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Información del Conductor -->
+                    <div class="completed-driver-info">
+                        <div class="driver-profile-completed">
+                            <div class="driver-avatar">
+                                <img src="{{ url_for('static', filename='images/driver-3.jpg') }}" alt="Javier López">
+                            </div>
+                            <div class="driver-details">
+                                <h4 class="driver-name">Javier López</h4>
+                                <div class="driver-stats">
+                                    <span class="driver-rating">
+                                        <i class="fas fa-star"></i> 4.9 (76)
+                                    </span>
+                                    <span class="driver-trips">
+                                        <i class="fas fa-road"></i> 522 viajes
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="trip-details">
+                            <div class="trip-item">
+                                <i class="fas fa-road"></i>
+                                <span>Distancia: 600 km</span>
+                            </div>
+                            <div class="trip-item">
+                                <i class="fas fa-clock"></i>
+                                <span>Tiempo real: 9h 30min</span>
+                            </div>
+                            <div class="trip-item">
+                                <i class="fas fa-money-bill-wave"></i>
+                                <span>Precio final: $1,850,000 COP</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Rating y Reseña -->
+                    <div class="rating-section">
+                        <div class="rating-header">
+                            <h4>Tu Calificación</h4>
+                            <span class="rating-date">Calificado el 14 Dic, 2024</span>
+                        </div>
+                        <div class="rating-content">
+                            <div class="star-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                                <span class="rating-value">4.0</span>
+                            </div>
+                            <div class="review-text">
+                                <p>"Buen servicio en general. Hubo un retraso por condiciones climáticas, pero el conductor mantuvo buena comunicación."</p>
+                            </div>
+                            <div class="rating-tags">
+                                <span class="rating-tag">Comunicativo</span>
+                                <span class="rating-tag">Experto</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Nota de Retraso -->
+                    <div class="delay-note">
+                        <div class="delay-header">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <h5>Nota sobre el retraso</h5>
+                        </div>
+                        <p>Retraso de 45 minutos debido a lluvias fuertes en la vía Bogotá - Girardot. El conductor reportó las condiciones y mantuvo comunicación constante.</p>
+                    </div>
+                </div>
+
+                <div class="completed-load-footer">
+                    <div class="load-actions-completed">
+                        <button class="action-btn-text">
+                            <i class="fas fa-redo"></i>
+                            Repetir Envío
+                        </button>
+                        <button class="action-btn-text">
+                            <i class="fas fa-heart"></i>
+                            Guardar Conductor
+                        </button>
+                        <button class="action-btn-text primary">
+                            <i class="fas fa-download"></i>
+                            Descargar Todo
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Paginación -->
+        <div class="completed-pagination">
+            <button class="pagination-btn">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button class="pagination-btn active">1</button>
+            <button class="pagination-btn">2</button>
+            <button class="pagination-btn">3</button>
+            <span class="pagination-ellipsis">...</span>
+            <button class="pagination-btn">42</button>
+            <button class="pagination-btn">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Resumen Mensual -->
+    <div class="monthly-summary">
+        <div class="summary-header">
+            <h3>Resumen Diciembre 2024</h3>
+            <button class="summary-toggle">
+                <i class="fas fa-chevron-down"></i>
+            </button>
+        </div>
+        <div class="summary-content">
+            <div class="summary-stats">
+                <div class="summary-stat">
+                    <span class="stat-value">18</span>
+                    <span class="stat-label">Envíos Completados</span>
+                </div>
+                <div class="summary-stat">
+                    <span class="stat-value">98%</span>
+                    <span class="stat-label">Tasa de Éxito</span>
+                </div>
+                <div class="summary-stat">
+                    <span class="stat-value">4.6</span>
+                    <span class="stat-label">Rating Promedio</span>
+                </div>
+                <div class="summary-stat">
+                    <span class="stat-value">$12.4M</span>
+                    <span class="stat-label">Total Gastado</span>
+                </div>
+            </div>
+            <div class="summary-actions">
+                <button class="summary-btn">
+                    <i class="fas fa-chart-bar"></i>
+                    Ver Reporte Detallado
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/completed_loads.js') }}"></script>
+{% endblock %}

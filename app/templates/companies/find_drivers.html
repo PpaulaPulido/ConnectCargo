@@ -1,0 +1,603 @@
+{% extends "/companies/base_company.html" %}
+
+{% block title %}Buscar Conductores - ConnectCargo{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/find_drivers.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="find-drivers-container">
+    <!-- Header -->
+    <div class="find-drivers-header">
+        <div class="find-drivers-header-content">
+            <h1 class="find-drivers-title">Buscar Conductores</h1>
+            <p class="find-drivers-subtitle">Encuentra transportistas verificados para tus envíos</p>
+        </div>
+        <div class="find-drivers-stats">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-truck"></i>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-number">247</span>
+                    <span class="stat-label">Conductores Activos</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-number">189</span>
+                    <span class="stat-label">Verificados</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-star"></i>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-number">4.8</span>
+                    <span class="stat-label">Rating Promedio</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filtros y Búsqueda -->
+    <div class="search-filters-section">
+        <div class="search-bar-large">
+            <div class="search-input-wrapper">
+                <i class="fas fa-search"></i>
+                <input type="text" class="search-input" placeholder="Buscar por nombre, vehículo, especialidad...">
+                <button class="search-btn">
+                    <i class="fas fa-search"></i>
+                    Buscar
+                </button>
+            </div>
+        </div>
+
+        <div class="filters-container">
+            <div class="filters-header">
+                <h3>Filtros</h3>
+                <button class="clear-filters-btn">
+                    <i class="fas fa-times"></i>
+                    Limpiar
+                </button>
+            </div>
+
+            <div class="filters-grid">
+                <!-- Filtro de Ubicación -->
+                <div class="filter-group">
+                    <label class="filter-label">Ubicación</label>
+                    <select class="filter-select" id="locationFilter">
+                        <option value="">Todas las ciudades</option>
+                        <option value="bogota">Bogotá D.C.</option>
+                        <option value="medellin">Medellín</option>
+                        <option value="cali">Cali</option>
+                        <option value="barranquilla">Barranquilla</option>
+                        <option value="cartagena">Cartagena</option>
+                        <option value="bucaramanga">Bucaramanga</option>
+                    </select>
+                </div>
+
+                <!-- Filtro de Tipo de Vehículo -->
+                <div class="filter-group">
+                    <label class="filter-label">Tipo de Vehículo</label>
+                    <select class="filter-select" id="vehicleTypeFilter">
+                        <option value="">Todos los vehículos</option>
+                        <option value="pickup">Camioneta Pickup</option>
+                        <option value="van">Van/Camión</option>
+                        <option value="truck_3.5t">Camión 3.5T</option>
+                        <option value="truck_5t">Camión 5T</option>
+                        <option value="truck_10t">Camión 10T</option>
+                        <option value="tractor_trailer">Tractocamión</option>
+                        <option value="refrigerated">Refrigerado</option>
+                    </select>
+                </div>
+
+                <!-- Filtro de Especialidad -->
+                <div class="filter-group">
+                    <label class="filter-label">Especialidad</label>
+                    <select class="filter-select" id="specialtyFilter">
+                        <option value="">Todas las especialidades</option>
+                        <option value="general">Carga General</option>
+                        <option value="refrigerated">Refrigerada</option>
+                        <option value="dangerous">Mercancía Peligrosa</option>
+                        <option value="fragile">Frágil</option>
+                        <option value="oversized">Dimensional</option>
+                        <option value="livestock">Carga Viva</option>
+                    </select>
+                </div>
+
+                <!-- Filtro de Rating -->
+                <div class="filter-group">
+                    <label class="filter-label">Rating Mínimo</label>
+                    <select class="filter-select" id="ratingFilter">
+                        <option value="">Cualquier rating</option>
+                        <option value="4.5">4.5+ Estrellas</option>
+                        <option value="4.0">4.0+ Estrellas</option>
+                        <option value="3.5">3.5+ Estrellas</option>
+                        <option value="3.0">3.0+ Estrellas</option>
+                    </select>
+                </div>
+
+                <!-- Filtro de Verificación -->
+                <div class="filter-group">
+                    <label class="filter-label">Verificación</label>
+                    <div class="filter-checkboxes">
+                        <label class="filter-checkbox-label">
+                            <input type="checkbox" id="verifiedFilter" checked>
+                            <span class="filter-checkmark"></span>
+                            Solo verificados
+                        </label>
+                        <label class="filter-checkbox-label">
+                            <input type="checkbox" id="insuranceFilter">
+                            <span class="filter-checkmark"></span>
+                            Con seguro activo
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Filtro de Disponibilidad -->
+                <div class="filter-group">
+                    <label class="filter-label">Disponibilidad</label>
+                    <div class="filter-checkboxes">
+                        <label class="filter-checkbox-label">
+                            <input type="checkbox" id="availableNowFilter">
+                            <span class="filter-checkmark"></span>
+                            Disponible ahora
+                        </label>
+                        <label class="filter-checkbox-label">
+                            <input type="checkbox" id="24hFilter">
+                            <span class="filter-checkmark"></span>
+                            24/7
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="filters-actions">
+                <button class="apply-filters-btn">
+                    <i class="fas fa-filter"></i>
+                    Aplicar Filtros
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Resultados -->
+    <div class="results-section">
+        <div class="results-header">
+            <div class="results-info">
+                <h2>Conductores Encontrados</h2>
+                <span class="results-count">Mostrando 8 de 247 conductores</span>
+            </div>
+            <div class="results-sort">
+                <label for="sortSelect">Ordenar por:</label>
+                <select id="sortSelect" class="sort-select">
+                    <option value="rating">Mejor Rating</option>
+                    <option value="experience">Más Experiencia</option>
+                    <option value="price">Precio Más Bajo</option>
+                    <option value="completed">Más Viajes Completados</option>
+                    <option value="recent">Más Recientes</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Lista de Conductores -->
+        <div class="drivers-grid">
+            <!-- Conductor 1 -->
+            <div class="driver-card featured">
+                <div class="driver-card-header">
+                    <div class="driver-verified-badge">
+                        <i class="fas fa-shield-alt"></i>
+                        Verificado
+                    </div>
+                    <div class="driver-featured-badge">
+                        <i class="fas fa-crown"></i>
+                        Premium
+                    </div>
+                </div>
+
+                <div class="driver-card-content">
+                    <div class="driver-profile">
+                        <div class="driver-avatar">
+                            <img src="{{ url_for('static', filename='images/driver-1.jpg') }}" alt="Carlos Rodríguez">
+                            <div class="driver-status online"></div>
+                        </div>
+                        <div class="driver-info">
+                            <h3 class="driver-name">Carlos Rodríguez</h3>
+                            <div class="driver-rating">
+                                <div class="stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star-half-alt"></i>
+                                </div>
+                                <span class="rating-value">4.8</span>
+                                <span class="rating-count">(142)</span>
+                            </div>
+                            <div class="driver-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Bogotá D.C.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="driver-specs">
+                        <div class="spec-item">
+                            <i class="fas fa-truck"></i>
+                            <span>Camiones 5T y 10T</span>
+                        </div>
+                        <div class="spec-item">
+                            <i class="fas fa-briefcase"></i>
+                            <span>8 años de experiencia</span>
+                        </div>
+                        <div class="spec-item">
+                            <i class="fas fa-road"></i>
+                            <span>347 viajes completados</span>
+                        </div>
+                        <div class="spec-item">
+                            <i class="fas fa-percentage"></i>
+                            <span>98% de entregas exitosas</span>
+                        </div>
+                    </div>
+
+                    <div class="driver-specialties">
+                        <h4>Especialidades:</h4>
+                        <div class="specialty-tags">
+                            <span class="specialty-tag">Carga General</span>
+                            <span class="specialty-tag">Refrigerada</span>
+                            <span class="specialty-tag">Dimensional</span>
+                        </div>
+                    </div>
+
+                    <div class="driver-availability">
+                        <div class="availability-status available">
+                            <i class="fas fa-circle"></i>
+                            Disponible ahora
+                        </div>
+                        <div class="response-time">
+                            <i class="fas fa-clock"></i>
+                            Respuesta: 15 min
+                        </div>
+                    </div>
+                </div>
+
+                <div class="driver-card-actions">
+                    <button class="driver-action-btn outline">
+                        <i class="fas fa-eye"></i>
+                        Ver Perfil
+                    </button>
+                    <button class="driver-action-btn primary">
+                        <i class="fas fa-paper-plane"></i>
+                        Contactar
+                    </button>
+                </div>
+            </div>
+
+            <!-- Conductor 2 -->
+            <div class="driver-card">
+                <div class="driver-card-header">
+                    <div class="driver-verified-badge">
+                        <i class="fas fa-shield-alt"></i>
+                        Verificado
+                    </div>
+                </div>
+
+                <div class="driver-card-content">
+                    <div class="driver-profile">
+                        <div class="driver-avatar">
+                            <img src="{{ url_for('static', filename='images/driver-2.jpg') }}" alt="María González">
+                            <div class="driver-status online"></div>
+                        </div>
+                        <div class="driver-info">
+                            <h3 class="driver-name">María González</h3>
+                            <div class="driver-rating">
+                                <div class="stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <span class="rating-value">5.0</span>
+                                <span class="rating-count">(89)</span>
+                            </div>
+                            <div class="driver-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Medellín
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="driver-specs">
+                        <div class="spec-item">
+                            <i class="fas fa-truck"></i>
+                            <span>Vans y Camiones 3.5T</span>
+                        </div>
+                        <div class="spec-item">
+                            <i class="fas fa-briefcase"></i>
+                            <span>5 años de experiencia</span>
+                        </div>
+                        <div class="spec-item">
+                            <i class="fas fa-road"></i>
+                            <span>213 viajes completados</span>
+                        </div>
+                        <div class="spec-item">
+                            <i class="fas fa-percentage"></i>
+                            <span>100% de entregas exitosas</span>
+                        </div>
+                    </div>
+
+                    <div class="driver-specialties">
+                        <h4>Especialidades:</h4>
+                        <div class="specialty-tags">
+                            <span class="specialty-tag">Carga General</span>
+                            <span class="specialty-tag">Frágil</span>
+                            <span class="specialty-tag">Mercancía Peligrosa</span>
+                        </div>
+                    </div>
+
+                    <div class="driver-availability">
+                        <div class="availability-status available">
+                            <i class="fas fa-circle"></i>
+                            Disponible ahora
+                        </div>
+                        <div class="response-time">
+                            <i class="fas fa-clock"></i>
+                            Respuesta: 10 min
+                        </div>
+                    </div>
+                </div>
+
+                <div class="driver-card-actions">
+                    <button class="driver-action-btn outline">
+                        <i class="fas fa-eye"></i>
+                        Ver Perfil
+                    </button>
+                    <button class="driver-action-btn primary">
+                        <i class="fas fa-paper-plane"></i>
+                        Contactar
+                    </button>
+                </div>
+            </div>
+
+            <!-- Conductor 3 -->
+            <div class="driver-card">
+                <div class="driver-card-header">
+                    <div class="driver-verified-badge">
+                        <i class="fas fa-shield-alt"></i>
+                        Verificado
+                    </div>
+                </div>
+
+                <div class="driver-card-content">
+                    <div class="driver-profile">
+                        <div class="driver-avatar">
+                            <img src="{{ url_for('static', filename='images/driver-3.jpg') }}" alt="Javier López">
+                            <div class="driver-status away"></div>
+                        </div>
+                        <div class="driver-info">
+                            <h3 class="driver-name">Javier López</h3>
+                            <div class="driver-rating">
+                                <div class="stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <span class="rating-value">4.9</span>
+                                <span class="rating-count">(76)</span>
+                            </div>
+                            <div class="driver-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Cali
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="driver-specs">
+                        <div class="spec-item">
+                            <i class="fas fa-truck"></i>
+                            <span>Tractocamión Refrigerado</span>
+                        </div>
+                        <div class="spec-item">
+                            <i class="fas fa-briefcase"></i>
+                            <span>12 años de experiencia</span>
+                        </div>
+                        <div class="spec-item">
+                            <i class="fas fa-road"></i>
+                            <span>521 viajes completados</span>
+                        </div>
+                        <div class="spec-item">
+                            <i class="fas fa-percentage"></i>
+                            <span>99% de entregas exitosas</span>
+                        </div>
+                    </div>
+
+                    <div class="driver-specialties">
+                        <h4>Especialidades:</h4>
+                        <div class="specialty-tags">
+                            <span class="specialty-tag">Refrigerada</span>
+                            <span class="specialty-tag">Carga Viva</span>
+                            <span class="specialty-tag">Larga Distancia</span>
+                        </div>
+                    </div>
+
+                    <div class="driver-availability">
+                        <div class="availability-status away">
+                            <i class="fas fa-circle"></i>
+                            En viaje
+                        </div>
+                        <div class="response-time">
+                            <i class="fas fa-clock"></i>
+                            Disponible en 2 horas
+                        </div>
+                    </div>
+                </div>
+
+                <div class="driver-card-actions">
+                    <button class="driver-action-btn outline">
+                        <i class="fas fa-eye"></i>
+                        Ver Perfil
+                    </button>
+                    <button class="driver-action-btn primary">
+                        <i class="fas fa-paper-plane"></i>
+                        Contactar
+                    </button>
+                </div>
+            </div>
+
+            <!-- Conductor 4 -->
+            <div class="driver-card">
+                <div class="driver-card-header">
+                    <div class="driver-verified-badge">
+                        <i class="fas fa-shield-alt"></i>
+                        Verificado
+                    </div>
+                </div>
+
+                <div class="driver-card-content">
+                    <div class="driver-profile">
+                        <div class="driver-avatar">
+                            <img src="{{ url_for('static', filename='images/driver-4.jpg') }}" alt="Ana Martínez">
+                            <div class="driver-status online"></div>
+                        </div>
+                        <div class="driver-info">
+                            <h3 class="driver-name">Ana Martínez</h3>
+                            <div class="driver-rating">
+                                <div class="stars">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <span class="rating-value">4.7</span>
+                                <span class="rating-count">(134)</span>
+                            </div>
+                            <div class="driver-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Barranquilla
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="driver-specs">
+                        <div class="spec-item">
+                            <i class="fas fa-truck"></i>
+                            <span>Camionetas Pickup</span>
+                        </div>
+                        <div class="spec-item">
+                            <i class="fas fa-briefcase"></i>
+                            <span>3 años de experiencia</span>
+                        </div>
+                        <div class="spec-item">
+                            <i class="fas fa-road"></i>
+                            <span>187 viajes completados</span>
+                        </div>
+                        <div class="spec-item">
+                            <i class="fas fa-percentage"></i>
+                            <span>96% de entregas exitosas</span>
+                        </div>
+                    </div>
+
+                    <div class="driver-specialties">
+                        <h4>Especialidades:</h4>
+                        <div class="specialty-tags">
+                            <span class="specialty-tag">Paquetería</span>
+                            <span class="specialty-tag">Mudanzas</span>
+                            <span class="specialty-tag">Entregas Rápidas</span>
+                        </div>
+                    </div>
+
+                    <div class="driver-availability">
+                        <div class="availability-status available">
+                            <i class="fas fa-circle"></i>
+                            Disponible ahora
+                        </div>
+                        <div class="response-time">
+                            <i class="fas fa-clock"></i>
+                            Respuesta: 5 min
+                        </div>
+                    </div>
+                </div>
+
+                <div class="driver-card-actions">
+                    <button class="driver-action-btn outline">
+                        <i class="fas fa-eye"></i>
+                        Ver Perfil
+                    </button>
+                    <button class="driver-action-btn primary">
+                        <i class="fas fa-paper-plane"></i>
+                        Contactar
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Paginación -->
+        <div class="pagination">
+            <button class="pagination-btn disabled">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button class="pagination-btn active">1</button>
+            <button class="pagination-btn">2</button>
+            <button class="pagination-btn">3</button>
+            <button class="pagination-btn">4</button>
+            <span class="pagination-ellipsis">...</span>
+            <button class="pagination-btn">12</button>
+            <button class="pagination-btn">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="quick-actions-section">
+        <div class="quick-actions-grid">
+            <div class="quick-action-card">
+                <div class="quick-action-icon">
+                    <i class="fas fa-history"></i>
+                </div>
+                <h3>Conductores Recientes</h3>
+                <p>Ve los transportistas con los que has trabajado antes</p>
+                <button class="quick-action-btn">
+                    Ver Historial
+                </button>
+            </div>
+
+            <div class="quick-action-card">
+                <div class="quick-action-icon">
+                    <i class="fas fa-heart"></i>
+                </div>
+                <h3>Favoritos</h3>
+                <p>Accede rápidamente a tus conductores preferidos</p>
+                <button class="quick-action-btn">
+                    Ver Favoritos
+                </button>
+            </div>
+
+            <div class="quick-action-card">
+                <div class="quick-action-icon">
+                    <i class="fas fa-bullhorn"></i>
+                </div>
+                <h3>Publicación Rápida</h3>
+                <p>Publica tu carga y deja que los conductores te contacten</p>
+                <button class="quick-action-btn primary">
+                    Publicar Carga
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/find_drivers.js') }}"></script>
+{% endblock %}

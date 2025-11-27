@@ -1,0 +1,578 @@
+{% extends "/companies/base_company.html" %}
+
+{% block title %}Notificaciones - ConnectCargo{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/notifications_company.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="notifications-company-container">
+    <!-- Header -->
+    <div class="notifications-company-header">
+        <div class="notifications-company-header-content">
+            <h1 class="notifications-company-title">Notificaciones</h1>
+            <p class="notifications-company-subtitle">Mantente informado sobre tu actividad en la plataforma</p>
+        </div>
+        <div class="notifications-company-header-actions">
+            <button class="notifications-btn notifications-btn-secondary" id="markAllRead">
+                <i class="fas fa-check-double"></i>
+                Marcar Todas como Leídas
+            </button>
+            <button class="notifications-btn notifications-btn-outline" id="notificationSettings">
+                <i class="fas fa-cog"></i>
+                Configurar
+            </button>
+        </div>
+    </div>
+
+    <!-- Filtros y Estadísticas -->
+    <div class="notifications-controls">
+        <div class="notifications-filters">
+            <div class="notifications-filter-group">
+                <button class="notifications-filter-btn notifications-filter-active" data-filter="all">
+                    <i class="fas fa-bell"></i>
+                    Todas
+                    <span class="notifications-filter-count">24</span>
+                </button>
+                <button class="notifications-filter-btn" data-filter="unread">
+                    <i class="fas fa-envelope"></i>
+                    No Leídas
+                    <span class="notifications-filter-count">8</span>
+                </button>
+                <button class="notifications-filter-btn" data-filter="important">
+                    <i class="fas fa-exclamation-circle"></i>
+                    Importantes
+                    <span class="notifications-filter-count">5</span>
+                </button>
+            </div>
+
+            <div class="notifications-filter-group">
+                <button class="notifications-filter-btn" data-filter="shipments">
+                    <i class="fas fa-shipping-fast"></i>
+                    Envíos
+                </button>
+                <button class="notifications-filter-btn" data-filter="quotes">
+                    <i class="fas fa-file-invoice-dollar"></i>
+                    Cotizaciones
+                </button>
+                <button class="notifications-filter-btn" data-filter="system">
+                    <i class="fas fa-cog"></i>
+                    Sistema
+                </button>
+            </div>
+        </div>
+
+        <div class="notifications-stats">
+            <div class="notifications-stat-item">
+                <span class="notifications-stat-value">8</span>
+                <span class="notifications-stat-label">Pendientes</span>
+            </div>
+            <div class="notifications-stat-item">
+                <span class="notifications-stat-value">16</span>
+                <span class="notifications-stat-label">Leídas</span>
+            </div>
+            <div class="notifications-stat-item">
+                <span class="notifications-stat-value">5</span>
+                <span class="notifications-stat-label">Importantes</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lista de Notificaciones -->
+    <div class="notifications-list-container">
+        <div class="notifications-list-header">
+            <h2>Notificaciones Recientes</h2>
+            <div class="notifications-sort">
+                <select class="notifications-sort-select" id="sortSelect">
+                    <option value="newest">Más recientes primero</option>
+                    <option value="oldest">Más antiguas primero</option>
+                    <option value="important">Más importantes primero</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="notifications-list">
+            <!-- Notificación 1: Nueva Cotización - IMPORTANTE -->
+            <div class="notifications-item notifications-unread notifications-important">
+                <div class="notifications-item-icon">
+                    <i class="fas fa-file-invoice-dollar"></i>
+                    <div class="notifications-priority-dot"></div>
+                </div>
+                <div class="notifications-item-content">
+                    <div class="notifications-item-header">
+                        <h3 class="notifications-item-title">
+                            Nueva cotización recibida
+                            <span class="notifications-badge notifications-badge-important">Importante</span>
+                        </h3>
+                        <span class="notifications-item-time">Hace 5 minutos</span>
+                    </div>
+                    <p class="notifications-item-message">
+                        <strong>Carlos Rodríguez</strong> ha enviado una cotización por <strong>$1,450,000 COP</strong> para tu envío 
+                        <strong>#CC-2024-015</strong> (Bogotá - Medellín).
+                    </p>
+                    <div class="notifications-item-meta">
+                        <span class="notifications-meta-item">
+                            <i class="fas fa-truck"></i>
+                            Transportista: Carlos Rodríguez
+                        </span>
+                        <span class="notifications-meta-item">
+                            <i class="fas fa-star"></i>
+                            Calificación: 4.8/5.0
+                        </span>
+                        <span class="notifications-meta-item">
+                            <i class="fas fa-road"></i>
+                            Ruta: Bogotá - Medellín
+                        </span>
+                    </div>
+                    <div class="notifications-item-actions">
+                        <button class="notifications-action-btn notifications-action-primary" data-action="view-quote">
+                            <i class="fas fa-eye"></i>
+                            Ver Cotización
+                        </button>
+                        <button class="notifications-action-btn notifications-action-secondary" data-action="view-shipment">
+                            <i class="fas fa-shipping-fast"></i>
+                            Ver Envío
+                        </button>
+                        <button class="notifications-action-btn notifications-action-outline" data-action="dismiss">
+                            <i class="fas fa-times"></i>
+                            Descartar
+                        </button>
+                    </div>
+                </div>
+                <div class="notifications-item-actions-mini">
+                    <button class="notifications-action-icon" title="Marcar como leída" data-action="mark-read">
+                        <i class="fas fa-envelope-open"></i>
+                    </button>
+                    <button class="notifications-action-icon" title="Archivar" data-action="archive">
+                        <i class="fas fa-archive"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Notificación 2: Envío Completado -->
+            <div class="notifications-item notifications-unread notifications-success">
+                <div class="notifications-item-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="notifications-item-content">
+                    <div class="notifications-item-header">
+                        <h3 class="notifications-item-title">
+                            Envío completado exitosamente
+                            <span class="notifications-badge notifications-badge-success">Completado</span>
+                        </h3>
+                        <span class="notifications-item-time">Hace 2 horas</span>
+                    </div>
+                    <p class="notifications-item-message">
+                        Tu envío <strong>#CC-2024-014</strong> ha sido entregado en <strong>Medellín</strong> por 
+                        <strong>María González</strong>. El viaje se completó en <strong>7h 15min</strong>.
+                    </p>
+                    <div class="notifications-item-meta">
+                        <span class="notifications-meta-item">
+                            <i class="fas fa-check-circle"></i>
+                            Estado: Entregado a tiempo
+                        </span>
+                        <span class="notifications-meta-item">
+                            <i class="fas fa-clock"></i>
+                            Duración: 7h 15min
+                        </span>
+                        <span class="notifications-meta-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            Destino: Medellín, Antioquia
+                        </span>
+                    </div>
+                    <div class="notifications-item-actions">
+                        <button class="notifications-action-btn notifications-action-primary" data-action="rate-driver">
+                            <i class="fas fa-star"></i>
+                            Calificar Servicio
+                        </button>
+                        <button class="notifications-action-btn notifications-action-secondary" data-action="view-documents">
+                            <i class="fas fa-file-download"></i>
+                            Descargar Documentos
+                        </button>
+                    </div>
+                </div>
+                <div class="notifications-item-actions-mini">
+                    <button class="notifications-action-icon" title="Marcar como leída" data-action="mark-read">
+                        <i class="fas fa-envelope-open"></i>
+                    </button>
+                    <button class="notifications-action-icon" title="Archivar" data-action="archive">
+                        <i class="fas fa-archive"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Notificación 3: Recordatorio de Pago -->
+            <div class="notifications-item notifications-unread notifications-warning">
+                <div class="notifications-item-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div class="notifications-item-content">
+                    <div class="notifications-item-header">
+                        <h3 class="notifications-item-title">
+                            Recordatorio de pago pendiente
+                            <span class="notifications-badge notifications-badge-warning">Pendiente</span>
+                        </h3>
+                        <span class="notifications-item-time">Hace 6 horas</span>
+                    </div>
+                    <p class="notifications-item-message">
+                        Tienes un pago pendiente por <strong>$2,150,000 COP</strong> para el envío 
+                        <strong>#CC-2024-013</strong>. La fecha límite es <strong>mañana</strong>.
+                    </p>
+                    <div class="notifications-item-meta">
+                        <span class="notifications-meta-item">
+                            <i class="fas fa-money-bill-wave"></i>
+                            Monto: $2,150,000 COP
+                        </span>
+                        <span class="notifications-meta-item">
+                            <i class="fas fa-calendar-day"></i>
+                            Vence: 20 Dic, 2024
+                        </span>
+                        <span class="notifications-meta-item">
+                            <i class="fas fa-shipping-fast"></i>
+                            Envío: #CC-2024-013
+                        </span>
+                    </div>
+                    <div class="notifications-item-actions">
+                        <button class="notifications-action-btn notifications-action-primary" data-action="pay-now">
+                            <i class="fas fa-credit-card"></i>
+                            Pagar Ahora
+                        </button>
+                        <button class="notifications-action-btn notifications-action-outline" data-action="view-invoice">
+                            <i class="fas fa-receipt"></i>
+                            Ver Factura
+                        </button>
+                    </div>
+                </div>
+                <div class="notifications-item-actions-mini">
+                    <button class="notifications-action-icon" title="Marcar como leída" data-action="mark-read">
+                        <i class="fas fa-envelope-open"></i>
+                    </button>
+                    <button class="notifications-action-icon" title="Recordarme después" data-action="remind-later">
+                        <i class="fas fa-clock"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Notificación 4: Actualización de Sistema -->
+            <div class="notifications-item notifications-read notifications-info">
+                <div class="notifications-item-icon">
+                    <i class="fas fa-info-circle"></i>
+                </div>
+                <div class="notifications-item-content">
+                    <div class="notifications-item-header">
+                        <h3 class="notifications-item-title">
+                            Actualización del sistema completada
+                            <span class="notifications-badge notifications-badge-info">Sistema</span>
+                        </h3>
+                        <span class="notifications-item-time">Ayer, 14:30</span>
+                    </div>
+                    <p class="notifications-item-message">
+                        Hemos completado la actualización programada del sistema. Nuevas características incluyen: 
+                        reportes avanzados, seguimiento en tiempo real mejorado y integración con más transportistas.
+                    </p>
+                    <div class="notifications-item-meta">
+                        <span class="notifications-meta-item">
+                            <i class="fas fa-rocket"></i>
+                            Versión: 2.1.0
+                        </span>
+                        <span class="notifications-meta-item">
+                            <i class="fas fa-clock"></i>
+                            Duración: 30 minutos
+                        </span>
+                    </div>
+                    <div class="notifications-item-actions">
+                        <button class="notifications-action-btn notifications-action-outline" data-action="view-changelog">
+                            <i class="fas fa-list"></i>
+                            Ver Cambios
+                        </button>
+                    </div>
+                </div>
+                <div class="notifications-item-actions-mini">
+                    <button class="notifications-action-icon" title="Archivar" data-action="archive">
+                        <i class="fas fa-archive"></i>
+                    </button>
+                    <button class="notifications-action-icon" title="Eliminar" data-action="delete">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Notificación 5: Transportista Preferido Disponible -->
+            <div class="notifications-item notifications-read notifications-success">
+                <div class="notifications-item-icon">
+                    <i class="fas fa-heart"></i>
+                </div>
+                <div class="notifications-item-content">
+                    <div class="notifications-item-header">
+                        <h3 class="notifications-item-title">
+                            Transportista preferido disponible
+                            <span class="notifications-badge notifications-badge-success">Recomendación</span>
+                        </h3>
+                        <span class="notifications-item-time">Ayer, 09:15</span>
+                    </div>
+                    <p class="notifications-item-message">
+                        <strong>Javier López</strong> (calificación 4.9/5.0) está disponible para rutas hacia 
+                        <strong>Barranquilla</strong>. Has trabajado con él 12 veces anteriormente con 100% de satisfacción.
+                    </p>
+                    <div class="notifications-item-meta">
+                        <span class="notifications-meta-item">
+                            <i class="fas fa-user-check"></i>
+                            Transportista: Javier López
+                        </span>
+                        <span class="notifications-meta-item">
+                            <i class="fas fa-star"></i>
+                            Calificación: 4.9/5.0
+                        </span>
+                        <span class="notifications-meta-item">
+                            <i class="fas fa-history"></i>
+                            Viajes contigo: 12
+                        </span>
+                    </div>
+                    <div class="notifications-item-actions">
+                        <button class="notifications-action-btn notifications-action-primary" data-action="contact-driver">
+                            <i class="fas fa-comment"></i>
+                            Contactar
+                        </button>
+                        <button class="notifications-action-btn notifications-action-secondary" data-action="view-profile">
+                            <i class="fas fa-user"></i>
+                            Ver Perfil
+                        </button>
+                    </div>
+                </div>
+                <div class="notifications-item-actions-mini">
+                    <button class="notifications-action-icon" title="Archivar" data-action="archive">
+                        <i class="fas fa-archive"></i>
+                    </button>
+                    <button class="notifications-action-icon" title="Guardar" data-action="save">
+                        <i class="fas fa-bookmark"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Notificación 6: Retraso en Envío -->
+            <div class="notifications-item notifications-read notifications-warning">
+                <div class="notifications-item-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="notifications-item-content">
+                    <div class="notifications-item-header">
+                        <h3 class="notifications-item-title">
+                            Actualización: Retraso en envío
+                            <span class="notifications-badge notifications-badge-warning">En Curso</span>
+                        </h3>
+                        <span class="notifications-item-time">15 Dic, 2024 - 16:45</span>
+                    </div>
+                    <p class="notifications-item-message">
+                        El envío <strong>#CC-2024-012</strong> experimenta un retraso de aproximadamente 
+                        <strong>45 minutos</strong> debido a condiciones climáticas en la vía Bogotá - Girardot.
+                    </p>
+                    <div class="notifications-item-meta">
+                        <span class="notifications-meta-item">
+                            <i class="fas fa-cloud-rain"></i>
+                            Motivo: Condiciones climáticas
+                        </span>
+                        <span class="notifications-meta-item">
+                            <i class="fas fa-clock"></i>
+                            Retraso estimado: 45 min
+                        </span>
+                        <span class="notifications-meta-item">
+                            <i class="fas fa-truck"></i>
+                            Transportista: Ana Martínez
+                        </span>
+                    </div>
+                    <div class="notifications-item-actions">
+                        <button class="notifications-action-btn notifications-action-outline" data-action="track-shipment">
+                            <i class="fas fa-map-marker-alt"></i>
+                            Seguir Envío
+                        </button>
+                        <button class="notifications-action-btn notifications-action-outline" data-action="contact-support">
+                            <i class="fas fa-headset"></i>
+                            Soporte
+                        </button>
+                    </div>
+                </div>
+                <div class="notifications-item-actions-mini">
+                    <button class="notifications-action-icon" title="Archivar" data-action="archive">
+                        <i class="fas fa-archive"></i>
+                    </button>
+                    <button class="notifications-action-icon" title="Eliminar" data-action="delete">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Paginación -->
+        <div class="notifications-pagination">
+            <button class="notifications-pagination-btn notifications-pagination-prev">
+                <i class="fas fa-chevron-left"></i>
+                Anterior
+            </button>
+            <div class="notifications-pagination-pages">
+                <button class="notifications-pagination-page notifications-page-active">1</button>
+                <button class="notifications-pagination-page">2</button>
+                <button class="notifications-pagination-page">3</button>
+                <span class="notifications-pagination-ellipsis">...</span>
+                <button class="notifications-pagination-page">8</button>
+            </div>
+            <button class="notifications-pagination-btn notifications-pagination-next">
+                Siguiente
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Estado Vacío -->
+    <div class="notifications-empty-state" id="emptyState" style="display: none;">
+        <div class="notifications-empty-icon">
+            <i class="fas fa-bell-slash"></i>
+        </div>
+        <h3>No hay notificaciones</h3>
+        <p>Cuando recibas nuevas notificaciones, aparecerán aquí.</p>
+        <button class="notifications-btn notifications-btn-primary" id="checkForNotifications">
+            <i class="fas fa-sync-alt"></i>
+            Buscar Notificaciones
+        </button>
+    </div>
+</div>
+
+<!-- Modal de Configuración de Notificaciones -->
+<div class="notifications-modal" id="settingsModal">
+    <div class="notifications-modal-content">
+        <div class="notifications-modal-header">
+            <h3>Configuración de Notificaciones</h3>
+            <button class="notifications-modal-close" id="settingsModalClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="notifications-modal-body">
+            <div class="notifications-settings">
+                <div class="notifications-settings-section">
+                    <h4>Preferencias de Notificaciones</h4>
+                    <div class="notifications-settings-list">
+                        <div class="notifications-setting-item">
+                            <div class="notifications-setting-info">
+                                <h5>Notificaciones por Email</h5>
+                                <p>Recibe notificaciones importantes por correo electrónico</p>
+                            </div>
+                            <label class="notifications-toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="notifications-toggle-slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="notifications-setting-item">
+                            <div class="notifications-setting-info">
+                                <h5>Notificaciones Push</h5>
+                                <p>Notificaciones en tiempo real en tu navegador</p>
+                            </div>
+                            <label class="notifications-toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="notifications-toggle-slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="notifications-setting-item">
+                            <div class="notifications-setting-info">
+                                <h5>Notificaciones por SMS</h5>
+                                <p>Mensajes de texto para alertas críticas</p>
+                            </div>
+                            <label class="notifications-toggle-switch">
+                                <input type="checkbox">
+                                <span class="notifications-toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="notifications-settings-section">
+                    <h4>Tipos de Notificaciones</h4>
+                    <div class="notifications-categories">
+                        <div class="notifications-category">
+                            <h5>Gestión de Envíos</h5>
+                            <div class="notifications-category-settings">
+                                <label class="notifications-category-setting">
+                                    <input type="checkbox" checked>
+                                    <span class="notifications-category-check"></span>
+                                    Nuevas cotizaciones
+                                </label>
+                                <label class="notifications-category-setting">
+                                    <input type="checkbox" checked>
+                                    <span class="notifications-category-check"></span>
+                                    Cambios de estado
+                                </label>
+                                <label class="notifications-category-setting">
+                                    <input type="checkbox" checked>
+                                    <span class="notifications-category-check"></span>
+                                    Envíos completados
+                                </label>
+                                <label class="notifications-category-setting">
+                                    <input type="checkbox">
+                                    <span class="notifications-category-check"></span>
+                                    Retrasos en envíos
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="notifications-category">
+                            <h5>Pagos y Facturación</h5>
+                            <div class="notifications-category-settings">
+                                <label class="notifications-category-setting">
+                                    <input type="checkbox" checked>
+                                    <span class="notifications-category-check"></span>
+                                    Recordatorios de pago
+                                </label>
+                                <label class="notifications-category-setting">
+                                    <input type="checkbox" checked>
+                                    <span class="notifications-category-check"></span>
+                                    Facturas generadas
+                                </label>
+                                <label class="notifications-category-setting">
+                                    <input type="checkbox">
+                                    <span class="notifications-category-check"></span>
+                                    Promociones especiales
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="notifications-category">
+                            <h5>Sistema y Soporte</h5>
+                            <div class="notifications-category-settings">
+                                <label class="notifications-category-setting">
+                                    <input type="checkbox" checked>
+                                    <span class="notifications-category-check"></span>
+                                    Actualizaciones del sistema
+                                </label>
+                                <label class="notifications-category-setting">
+                                    <input type="checkbox">
+                                    <span class="notifications-category-check"></span>
+                                    Novedades y características
+                                </label>
+                                <label class="notifications-category-setting">
+                                    <input type="checkbox" checked>
+                                    <span class="notifications-category-check"></span>
+                                    Alertas de seguridad
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="notifications-modal-footer">
+            <button class="notifications-btn notifications-btn-secondary" id="settingsCancel">
+                Cancelar
+            </button>
+            <button class="notifications-btn notifications-btn-primary" id="settingsSave">
+                <i class="fas fa-save"></i>
+                Guardar Configuración
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/notifications_company.js') }}"></script>
+{% endblock %}
