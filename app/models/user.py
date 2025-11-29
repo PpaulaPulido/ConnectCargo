@@ -53,7 +53,7 @@ class User(db.Model, UserMixin):
     verification_date = db.Column(db.DateTime)
     
     # Email verification
-    email_verified = db.Column(db.Boolean, default=False)
+    email_verified = db.Column(db.Boolean, default=True)
     verification_token = db.Column(db.String(100))
     verification_token_expires = db.Column(db.DateTime)
     
@@ -102,15 +102,17 @@ class User(db.Model, UserMixin):
     
     def generate_verification_token(self):
         """Generate unique verification token"""
-        self.verification_token = secrets.token_urlsafe(32)
-        self.verification_token_expires = datetime.utcnow() + timedelta(hours=24)
-        return self.verification_token
+        #self.verification_token = secrets.token_urlsafe(32)
+        #self.verification_token_expires = datetime.utcnow() + timedelta(hours=24)
+        #return self.verification_token
+        pass
     
     def is_verification_token_valid(self):
         """Check if verification token is valid"""
-        if not self.verification_token or not self.verification_token_expires:
-            return False
-        return datetime.utcnow() < self.verification_token_expires
+        #if not self.verification_token or not self.verification_token_expires:
+            #return False
+        #return datetime.utcnow() < self.verification_token_expires
+        return True
     
     def verify_email(self):
         """Mark email as verified"""
@@ -118,8 +120,8 @@ class User(db.Model, UserMixin):
         if not self.account_status:
             self.account_status = AccountStatus.ACTIVE
         self.verification_date = datetime.utcnow()
-        self.verification_token = None
-        self.verification_token_expires = None
+        #self.verification_token = None
+        #self.verification_token_expires = None
     
     def get_profile_picture_url(self):
         """Obtener URL de la foto de perfil"""

@@ -188,11 +188,14 @@ def register():
                 identity_document=None, 
                 document_type=None,
                 accepted_terms=True,
-                terms_acceptance_date=datetime.utcnow()
+                terms_acceptance_date=datetime.utcnow(),
+                email_verified=True,  # VERIFICACIÓN AUTOMÁTICA
+                account_status=AccountStatus.ACTIVE  # CUENTA ACTIVA DIRECTAMENTE
             )
             
+    
             # Generar token de verificacion
-            new_user.generate_verification_token()
+            #new_user.generate_verification_token()
             
             db.session.add(new_user)
             db.session.flush()  # Obtener el ID del usuario
@@ -215,16 +218,12 @@ def register():
             db.session.add(new_profile)
             
             # Enviar email de verificacion
-            email_sent = EmailVerification.send_verification_email(new_user)
+            #email_sent = EmailVerification.send_verification_email(new_user)
             
-            if email_sent:
-                db.session.commit()
-                flash('¡Registro exitoso! Por favor revisa tu email para las instrucciones de verificacion.', 'success')
-                return redirect(url_for('auth.login'))
-            else:
-                db.session.rollback()
-                flash('Error enviando email de verificacion. Por favor intenta de nuevo.', 'error')
-            
+            db.session.commit()
+            flash('¡Registro exitoso! Tu cuenta ha sido creada y verificada automáticamente.', 'success')
+            return redirect(url_for('auth.login'))
+        
         except Exception as e:
             db.session.rollback()
             flash('Ocurrio un error durante el registro. Por favor intenta de nuevo.', 'error')
@@ -243,10 +242,6 @@ def login():
         user = User.query.filter_by(email=email).first()
         
         if user and PasswordHelper.verify_password(password, user.password_hash):
-            # Verificar si el email esta verificado
-            if not user.email_verified:
-                flash('Por favor verifica tu email antes de iniciar sesion. Revisa tu bandeja de entrada para el enlace de verificacion.', 'warning')
-                return render_template('auth/login.html') 
             
             # Verificar si la cuenta esta activa
             if user.account_status != AccountStatus.ACTIVE:
