@@ -1,0 +1,1102 @@
+/* vehicle_info.css - Estilos específicos para información de vehículos */
+
+.vehicle-page {
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+/* Header */
+.vehicle-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.header-content h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+}
+
+.header-content p {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    margin: 0;
+}
+
+/* Botones de Acción */
+.vehicle-action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: var(--border-radius);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.vehicle-action-btn.primary {
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-hover));
+    color: var(--text-light);
+}
+
+.vehicle-action-btn.primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(242, 140, 40, 0.4);
+}
+
+.vehicle-action-btn.outline {
+    background: transparent;
+    color: var(--accent-primary);
+    border: 2px solid var(--accent-primary);
+}
+
+.vehicle-action-btn.outline:hover {
+    background: var(--accent-primary);
+    color: var(--text-light);
+    transform: translateY(-2px);
+}
+
+.vehicle-action-btn.secondary {
+    background: var(--bg-main);
+    color: var(--text-secondary);
+    border: 2px solid var(--border-light);
+}
+
+.vehicle-action-btn.secondary:hover {
+    border-color: var(--accent-primary);
+    color: var(--accent-primary);
+    transform: translateY(-2px);
+}
+
+/* Pestañas de Navegación */
+.vehicle-tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--border-light);
+    padding-bottom: 1rem;
+    flex-wrap: wrap;
+}
+
+.vehicle-tab {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 1.5rem;
+    background: none;
+    border: none;
+    border-radius: var(--border-radius);
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    white-space: nowrap;
+}
+
+.vehicle-tab:hover {
+    background: var(--bg-gray);
+    color: var(--text-primary);
+}
+
+.vehicle-tab.active {
+    background: var(--accent-primary);
+    color: var(--text-light);
+    font-weight: 600;
+}
+
+.vehicle-tab i {
+    font-size: 1.1rem;
+}
+
+/* Contenido de Pestañas */
+.vehicle-tab-content {
+    display: none;
+}
+
+.vehicle-tab-content.active {
+    display: block;
+    animation: vehicleFadeIn 0.3s ease;
+}
+
+@keyframes vehicleFadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== PESTAÑA: MI FLOTA ===== */
+
+/* Estadísticas de Flota */
+.fleet-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.fleet-stat-card {
+    background: var(--bg-main);
+    border: 1px solid var(--border-light);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: var(--transition);
+}
+
+.fleet-stat-card:hover {
+    border-color: var(--accent-primary);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+}
+
+.fleet-stat-card .stat-icon {
+    width: 50px;
+    height: 50px;
+    background: var(--accent-light);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent-primary);
+    font-size: 1.25rem;
+    flex-shrink: 0;
+}
+
+.fleet-stat-card .stat-info h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+    line-height: 1;
+}
+
+.fleet-stat-card .stat-info p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+/* Grid de Vehículos */
+.vehicles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+/* Tarjetas de Vehículo */
+.vehicle-card {
+    background: var(--bg-main);
+    border: 1px solid var(--border-light);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    transition: var(--transition);
+    position: relative;
+}
+
+.vehicle-card:hover {
+    border-color: var(--accent-primary);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+}
+
+.vehicle-card.featured {
+    border: 2px solid var(--accent-primary);
+}
+
+.vehicle-badge {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    padding: 0.5rem 1rem;
+    background: var(--accent-primary);
+    color: var(--text-light);
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    z-index: 2;
+}
+
+.vehicle-image {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+}
+
+.vehicle-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: var(--transition);
+}
+
+.vehicle-card:hover .vehicle-image img {
+    transform: scale(1.05);
+}
+
+.vehicle-status {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    z-index: 2;
+}
+
+.vehicle-status.available {
+    background: #D1FAE5;
+    color: #065F46;
+}
+
+.vehicle-status.maintenance {
+    background: #FEF3C7;
+    color: #92400E;
+}
+
+.vehicle-status.unavailable {
+    background: #FEE2E2;
+    color: #991B1B;
+}
+
+.vehicle-info {
+    padding: 1.5rem;
+}
+
+.vehicle-info h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+
+.vehicle-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.vehicle-details .detail {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.vehicle-details .detail i {
+    color: var(--accent-primary);
+    width: 16px;
+    text-align: center;
+}
+
+.vehicle-specs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    padding: 1rem;
+    background: var(--bg-gray);
+    border-radius: var(--border-radius);
+}
+
+.vehicle-specs .spec {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.vehicle-specs .spec label {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+}
+
+.vehicle-specs .spec span {
+    color: var(--text-primary);
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.vehicle-actions {
+    padding: 1rem 1.5rem;
+    border-top: 1px solid var(--border-light);
+    display: flex;
+    gap: 0.75rem;
+}
+
+.vehicle-actions .vehicle-action-btn {
+    flex: 1;
+    justify-content: center;
+}
+
+/* Tarjeta para Agregar Vehículo */
+.add-vehicle-card {
+    background: var(--bg-gray);
+    border: 2px dashed var(--border-light);
+    border-radius: var(--border-radius);
+    padding: 3rem 2rem;
+    text-align: center;
+    transition: var(--transition);
+    cursor: pointer;
+}
+
+.add-vehicle-card:hover {
+    border-color: var(--accent-primary);
+    background: var(--accent-light);
+}
+
+.add-vehicle-content i {
+    font-size: 3rem;
+    color: var(--accent-primary);
+    margin-bottom: 1rem;
+}
+
+.add-vehicle-content h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.add-vehicle-content p {
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+}
+
+/* ===== PESTAÑA: DOCUMENTOS ===== */
+
+.documents-section h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.documents-section > p {
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+}
+
+.documents-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.document-card {
+    background: var(--bg-main);
+    border: 1px solid var(--border-light);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    display: flex;
+    gap: 1rem;
+    transition: var(--transition);
+}
+
+.document-card:hover {
+    border-color: var(--accent-primary);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+}
+
+.document-icon {
+    width: 50px;
+    height: 50px;
+    background: var(--accent-light);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent-primary);
+    font-size: 1.25rem;
+    flex-shrink: 0;
+}
+
+.document-info {
+    flex: 1;
+}
+
+.document-info h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.document-info p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+.document-meta {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.status {
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.status.valid {
+    background: #D1FAE5;
+    color: #065F46;
+}
+
+.status.warning {
+    background: #FEF3C7;
+    color: #92400E;
+}
+
+.status.expired {
+    background: #FEE2E2;
+    color: #991B1B;
+}
+
+.expiry {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+}
+
+.document-actions {
+    display: flex;
+    gap: 0.5rem;
+    align-self: flex-start;
+}
+
+.document-action-btn {
+    width: 36px;
+    height: 36px;
+    background: none;
+    border: 1px solid var(--border-light);
+    border-radius: var(--border-radius);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.document-action-btn:hover {
+    border-color: var(--accent-primary);
+    color: var(--accent-primary);
+    transform: scale(1.1);
+}
+
+/* Área de Subida */
+.upload-section {
+    background: var(--bg-main);
+    border: 1px solid var(--border-light);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+}
+
+.upload-section h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 1.5rem;
+}
+
+.upload-area {
+    border: 2px dashed var(--border-light);
+    border-radius: var(--border-radius);
+    padding: 3rem 2rem;
+    text-align: center;
+    transition: var(--transition);
+    cursor: pointer;
+}
+
+.upload-area:hover {
+    border-color: var(--accent-primary);
+    background: var(--accent-light);
+}
+
+.upload-area.dragover {
+    border-color: var(--accent-primary);
+    background: var(--accent-light);
+}
+
+.upload-area i {
+    font-size: 3rem;
+    color: var(--accent-primary);
+    margin-bottom: 1rem;
+}
+
+.upload-area p {
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+}
+
+.browse-link {
+    color: var(--accent-primary);
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.upload-area small {
+    color: var(--text-muted);
+}
+
+/* ===== PESTAÑA: MANTENIMIENTO ===== */
+
+.maintenance-section h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.maintenance-section > p {
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+}
+
+.maintenance-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.maintenance-stat {
+    background: var(--bg-main);
+    border: 1px solid var(--border-light);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: var(--transition);
+}
+
+.maintenance-stat:hover {
+    border-color: var(--accent-primary);
+    transform: translateY(-2px);
+}
+
+.maintenance-stat i {
+    width: 50px;
+    height: 50px;
+    background: var(--accent-light);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent-primary);
+    font-size: 1.25rem;
+    flex-shrink: 0;
+}
+
+.maintenance-stat h4 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+    line-height: 1;
+}
+
+.maintenance-stat span {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.maintenance-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.maintenance-item {
+    background: var(--bg-main);
+    border: 1px solid var(--border-light);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    transition: var(--transition);
+}
+
+.maintenance-item:hover {
+    border-color: var(--accent-primary);
+    transform: translateY(-2px);
+}
+
+.maintenance-item.upcoming {
+    background: var(--accent-light);
+    border-color: var(--accent-primary);
+}
+
+.maintenance-icon {
+    width: 50px;
+    height: 50px;
+    background: var(--bg-gray);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent-primary);
+    font-size: 1.25rem;
+    flex-shrink: 0;
+}
+
+.maintenance-details {
+    flex: 1;
+}
+
+.maintenance-details h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.maintenance-details p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+.maintenance-meta {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.maintenance-meta span {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+.maintenance-meta .cost {
+    color: var(--accent-primary);
+    font-weight: 500;
+}
+
+.maintenance-status {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.maintenance-status.completed {
+    background: #D1FAE5;
+    color: #065F46;
+}
+
+.maintenance-status.scheduled {
+    background: #FEF3C7;
+    color: #92400E;
+}
+
+/* ===== PESTAÑA: SEGUROS ===== */
+
+.insurance-section h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.insurance-section > p {
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+}
+
+.insurance-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 1.5rem;
+}
+
+.insurance-card {
+    background: var(--bg-main);
+    border: 1px solid var(--border-light);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    transition: var(--transition);
+    position: relative;
+}
+
+.insurance-card:hover {
+    border-color: var(--accent-primary);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+}
+
+.insurance-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.insurance-icon {
+    width: 50px;
+    height: 50px;
+    background: var(--accent-light);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent-primary);
+    font-size: 1.25rem;
+    flex-shrink: 0;
+}
+
+.insurance-info h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+}
+
+.policy-number {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+.insurance-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.insurance-details .detail {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.insurance-details .detail label {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.insurance-details .detail span {
+    color: var(--text-primary);
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.insurance-status {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.insurance-status.valid {
+    background: #D1FAE5;
+    color: #065F46;
+}
+
+.insurance-status.warning {
+    background: #FEF3C7;
+    color: #92400E;
+}
+
+.insurance-status.expired {
+    background: #FEE2E2;
+    color: #991B1B;
+}
+
+/* ===== MODAL ===== */
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    padding: 1rem;
+    backdrop-filter: blur(5px);
+}
+
+.modal-overlay.hidden {
+    display: none;
+}
+
+.modal-content {
+    background: var(--bg-main);
+    border-radius: var(--border-radius);
+    width: 100%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: var(--shadow-large);
+    animation: modalSlideIn 0.3s ease;
+}
+
+.modal-content.large {
+    max-width: 600px;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.modal-header h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 4px;
+    transition: var(--transition);
+}
+
+.modal-close:hover {
+    background: var(--bg-gray);
+    color: var(--text-primary);
+}
+
+/* Formulario de Vehículo */
+.vehicle-form {
+    padding: 1.5rem;
+}
+
+.form-section {
+    margin-bottom: 2rem;
+}
+
+.form-section h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.input-group label {
+    font-weight: 500;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+}
+
+.input-group input,
+.input-group select,
+.input-group textarea {
+    padding: 0.875rem 1rem;
+    border: 1px solid var(--border-light);
+    border-radius: var(--border-radius);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    transition: var(--transition);
+    background: var(--bg-main);
+}
+
+.input-group input:focus,
+.input-group select:focus,
+.input-group textarea:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 3px rgba(242, 140, 40, 0.1);
+}
+
+.input-group textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-light);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .vehicles-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .documents-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .insurance-cards {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .vehicle-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .header-actions {
+        justify-content: stretch;
+    }
+    
+    .vehicle-action-btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .vehicle-tabs {
+        flex-direction: column;
+    }
+    
+    .vehicle-tab {
+        justify-content: center;
+    }
+    
+    .fleet-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .maintenance-stats {
+        grid-template-columns: 1fr;
+    }
+    
+    .vehicle-details {
+        grid-template-columns: 1fr;
+    }
+    
+    .vehicle-specs {
+        grid-template-columns: 1fr;
+    }
+    
+    .vehicle-actions {
+        flex-direction: column;
+    }
+    
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .modal-actions {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 480px) {
+    .fleet-stats {
+        grid-template-columns: 1fr;
+    }
+    
+    .document-card {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .document-actions {
+        align-self: center;
+    }
+    
+    .maintenance-item {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .maintenance-meta {
+        justify-content: center;
+    }
+    
+    .modal-content {
+        margin: 1rem;
+        max-height: calc(100vh - 2rem);
+    }
+}
+
+/* Mejoras de accesibilidad */
+@media (prefers-reduced-motion: reduce) {
+    .vehicle-card,
+    .fleet-stat-card,
+    .document-card,
+    .maintenance-item,
+    .insurance-card,
+    .vehicle-action-btn,
+    .vehicle-tab {
+        transition: none;
+        animation: none;
+    }
+}
+
+/* Focus states */
+.vehicle-action-btn:focus,
+.vehicle-tab:focus,
+.document-action-btn:focus,
+.modal-close:focus,
+.input-group input:focus,
+.input-group select:focus,
+.input-group textarea:focus {
+    outline: 2px solid var(--accent-primary);
+    outline-offset: 2px;
+}

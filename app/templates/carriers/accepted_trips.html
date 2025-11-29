@@ -1,0 +1,552 @@
+{% extends "/carriers/base_carrier.html" %}
+
+{% block title %}Viajes Aceptados - ConnectCargo{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/accepted_trips.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="accepted-trips-container">
+    <!-- Header Section -->
+    <div class="page-header">
+        <div class="header-content">
+            <h1 class="page-title">
+                <i class="fas fa-check-circle"></i>
+                Viajes Aceptados
+            </h1>
+        </div>
+        <div class="header-stats">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-play-circle"></i>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-number">3</span>
+                    <span class="stat-label">Por Iniciar</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-truck-moving"></i>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-number">1</span>
+                    <span class="stat-label">En Curso</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-calendar-day"></i>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-number">2</span>
+                    <span class="stat-label">Hoy</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="quick-actions">
+        <div class="actions-grid">
+            <button class="action-card" onclick="acceptedTrips.showUpcomingTrips()">
+                <div class="action-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="action-content">
+                    <h4>Próximos Viajes</h4>
+                    <p>Revisa los viajes programados para los próximos días</p>
+                </div>
+            </button>
+            <button class="action-card" onclick="acceptedTrips.startNavigation()">
+                <div class="action-icon">
+                    <i class="fas fa-map-marked-alt"></i>
+                </div>
+                <div class="action-content">
+                    <h4>Navegación</h4>
+                    <p>Abre la ruta en tu aplicación de mapas preferida</p>
+                </div>
+            </button>
+            <button class="action-card" onclick="acceptedTrips.viewDocuments()">
+                <div class="action-icon">
+                    <i class="fas fa-file-contract"></i>
+                </div>
+                <div class="action-content">
+                    <h4>Documentos</h4>
+                    <p>Accede a contratos y documentos del viaje</p>
+                </div>
+            </button>
+            <button class="action-card" onclick="acceptedTrips.contactSupport()">
+                <div class="action-icon">
+                    <i class="fas fa-headset"></i>
+                </div>
+                <div class="action-content">
+                    <h4>Soporte 24/7</h4>
+                    <p>Contacta con nuestro equipo de soporte</p>
+                </div>
+            </button>
+        </div>
+    </div>
+
+    <!-- Active Trip Banner -->
+    <div class="active-trip-banner" id="activeTripBanner">
+        <div class="banner-content">
+            <div class="banner-icon">
+                <i class="fas fa-truck-moving"></i>
+            </div>
+            <div class="banner-info">
+                <h3>Viaje en Curso</h3>
+                <p>Tienes un viaje activo en este momento</p>
+            </div>
+            <div class="banner-actions">
+                <button class="btn btn-outline btn-sm" onclick="acceptedTrips.viewActiveTrip()">
+                    <i class="fas fa-eye"></i>
+                    Ver Detalles
+                </button>
+                <button class="btn btn-primary btn-sm" onclick="acceptedTrips.updateLocation()">
+                    <i class="fas fa-map-marker-alt"></i>
+                    Actualizar Ubicación
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Trips Tabs -->
+    <div class="trips-tabs">
+        <div class="tabs-header">
+            <button class="tab-btn active" data-tab="today">Hoy</button>
+            <button class="tab-btn" data-tab="upcoming">Próximos</button>
+            <button class="tab-btn" data-tab="completed">Finalizados</button>
+        </div>
+
+        <div class="tabs-content">
+            <!-- Today Tab -->
+            <div class="tab-pane active" id="today-tab">
+                <div class="trips-list">
+                    <!-- Trip Card 1 - Ready to Start -->
+                    <div class="trip-card status-ready">
+                        <div class="trip-header">
+                            <div class="trip-badge ready">
+                                <i class="fas fa-check-circle"></i>
+                                Listo para Iniciar
+                            </div>
+                            <div class="trip-meta">
+                                <span class="trip-id">#VC-7842</span>
+                                <span class="trip-priority high">
+                                    <i class="fas fa-exclamation-circle"></i>
+                                    Alta Prioridad
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="trip-content">
+                            <div class="route-info">
+                                <div class="route-point origin">
+                                    <div class="point-marker">
+                                        <i class="fas fa-play-circle"></i>
+                                    </div>
+                                    <div class="point-details">
+                                        <h4>Origen</h4>
+                                        <p>Bodega Central, Calle 100 #15-20, Bogotá</p>
+                                        <div class="time-info">
+                                            <i class="fas fa-clock"></i>
+                                            <span>Recoger: Hoy 2:00 PM</span>
+                                            <span class="time-remaining">(en 2 horas)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="route-line">
+                                    <div class="route-duration">
+                                        <i class="fas fa-clock"></i>
+                                        4h 30m
+                                    </div>
+                                    <div class="route-distance">280 km</div>
+                                </div>
+                                <div class="route-point destination">
+                                    <div class="point-marker">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                    </div>
+                                    <div class="point-details">
+                                        <h4>Destino</h4>
+                                        <p>Centro Logístico, Carrera 50 #82-100, Medellín</p>
+                                        <div class="time-info">
+                                            <i class="fas fa-clock"></i>
+                                            <span>Entregar: Hoy 6:30 PM</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="trip-details-grid">
+                                <div class="detail-column">
+                                    <div class="detail-item">
+                                        <i class="fas fa-box"></i>
+                                        <div class="detail-content">
+                                            <span class="detail-label">Tipo de carga</span>
+                                            <span class="detail-value">Electrónicos</span>
+                                        </div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <i class="fas fa-weight-hanging"></i>
+                                        <div class="detail-content">
+                                            <span class="detail-label">Peso / Volumen</span>
+                                            <span class="detail-value">1,200 kg / 18m³</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="detail-column">
+                                    <div class="detail-item">
+                                        <i class="fas fa-dollar-sign"></i>
+                                        <div class="detail-content">
+                                            <span class="detail-label">Valor del viaje</span>
+                                            <span class="detail-value price">$1,250,000</span>
+                                        </div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <i class="fas fa-receipt"></i>
+                                        <div class="detail-content">
+                                            <span class="detail-label">Anticipo recibido</span>
+                                            <span class="detail-value">$375,000</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="client-info">
+                                <div class="client-avatar">
+                                    <i class="fas fa-building"></i>
+                                </div>
+                                <div class="client-details">
+                                    <h5>TechImport S.A.S.</h5>
+                                    <div class="contact-info">
+                                        <span class="contact-item">
+                                            <i class="fas fa-phone"></i>
+                                            +57 321 456 7890
+                                        </span>
+                                        <span class="contact-item">
+                                            <i class="fas fa-user"></i>
+                                            Carlos Rodríguez
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="checklist">
+                                <h5>Checklist Pre-Viaje</h5>
+                                <div class="checklist-items">
+                                    <label class="checklist-item">
+                                        <input type="checkbox" onchange="acceptedTrips.updateChecklist(this)">
+                                        <span class="checkmark"></span>
+                                        Verificar documentación del vehículo
+                                    </label>
+                                    <label class="checklist-item">
+                                        <input type="checkbox" onchange="acceptedTrips.updateChecklist(this)">
+                                        <span class="checkmark"></span>
+                                        Revisar estado del combustible
+                                    </label>
+                                    <label class="checklist-item">
+                                        <input type="checkbox" onchange="acceptedTrips.updateChecklist(this)">
+                                        <span class="checkmark"></span>
+                                        Confirmar ruta con el cliente
+                                    </label>
+                                    <label class="checklist-item">
+                                        <input type="checkbox" onchange="acceptedTrips.updateChecklist(this)">
+                                        <span class="checkmark"></span>
+                                        Preparar equipo de carga/descarga
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="trip-actions">
+                            <button class="btn btn-success" onclick="acceptedTrips.startTrip(this)">
+                                <i class="fas fa-play-circle"></i>
+                                Iniciar Viaje
+                            </button>
+                            <button class="btn btn-outline" onclick="acceptedTrips.viewRoute(this)">
+                                <i class="fas fa-route"></i>
+                                Ver Ruta
+                            </button>
+                            <button class="btn btn-outline" onclick="acceptedTrips.contactClient(this)">
+                                <i class="fas fa-phone"></i>
+                                Contactar Cliente
+                            </button>
+                            <button class="btn btn-outline" onclick="acceptedTrips.viewDocuments(this)">
+                                <i class="fas fa-file-contract"></i>
+                                Documentos
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Trip Card 2 - In Progress -->
+                    <div class="trip-card status-active">
+                        <div class="trip-header">
+                            <div class="trip-badge active">
+                                <i class="fas fa-truck-moving"></i>
+                                En Curso
+                            </div>
+                            <div class="trip-meta">
+                                <span class="trip-id">#VC-7833</span>
+                                <span class="trip-progress">
+                                    <i class="fas fa-sync-alt"></i>
+                                    45% Completado
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="trip-content">
+                            <div class="route-info">
+                                <div class="route-point origin">
+                                    <div class="point-marker">
+                                        <i class="fas fa-play-circle"></i>
+                                    </div>
+                                    <div class="point-details">
+                                        <h4>Origen</h4>
+                                        <p>Planta Química, Zona Franca, Cartagena</p>
+                                        <div class="time-info completed">
+                                            <i class="fas fa-check-circle"></i>
+                                            <span>Recogido: Hoy 9:30 AM</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="route-line">
+                                    <div class="route-progress">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: 45%"></div>
+                                        </div>
+                                        <div class="progress-text">45% completado</div>
+                                    </div>
+                                    <div class="route-stats">
+                                        <div class="stat">
+                                            <i class="fas fa-road"></i>
+                                            <span>306 km recorridos</span>
+                                        </div>
+                                        <div class="stat">
+                                            <i class="fas fa-clock"></i>
+                                            <span>4h 45m restantes</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="route-point destination">
+                                    <div class="point-marker">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                    </div>
+                                    <div class="point-details">
+                                        <h4>Destino</h4>
+                                        <p>Refinería, Yumbo - Valle</p>
+                                        <div class="time-info">
+                                            <i class="fas fa-clock"></i>
+                                            <span>ETA: Hoy 7:15 PM</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="current-location">
+                                <div class="location-header">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <h5>Ubicación Actual</h5>
+                                </div>
+                                <p>Vía Cartagena - Sincelejo, KM 85, Sucre</p>
+                                <div class="location-actions">
+                                    <button class="btn btn-outline btn-sm" onclick="acceptedTrips.updateLocation()">
+                                        <i class="fas fa-sync-alt"></i>
+                                        Actualizar Ubicación
+                                    </button>
+                                    <button class="btn btn-outline btn-sm" onclick="acceptedTrips.shareLocation()">
+                                        <i class="fas fa-share"></i>
+                                        Compartir Ubicación
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="trip-details-grid">
+                                <div class="detail-column">
+                                    <div class="detail-item">
+                                        <i class="fas fa-radiation"></i>
+                                        <div class="detail-content">
+                                            <span class="detail-label">Tipo de carga</span>
+                                            <span class="detail-value">Productos químicos</span>
+                                        </div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <i class="fas fa-weight-hanging"></i>
+                                        <div class="detail-content">
+                                            <span class="detail-label">Peso</span>
+                                            <span class="detail-value">15,000 kg</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="detail-column">
+                                    <div class="detail-item">
+                                        <i class="fas fa-dollar-sign"></i>
+                                        <div class="detail-content">
+                                            <span class="detail-label">Valor del viaje</span>
+                                            <span class="detail-value price">$2,100,000</span>
+                                        </div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <i class="fas fa-tachometer-alt"></i>
+                                        <div class="detail-content">
+                                            <span class="detail-label">Velocidad promedio</span>
+                                            <span class="detail-value">68 km/h</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="trip-actions">
+                            <button class="btn btn-warning" onclick="acceptedTrips.pauseTrip(this)">
+                                <i class="fas fa-pause-circle"></i>
+                                Pausar Viaje
+                            </button>
+                            <button class="btn btn-outline" onclick="acceptedTrips.reportIssue(this)">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                Reportar Problema
+                            </button>
+                            <button class="btn btn-outline" onclick="acceptedTrips.contactSupport(this)">
+                                <i class="fas fa-headset"></i>
+                                Soporte
+                            </button>
+                            <button class="btn btn-success" onclick="acceptedTrips.completeTrip(this)">
+                                <i class="fas fa-flag-checkered"></i>
+                                Finalizar Viaje
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Upcoming Tab -->
+            <div class="tab-pane" id="upcoming-tab">
+                <div class="trips-list">
+                    <!-- Upcoming Trip Card -->
+                    <div class="trip-card status-upcoming">
+                        <div class="trip-header">
+                            <div class="trip-badge upcoming">
+                                <i class="fas fa-calendar-check"></i>
+                                Programado
+                            </div>
+                            <div class="trip-meta">
+                                <span class="trip-id">#VC-7851</span>
+                                <span class="trip-date">Lun 18 Nov - 8:00 AM</span>
+                            </div>
+                        </div>
+
+                        <div class="trip-content">
+                            <div class="route-info compact">
+                                <div class="route-point origin">
+                                    <div class="point-marker">
+                                        <i class="fas fa-play-circle"></i>
+                                    </div>
+                                    <div class="point-details">
+                                        <h4>Bogotá → Cali</h4>
+                                        <p>Centro Logístico Norte - Bodegas Pacifico</p>
+                                    </div>
+                                </div>
+                                <div class="route-line">
+                                    <div class="route-duration">
+                                        <i class="fas fa-clock"></i>
+                                        8h 0m
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="trip-details-grid">
+                                <div class="detail-column">
+                                    <div class="detail-item">
+                                        <i class="fas fa-box"></i>
+                                        <div class="detail-content">
+                                            <span class="detail-label">Carga</span>
+                                            <span class="detail-value">Textiles</span>
+                                        </div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <i class="fas fa-weight-hanging"></i>
+                                        <div class="detail-content">
+                                            <span class="detail-label">Peso</span>
+                                            <span class="detail-value">5,000 kg</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="detail-column">
+                                    <div class="detail-item">
+                                        <i class="fas fa-dollar-sign"></i>
+                                        <div class="detail-content">
+                                            <span class="detail-label">Valor</span>
+                                            <span class="detail-value price">$1,800,000</span>
+                                        </div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <i class="fas fa-building"></i>
+                                        <div class="detail-content">
+                                            <span class="detail-label">Cliente</span>
+                                            <span class="detail-value">ModaExport S.A.</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="preparation-notes">
+                                <h5>Notas de Preparación</h5>
+                                <p>• Llegar 30 minutos antes para proceso de carga<br>
+                                   • Traer equipo de amarre adicional<br>
+                                   • Confirmar con supervisor de planta</p>
+                            </div>
+                        </div>
+
+                        <div class="trip-actions">
+                            <button class="btn btn-outline" onclick="acceptedTrips.viewDetails(this)">
+                                <i class="fas fa-eye"></i>
+                                Ver Detalles
+                            </button>
+                            <button class="btn btn-outline" onclick="acceptedTrips.addToCalendar(this)">
+                                <i class="fas fa-calendar-plus"></i>
+                                Agendar
+                            </button>
+                            <button class="btn btn-outline" onclick="acceptedTrips.contactClient(this)">
+                                <i class="fas fa-phone"></i>
+                                Contactar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Completed Tab -->
+            <div class="tab-pane" id="completed-tab">
+                <div class="empty-state">
+                    <div class="empty-icon">
+                        <i class="fas fa-flag-checkered"></i>
+                    </div>
+                    <h3>No hay viajes finalizados recientemente</h3>
+                    <p>Los viajes que completes aparecerán en esta sección</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions Modal -->
+    <div class="modal" id="actionsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Acción del Viaje</h3>
+                <button class="modal-close" onclick="acceptedTrips.closeModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="modalContent">
+                    <!-- Content will be loaded dynamically -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/accepted_trips.js') }}"></script>
+{% endblock %}

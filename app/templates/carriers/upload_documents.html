@@ -1,0 +1,425 @@
+{% extends "/carriers/base_carrier.html" %}
+
+{% block title %}Subir Documentos - ConnectCargo{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/upload_documents.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="upload-documents-container">
+    <!-- Header Section -->
+    <div class="page-header">
+        <div class="header-content">
+            <h1 class="page-title">
+                <i class="fas fa-cloud-upload-alt"></i>
+                Subir Documentos
+            </h1>
+            <p class="page-subtitle">
+                Completa tu perfil subiendo los documentos requeridos para tu verificación
+            </p>
+        </div>
+        <div class="upload-progress">
+            <div class="progress-info">
+                <span class="progress-text">Progreso de documentación</span>
+                <span class="progress-percentage">60%</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 60%"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Upload Sections -->
+    <div class="upload-sections">
+        <!-- Required Documents -->
+        <div class="upload-section">
+            <div class="section-header">
+                <h2>
+                    <i class="fas fa-exclamation-circle"></i>
+                    Documentos Requeridos
+                </h2>
+                <p class="section-subtitle">
+                    Documentos obligatorios para operar en la plataforma
+                </p>
+            </div>
+
+            <div class="documents-grid">
+                <!-- Documento de Identidad -->
+                <div class="document-card required">
+                    <div class="document-header">
+                        <div class="document-icon">
+                            <i class="fas fa-id-card"></i>
+                        </div>
+                        <div class="document-info">
+                            <h3>Documento de Identidad</h3>
+                            <p class="document-description">
+                                Cédula de ciudadanía, extranjería o pasaporte vigente
+                            </p>
+                            <div class="document-requirements">
+                                <span class="requirement-tag">PDF, JPG, PNG</span>
+                                <span class="requirement-tag">Máx. 10MB</span>
+                                <span class="requirement-tag">Ambas caras</span>
+                            </div>
+                        </div>
+                        <div class="document-status">
+                            <span class="status-badge approved">Aprobado</span>
+                        </div>
+                    </div>
+                    <div class="document-preview">
+                        <div class="preview-item">
+                            <i class="fas fa-file-pdf"></i>
+                            <div class="file-info">
+                                <span class="file-name">cedula_frontal.pdf</span>
+                                <span class="file-size">2.1 MB</span>
+                            </div>
+                            <div class="file-actions">
+                                <button class="btn-icon" title="Ver documento">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn-icon" title="Eliminar">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="document-actions">
+                        <button class="btn btn-outline btn-sm">
+                            <i class="fas fa-sync-alt"></i>
+                            Actualizar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Licencia de Conducir -->
+                <div class="document-card required">
+                    <div class="document-header">
+                        <div class="document-icon">
+                            <i class="fas fa-id-card-alt"></i>
+                        </div>
+                        <div class="document-info">
+                            <h3>Licencia de Conducir</h3>
+                            <p class="document-description">
+                                Licencia de conducir vigente con categoría apropiada
+                            </p>
+                            <div class="document-requirements">
+                                <span class="requirement-tag">PDF, JPG, PNG</span>
+                                <span class="requirement-tag">Máx. 10MB</span>
+                                <span class="requirement-tag">Ambas caras</span>
+                            </div>
+                        </div>
+                        <div class="document-status">
+                            <span class="status-badge approved">Aprobado</span>
+                        </div>
+                    </div>
+                    <div class="document-preview">
+                        <div class="preview-item">
+                            <i class="fas fa-file-pdf"></i>
+                            <div class="file-info">
+                                <span class="file-name">licencia_conducir.pdf</span>
+                                <span class="file-size">1.8 MB</span>
+                            </div>
+                            <div class="file-actions">
+                                <button class="btn-icon" title="Ver documento">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn-icon" title="Eliminar">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="document-actions">
+                        <button class="btn btn-outline btn-sm">
+                            <i class="fas fa-sync-alt"></i>
+                            Actualizar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Seguro Vehicular -->
+                <div class="document-card required">
+                    <div class="document-header">
+                        <div class="document-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div class="document-info">
+                            <h3>Seguro Vehicular</h3>
+                            <p class="document-description">
+                                Póliza de seguro vehicular vigente con cobertura completa
+                            </p>
+                            <div class="document-requirements">
+                                <span class="requirement-tag">PDF</span>
+                                <span class="requirement-tag">Máx. 10MB</span>
+                                <span class="requirement-tag">Vigente</span>
+                            </div>
+                        </div>
+                        <div class="document-status">
+                            <span class="status-badge under-review">En Revisión</span>
+                        </div>
+                    </div>
+                    <div class="document-preview">
+                        <div class="preview-item">
+                            <i class="fas fa-file-pdf"></i>
+                            <div class="file-info">
+                                <span class="file-name">seguro_vehicular.pdf</span>
+                                <span class="file-size">3.2 MB</span>
+                            </div>
+                            <div class="file-actions">
+                                <button class="btn-icon" title="Ver documento">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn-icon" title="Eliminar">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="document-actions">
+                        <button class="btn btn-outline btn-sm">
+                            <i class="fas fa-sync-alt"></i>
+                            Reemplazar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- SOAT -->
+                <div class="document-card required">
+                    <div class="document-header">
+                        <div class="document-icon">
+                            <i class="fas fa-file-medical"></i>
+                        </div>
+                        <div class="document-info">
+                            <h3>SOAT</h3>
+                            <p class="document-description">
+                                Seguro Obligatorio de Accidentes de Tránsito vigente
+                            </p>
+                            <div class="document-requirements">
+                                <span class="requirement-tag">PDF, JPG</span>
+                                <span class="requirement-tag">Máx. 5MB</span>
+                                <span class="requirement-tag">Vigente</span>
+                            </div>
+                        </div>
+                        <div class="document-status">
+                            <span class="status-badge missing">Falta</span>
+                        </div>
+                    </div>
+                    <div class="upload-area" data-document-type="soat">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Arrastra tu archivo aquí o haz clic para seleccionar</p>
+                        <span>Formatos: PDF, JPG (Máx. 5MB)</span>
+                        <input type="file" accept=".pdf,.jpg,.jpeg" hidden>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Additional Documents -->
+        <div class="upload-section">
+            <div class="section-header">
+                <h2>
+                    <i class="fas fa-plus-circle"></i>
+                    Documentos Adicionales
+                </h2>
+                <p class="section-subtitle">
+                    Documentos opcionales que mejoran tu perfil y oportunidades
+                </p>
+            </div>
+
+            <div class="documents-grid">
+                <!-- Revisión Tecnomecánica -->
+                <div class="document-card optional">
+                    <div class="document-header">
+                        <div class="document-icon">
+                            <i class="fas fa-tachometer-alt"></i>
+                        </div>
+                        <div class="document-info">
+                            <h3>Revisión Tecnomecánica</h3>
+                            <p class="document-description">
+                                Certificado de revisión tecnomecánica vigente del vehículo
+                            </p>
+                            <div class="document-requirements">
+                                <span class="requirement-tag">PDF, JPG</span>
+                                <span class="requirement-tag">Máx. 5MB</span>
+                                <span class="requirement-tag">Vigente</span>
+                            </div>
+                        </div>
+                        <div class="document-status">
+                            <span class="status-badge missing">Opcional</span>
+                        </div>
+                    </div>
+                    <div class="upload-area" data-document-type="tecnomecanica">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Arrastra tu archivo aquí o haz clic para seleccionar</p>
+                        <span>Formatos: PDF, JPG (Máx. 5MB)</span>
+                        <input type="file" accept=".pdf,.jpg,.jpeg" hidden>
+                    </div>
+                </div>
+
+                <!-- Tarjeta de Operación -->
+                <div class="document-card optional">
+                    <div class="document-header">
+                        <div class="document-icon">
+                            <i class="fas fa-gas-pump"></i>
+                        </div>
+                        <div class="document-info">
+                            <h3>Tarjeta de Operación</h3>
+                            <p class="document-description">
+                                Tarjeta de operación vigente para transporte de carga
+                            </p>
+                            <div class="document-requirements">
+                                <span class="requirement-tag">PDF, JPG</span>
+                                <span class="requirement-tag">Máx. 5MB</span>
+                                <span class="requirement-tag">Vigente</span>
+                            </div>
+                        </div>
+                        <div class="document-status">
+                            <span class="status-badge missing">Opcional</span>
+                        </div>
+                    </div>
+                    <div class="upload-area" data-document-type="tarjeta-operacion">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Arrastra tu archivo aquí o haz clic para seleccionar</p>
+                        <span>Formatos: PDF, JPG (Máx. 5MB)</span>
+                        <input type="file" accept=".pdf,.jpg,.jpeg" hidden>
+                    </div>
+                </div>
+
+                <!-- Certificado de Antecedentes -->
+                <div class="document-card optional">
+                    <div class="document-header">
+                        <div class="document-icon">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                        <div class="document-info">
+                            <h3>Certificado de Antecedentes</h3>
+                            <p class="document-description">
+                                Certificado de antecedentes penales y judiciales
+                            </p>
+                            <div class="document-requirements">
+                                <span class="requirement-tag">PDF</span>
+                                <span class="requirement-tag">Máx. 5MB</span>
+                                <span class="requirement-tag">Reciente</span>
+                            </div>
+                        </div>
+                        <div class="document-status">
+                            <span class="status-badge missing">Opcional</span>
+                        </div>
+                    </div>
+                    <div class="upload-area" data-document-type="antecedentes">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Arrastra tu archivo aquí o haz clic para seleccionar</p>
+                        <span>Formatos: PDF (Máx. 5MB)</span>
+                        <input type="file" accept=".pdf" hidden>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bulk Upload Section -->
+    <div class="bulk-upload-section">
+        <div class="bulk-upload-card">
+            <div class="bulk-content">
+                <div class="bulk-icon">
+                    <i class="fas fa-folder-open"></i>
+                </div>
+                <div class="bulk-info">
+                    <h3>Subida Masiva de Documentos</h3>
+                    <p>Sube múltiples documentos a la vez para agilizar tu proceso de verificación</p>
+                </div>
+                <button class="btn btn-primary" id="bulkUploadBtn">
+                    <i class="fas fa-upload"></i>
+                    Subir Múltiples Archivos
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Upload Tips -->
+    <div class="tips-section">
+        <h3 class="tips-title">
+            <i class="fas fa-lightbulb"></i>
+            Consejos para una subida exitosa
+        </h3>
+        <div class="tips-grid">
+            <div class="tip-card">
+                <i class="fas fa-camera"></i>
+                <h4>Calidad de Imágenes</h4>
+                <p>Asegúrate de que las fotos sean nítidas y todos los datos sean legibles</p>
+            </div>
+            <div class="tip-card">
+                <i class="fas fa-file-pdf"></i>
+                <h4>Formatos Aceptados</h4>
+                <p>Utiliza PDF para documentos múltiples y JPG/PNG para imágenes individuales</p>
+            </div>
+            <div class="tip-card">
+                <i class="fas fa-calendar-check"></i>
+                <h4>Vigencia</h4>
+                <p>Verifica que todos los documentos estén vigentes antes de subirlos</p>
+            </div>
+            <div class="tip-card">
+                <i class="fas fa-shield-alt"></i>
+                <h4>Seguridad</h4>
+                <p>Tus documentos están protegidos con encriptación de grado bancario</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Upload Modal -->
+<div class="modal" id="uploadModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Subir Documento</h3>
+            <button class="modal-close" id="modalClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form id="uploadForm" class="upload-form">
+                <div class="form-group">
+                    <label for="documentType">Tipo de Documento</label>
+                    <select id="documentType" class="form-select" required>
+                        <option value="">Seleccionar tipo de documento...</option>
+                        <option value="soat">SOAT</option>
+                        <option value="tecnomecanica">Revisión Tecnomecánica</option>
+                        <option value="tarjeta-operacion">Tarjeta de Operación</option>
+                        <option value="antecedentes">Certificado de Antecedentes</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="documentFile">Archivo</label>
+                    <div class="file-upload-area" id="fileUploadArea">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Arrastra tu archivo aquí o haz clic para seleccionar</p>
+                        <span>Formatos: PDF, JPG, PNG (Máx. 10MB)</span>
+                        <input type="file" id="documentFile" accept=".pdf,.jpg,.jpeg,.png" hidden>
+                    </div>
+                    <div class="file-preview" id="filePreview"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="expiryDate">Fecha de Vencimiento</label>
+                    <input type="date" id="expiryDate" class="form-input" required>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-outline" id="cancelUpload">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-upload"></i>
+                        Subir Documento
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/upload_documents.js') }}"></script>
+{% endblock %}

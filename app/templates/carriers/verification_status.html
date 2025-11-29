@@ -1,0 +1,353 @@
+{% extends "/carriers/base_carrier.html" %}
+
+{% block title %}Estado de Verificación - ConnectCargo{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/verification_status.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="verification-container">
+    <!-- Header Section -->
+    <div class="page-header">
+        <div class="header-content">
+            <h1 class="page-title">
+                <i class="fas fa-user-check"></i>
+                Estado de Verificación
+            </h1>
+            <p class="page-subtitle">
+                Revisa el progreso de tu verificación y accede a beneficios exclusivos
+            </p>
+        </div>
+        <div class="header-badge">
+            <div class="verification-badge level-basic">
+                <i class="fas fa-shield-alt"></i>
+                <span>Básico</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Progress Overview -->
+    <div class="progress-overview">
+        <div class="progress-card">
+            <div class="progress-header">
+                <h3>Progreso de Verificación</h3>
+                <div class="progress-percentage">65%</div>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 65%"></div>
+            </div>
+            <p class="progress-text">Completa todos los pasos para obtener la verificación premium</p>
+        </div>
+
+        <div class="benefits-preview">
+            <h4>Beneficios Desbloqueados</h4>
+            <div class="benefits-list">
+                <div class="benefit-item unlocked">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Acceso a cargas básicas</span>
+                </div>
+                <div class="benefit-item unlocked">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Perfil visible para empresas</span>
+                </div>
+                <div class="benefit-item locked">
+                    <i class="fas fa-lock"></i>
+                    <span>Cargas premium prioritarias</span>
+                </div>
+                <div class="benefit-item locked">
+                    <i class="fas fa-lock"></i>
+                    <span>Tarifas preferenciales</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Verification Steps -->
+    <div class="verification-steps">
+        <h2 class="section-title">Pasos de Verificación</h2>
+        
+        <div class="steps-timeline">
+            <!-- Step 1: Basic Info -->
+            <div class="step-item completed">
+                <div class="step-marker">
+                    <i class="fas fa-check"></i>
+                </div>
+                <div class="step-content">
+                    <div class="step-header">
+                        <h3>Información Básica</h3>
+                        <span class="step-status completed">Completado</span>
+                    </div>
+                    <p class="step-description">
+                        Verificación de datos personales y información de contacto
+                    </p>
+                    <div class="step-details">
+                        <div class="detail-item verified">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Email verificado</span>
+                        </div>
+                        <div class="detail-item verified">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Teléfono confirmado</span>
+                        </div>
+                        <div class="detail-item verified">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Perfil completo al 100%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2: Identity Verification -->
+            <div class="step-item completed">
+                <div class="step-marker">
+                    <i class="fas fa-check"></i>
+                </div>
+                <div class="step-content">
+                    <div class="step-header">
+                        <h3>Verificación de Identidad</h3>
+                        <span class="step-status completed">Completado</span>
+                    </div>
+                    <p class="step-description">
+                        Validación de documentos de identidad y licencia de conducir
+                    </p>
+                    <div class="step-details">
+                        <div class="detail-item verified">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Documento de identidad</span>
+                        </div>
+                        <div class="detail-item verified">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Licencia de conducir</span>
+                        </div>
+                        <div class="detail-item pending">
+                            <i class="fas fa-clock"></i>
+                            <span>Selfie de verificación</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-outline btn-sm">
+                        <i class="fas fa-camera"></i>
+                        Subir Selfie
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 3: Vehicle & Insurance -->
+            <div class="step-item in-progress">
+                <div class="step-marker">
+                    <i class="fas fa-spinner"></i>
+                </div>
+                <div class="step-content">
+                    <div class="step-header">
+                        <h3>Vehículo y Seguros</h3>
+                        <span class="step-status in-progress">En Revisión</span>
+                    </div>
+                    <p class="step-description">
+                        Documentación del vehículo y pólizas de seguro vigentes
+                    </p>
+                    <div class="step-details">
+                        <div class="detail-item verified">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Información del vehículo</span>
+                        </div>
+                        <div class="detail-item under-review">
+                            <i class="fas fa-search"></i>
+                            <span>Seguro vehicular</span>
+                        </div>
+                        <div class="detail-item missing">
+                            <i class="fas fa-times-circle"></i>
+                            <span>SOAT vigente</span>
+                        </div>
+                        <div class="detail-item missing">
+                            <i class="fas fa-times-circle"></i>
+                            <span>Revisión tecnomecánica</span>
+                        </div>
+                    </div>
+                    <div class="step-actions">
+                        <button class="btn btn-primary btn-sm">
+                            <i class="fas fa-upload"></i>
+                            Subir Documentos
+                        </button>
+                        <button class="btn btn-outline btn-sm">
+                            <i class="fas fa-eye"></i>
+                            Ver Detalles
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 4: Background Check -->
+            <div class="step-item pending">
+                <div class="step-marker">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="step-content">
+                    <div class="step-header">
+                        <h3>Verificación de Antecedentes</h3>
+                        <span class="step-status pending">Pendiente</span>
+                    </div>
+                    <p class="step-description">
+                        Revisión de antecedentes penales y laborales
+                    </p>
+                    <div class="step-details">
+                        <div class="detail-item locked">
+                            <i class="fas fa-lock"></i>
+                            <span>Antecedentes penales</span>
+                        </div>
+                        <div class="detail-item locked">
+                            <i class="fas fa-lock"></i>
+                            <span>Historial laboral</span>
+                        </div>
+                        <div class="detail-item locked">
+                            <i class="fas fa-lock"></i>
+                            <span>Referencias comerciales</span>
+                        </div>
+                    </div>
+                    <p class="step-note">
+                        <i class="fas fa-info-circle"></i>
+                        Disponible después de completar los pasos anteriores
+                    </p>
+                </div>
+            </div>
+
+            <!-- Step 5: Premium Verification -->
+            <div class="step-item locked">
+                <div class="step-marker">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <div class="step-content">
+                    <div class="step-header">
+                        <h3>Verificación Premium</h3>
+                        <span class="step-status locked">Bloqueado</span>
+                    </div>
+                    <p class="step-description">
+                        Acceso a cargas de alto valor y clientes corporativos
+                    </p>
+                    <div class="premium-benefits">
+                        <div class="benefit-card">
+                            <i class="fas fa-star"></i>
+                            <h4>Tarifas Premium</h4>
+                            <p>Hasta 30% mejor remuneración</p>
+                        </div>
+                        <div class="benefit-card">
+                            <i class="fas fa-briefcase"></i>
+                            <h4>Clientes Corporativos</h4>
+                            <p>Acceso a empresas Fortune 500</p>
+                        </div>
+                        <div class="benefit-card">
+                            <i class="fas fa-headset"></i>
+                            <h4>Soporte Prioritario</h4>
+                            <p>Atención 24/7 dedicada</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Document Status -->
+    <div class="document-status-section">
+        <h2 class="section-title">Estado de Documentos</h2>
+        
+        <div class="documents-grid">
+            <div class="document-status-card">
+                <div class="document-icon">
+                    <i class="fas fa-id-card"></i>
+                </div>
+                <div class="document-info">
+                    <h4>Documento de Identidad</h4>
+                    <p class="document-type">Cédula de Ciudadanía</p>
+                    <span class="status-badge approved">Aprobado</span>
+                </div>
+                <div class="document-actions">
+                    <button class="btn-icon" title="Ver documento">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                    <button class="btn-icon" title="Descargar">
+                        <i class="fas fa-download"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="document-status-card">
+                <div class="document-icon">
+                    <i class="fas fa-id-card-alt"></i>
+                </div>
+                <div class="document-info">
+                    <h4>Licencia de Conducir</h4>
+                    <p class="document-type">Categoría C1</p>
+                    <span class="status-badge approved">Aprobado</span>
+                </div>
+                <div class="document-actions">
+                    <button class="btn-icon" title="Ver documento">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                    <button class="btn-icon" title="Descargar">
+                        <i class="fas fa-download"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="document-status-card">
+                <div class="document-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <div class="document-info">
+                    <h4>Seguro Vehicular</h4>
+                    <p class="document-type">Póliza Integral</p>
+                    <span class="status-badge under-review">En Revisión</span>
+                </div>
+                <div class="document-actions">
+                    <button class="btn-icon" title="Ver detalles">
+                        <i class="fas fa-info-circle"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="document-status-card">
+                <div class="document-icon">
+                    <i class="fas fa-file-medical"></i>
+                </div>
+                <div class="document-info">
+                    <h4>SOAT</h4>
+                    <p class="document-type">Seguro Obligatorio</p>
+                    <span class="status-badge rejected">Rechazado</span>
+                </div>
+                <div class="document-actions">
+                    <button class="btn btn-sm btn-primary">
+                        <i class="fas fa-upload"></i>
+                        Corregir
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Support Section -->
+    <div class="support-section">
+        <div class="support-card">
+            <div class="support-content">
+                <h3>¿Necesitas ayuda con tu verificación?</h3>
+                <p>Nuestro equipo de soporte está disponible para ayudarte con cualquier duda sobre el proceso de verificación.</p>
+                <div class="support-actions">
+                    <button class="btn btn-primary" id="contactSupport">
+                        <i class="fas fa-headset"></i>
+                        Contactar Soporte
+                    </button>
+                    <button class="btn btn-outline" id="showFAQ">
+                        <i class="fas fa-question-circle"></i>
+                        Preguntas Frecuentes
+                    </button>
+                </div>
+            </div>
+            <div class="support-visual">
+                <i class="fas fa-comments"></i>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/verification_status.js') }}"></script>
+{% endblock %}

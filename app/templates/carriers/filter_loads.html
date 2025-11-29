@@ -1,0 +1,603 @@
+{% extends "/carriers/base_carrier.html" %}
+
+{% block title %}Filtrar Cargas - ConnectCargo{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/carrier_filter_loads.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="carrier-filter-loads-container">
+    <!-- Header -->
+    <div class="carrier-filter-header">
+        <div class="carrier-filter-header-content">
+            <div class="carrier-filter-header-text">
+                <h1>Filtrar Cargas</h1>
+                <p>Encuentra las cargas perfectas usando filtros avanzados</p>
+            </div>
+            <div class="carrier-filter-header-actions">
+                <button class="carrier-btn carrier-btn-outline" id="carrierResetAllFilters">
+                    <i class="fas fa-undo"></i>
+                    Limpiar Filtros
+                </button>
+                <button class="carrier-btn carrier-btn-primary" id="carrierSaveFilterPreset">
+                    <i class="fas fa-save"></i>
+                    Guardar Preset
+                </button>
+            </div>
+        </div>
+
+        <!-- Active Filters -->
+        <div class="carrier-active-filters" id="carrierActiveFilters">
+            <div class="carrier-active-filters-header">
+                <span>Filtros Activos</span>
+                <span class="carrier-active-count" id="carrierActiveCount">0</span>
+            </div>
+            <div class="carrier-active-tags" id="carrierActiveTags">
+                <!-- Active filter tags will be added here dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <div class="carrier-filter-content">
+        <!-- Filters Sidebar -->
+        <div class="carrier-filters-main">
+            <!-- Ruta y Ubicación -->
+            <div class="carrier-filter-section">
+                <div class="carrier-filter-section-header">
+                    <h3>
+                        <i class="fas fa-route"></i>
+                        Ruta y Ubicación
+                    </h3>
+                    <button class="carrier-section-toggle">
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+                <div class="carrier-filter-section-content">
+                    <div class="carrier-filter-grid">
+                        <div class="carrier-filter-group">
+                            <label for="carrierOriginRegion">Región de Origen</label>
+                            <select id="carrierOriginRegion">
+                                <option value="">Todas las regiones</option>
+                                <option value="andina">Región Andina</option>
+                                <option value="caribe">Región Caribe</option>
+                                <option value="pacifica">Región Pacífica</option>
+                                <option value="orinoquia">Orinoquía</option>
+                                <option value="amazonia">Amazonía</option>
+                            </select>
+                        </div>
+                        <div class="carrier-filter-group">
+                            <label for="carrierOriginCity">Ciudad de Origen</label>
+                            <input type="text" id="carrierOriginCity" placeholder="Ej: Bogotá, Medellín...">
+                        </div>
+                        <div class="carrier-filter-group">
+                            <label for="carrierDestinationRegion">Región de Destino</label>
+                            <select id="carrierDestinationRegion">
+                                <option value="">Todas las regiones</option>
+                                <option value="andina">Región Andina</option>
+                                <option value="caribe">Región Caribe</option>
+                                <option value="pacifica">Región Pacífica</option>
+                                <option value="orinoquia">Orinoquía</option>
+                                <option value="amazonia">Amazonía</option>
+                            </select>
+                        </div>
+                        <div class="carrier-filter-group">
+                            <label for="carrierDestinationCity">Ciudad de Destino</label>
+                            <input type="text" id="carrierDestinationCity" placeholder="Ej: Cali, Barranquilla...">
+                        </div>
+                    </div>
+
+                    <div class="carrier-filter-group">
+                        <label class="carrier-checkbox-label">
+                            <input type="checkbox" id="carrierMatchMyRoute">
+                            <span class="carrier-checkmark"></span>
+                            Solo cargas que coincidan con mis rutas habituales
+                        </label>
+                    </div>
+
+                    <div class="carrier-filter-group">
+                        <label for="carrierSearchRadius">Radio de búsqueda desde mi ubicación</label>
+                        <div class="carrier-range-container">
+                            <input type="range" id="carrierSearchRadius" min="0" max="500" value="50">
+                            <div class="carrier-range-values">
+                                <span>0 km</span>
+                                <span id="carrierRadiusValue">50 km</span>
+                                <span>500 km</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fechas y Tiempos -->
+            <div class="carrier-filter-section">
+                <div class="carrier-filter-section-header">
+                    <h3>
+                        <i class="fas fa-calendar-alt"></i>
+                        Fechas y Tiempos
+                    </h3>
+                    <button class="carrier-section-toggle">
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+                <div class="carrier-filter-section-content">
+                    <div class="carrier-filter-grid">
+                        <div class="carrier-filter-group">
+                            <label for="carrierPickupDateFrom">Recogida Desde</label>
+                            <input type="date" id="carrierPickupDateFrom">
+                        </div>
+                        <div class="carrier-filter-group">
+                            <label for="carrierPickupDateTo">Recogida Hasta</label>
+                            <input type="date" id="carrierPickupDateTo">
+                        </div>
+                    </div>
+
+                    <div class="carrier-filter-group">
+                        <label for="carrierDeliveryTime">Tiempo de Entrega Máximo</label>
+                        <select id="carrierDeliveryTime">
+                            <option value="">Cualquier tiempo</option>
+                            <option value="24">24 horas</option>
+                            <option value="48">48 horas</option>
+                            <option value="72">72 horas</option>
+                            <option value="168">1 semana</option>
+                        </select>
+                    </div>
+
+                    <div class="carrier-filter-group">
+                        <label>Urgencia</label>
+                        <div class="carrier-radio-group">
+                            <label class="carrier-radio-label">
+                                <input type="radio" name="urgency" value="" checked>
+                                <span class="carrier-radiomark"></span>
+                                Todas las cargas
+                            </label>
+                            <label class="carrier-radio-label">
+                                <input type="radio" name="urgency" value="urgent">
+                                <span class="carrier-radiomark"></span>
+                                Solo cargas urgentes
+                            </label>
+                            <label class="carrier-radio-label">
+                                <input type="radio" name="urgency" value="express">
+                                <span class="carrier-radiomark"></span>
+                                Solo cargas express
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Características de la Carga -->
+            <div class="carrier-filter-section">
+                <div class="carrier-filter-section-header">
+                    <h3>
+                        <i class="fas fa-box"></i>
+                        Características de la Carga
+                    </h3>
+                    <button class="carrier-section-toggle">
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+                <div class="carrier-filter-section-content">
+                    <div class="carrier-filter-grid">
+                        <div class="carrier-filter-group">
+                            <label for="carrierWeightMin">Peso Mínimo (kg)</label>
+                            <input type="number" id="carrierWeightMin" placeholder="0" min="0">
+                        </div>
+                        <div class="carrier-filter-group">
+                            <label for="carrierWeightMax">Peso Máximo (kg)</label>
+                            <input type="number" id="carrierWeightMax" placeholder="10000" min="0">
+                        </div>
+                    </div>
+
+                    <div class="carrier-filter-grid">
+                        <div class="carrier-filter-group">
+                            <label for="carrierVolumeMin">Volumen Mínimo (m³)</label>
+                            <input type="number" id="carrierVolumeMin" placeholder="0" min="0" step="0.1">
+                        </div>
+                        <div class="carrier-filter-group">
+                            <label for="carrierVolumeMax">Volumen Máximo (m³)</label>
+                            <input type="number" id="carrierVolumeMax" placeholder="50" min="0" step="0.1">
+                        </div>
+                    </div>
+
+                    <div class="carrier-filter-group">
+                        <label>Tipo de Carga</label>
+                        <div class="carrier-checkbox-grid">
+                            <label class="carrier-checkbox-label">
+                                <input type="checkbox" name="cargoType" value="general">
+                                <span class="carrier-checkmark"></span>
+                                Carga General
+                            </label>
+                            <label class="carrier-checkbox-label">
+                                <input type="checkbox" name="cargoType" value="refrigerated">
+                                <span class="carrier-checkmark"></span>
+                                Refrigerada
+                            </label>
+                            <label class="carrier-checkbox-label">
+                                <input type="checkbox" name="cargoType" value="dangerous">
+                                <span class="carrier-checkmark"></span>
+                                Materiales Peligrosos
+                            </label>
+                            <label class="carrier-checkbox-label">
+                                <input type="checkbox" name="cargoType" value="fragile">
+                                <span class="carrier-checkmark"></span>
+                                Frágil
+                            </label>
+                            <label class="carrier-checkbox-label">
+                                <input type="checkbox" name="cargoType" value="live_animals">
+                                <span class="carrier-checkmark"></span>
+                                Animales Vivos
+                            </label>
+                            <label class="carrier-checkbox-label">
+                                <input type="checkbox" name="cargoType" value="oversized">
+                                <span class="carrier-checkmark"></span>
+                                Carga Sobredimensionada
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="carrier-filter-group">
+                        <label>Requisitos Especiales</label>
+                        <div class="carrier-checkbox-grid">
+                            <label class="carrier-checkbox-label">
+                                <input type="checkbox" name="requirements" value="certification">
+                                <span class="carrier-checkmark"></span>
+                                Requiere certificación
+                            </label>
+                            <label class="carrier-checkbox-label">
+                                <input type="checkbox" name="requirements" value="insurance">
+                                <span class="carrier-checkmark"></span>
+                                Seguro adicional
+                            </label>
+                            <label class="carrier-checkbox-label">
+                                <input type="checkbox" name="requirements" value="special_equipment">
+                                <span class="carrier-checkmark"></span>
+                                Equipo especial
+                            </label>
+                            <label class="carrier-checkbox-label">
+                                <input type="checkbox" name="requirements" value="assistance">
+                                <span class="carrier-checkmark"></span>
+                                Personal de asistencia
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Precio y Pago -->
+            <div class="carrier-filter-section">
+                <div class="carrier-filter-section-header">
+                    <h3>
+                        <i class="fas fa-money-bill-wave"></i>
+                        Precio y Pago
+                    </h3>
+                    <button class="carrier-section-toggle">
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+                <div class="carrier-filter-section-content">
+                    <div class="carrier-filter-grid">
+                        <div class="carrier-filter-group">
+                            <label for="carrierPriceMin">Precio Mínimo</label>
+                            <div class="carrier-input-with-symbol">
+                                <span class="carrier-input-symbol">$</span>
+                                <input type="number" id="carrierPriceMin" placeholder="0" min="0">
+                            </div>
+                        </div>
+                        <div class="carrier-filter-group">
+                            <label for="carrierPriceMax">Precio Máximo</label>
+                            <div class="carrier-input-with-symbol">
+                                <span class="carrier-input-symbol">$</span>
+                                <input type="number" id="carrierPriceMax" placeholder="5000000" min="0">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="carrier-filter-group">
+                        <label>Tipo de Precio</label>
+                        <div class="carrier-checkbox-grid">
+                            <label class="carrier-checkbox-label">
+                                <input type="checkbox" name="priceType" value="fixed">
+                                <span class="carrier-checkmark"></span>
+                                Precio fijo
+                            </label>
+                            <label class="carrier-checkbox-label">
+                                <input type="checkbox" name="priceType" value="negotiable">
+                                <span class="carrier-checkmark"></span>
+                                Negociable
+                            </label>
+                            <label class="carrier-checkbox-label">
+                                <input type="checkbox" name="priceType" value="per_km">
+                                <span class="carrier-checkmark"></span>
+                                Por kilómetro
+                            </label>
+                            <label class="carrier-checkbox-label">
+                                <input type="checkbox" name="priceType" value="bid">
+                                <span class="carrier-checkmark"></span>
+                                Subasta
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="carrier-filter-group">
+                        <label>Método de Pago</label>
+                        <div class="carrier-checkbox-grid">
+                            <label class="carrier-checkbox-label">
+                                <input type="checkbox" name="paymentMethod" value="cash">
+                                <span class="carrier-checkmark"></span>
+                                Efectivo
+                            </label>
+                            <label class="carrier-checkbox-label">
+                                <input type="checkbox" name="paymentMethod" value="transfer">
+                                <span class="carrier-checkmark"></span>
+                                Transferencia
+                            </label>
+                            <label class="carrier-checkbox-label">
+                                <input type="checkbox" name="paymentMethod" value="platform">
+                                <span class="carrier-checkmark"></span>
+                                Pago por plataforma
+                            </label>
+                            <label class="carrier-checkbox-label">
+                                <input type="checkbox" name="paymentMethod" value="credit">
+                                <span class="carrier-checkmark"></span>
+                                Crédito
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Empresa y Reputación -->
+            <div class="carrier-filter-section">
+                <div class="carrier-filter-section-header">
+                    <h3>
+                        <i class="fas fa-building"></i>
+                        Empresa y Reputación
+                    </h3>
+                    <button class="carrier-section-toggle">
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+                <div class="carrier-filter-section-content">
+                    <div class="carrier-filter-group">
+                        <label for="carrierCompanyType">Tipo de Empresa</label>
+                        <select id="carrierCompanyType">
+                            <option value="">Todos los tipos</option>
+                            <option value="verified">Empresas verificadas</option>
+                            <option value="premium">Empresas premium</option>
+                            <option value="startup">Startups</option>
+                            <option value="corporation">Corporaciones</option>
+                        </select>
+                    </div>
+
+                    <div class="carrier-filter-group">
+                        <label for="carrierMinRating">Calificación Mínima</label>
+                        <div class="carrier-rating-filter">
+                            <div class="carrier-stars">
+                                <i class="fas fa-star" data-rating="1"></i>
+                                <i class="fas fa-star" data-rating="2"></i>
+                                <i class="fas fa-star" data-rating="3"></i>
+                                <i class="fas fa-star" data-rating="4"></i>
+                                <i class="fas fa-star" data-rating="5"></i>
+                            </div>
+                            <span class="carrier-rating-text" id="carrierRatingText">Cualquier calificación</span>
+                        </div>
+                    </div>
+
+                    <div class="carrier-filter-group">
+                        <label class="carrier-checkbox-label">
+                            <input type="checkbox" id="carrierVerifiedOnly">
+                            <span class="carrier-checkmark"></span>
+                            Solo empresas con documentación verificada
+                        </label>
+                    </div>
+
+                    <div class="carrier-filter-group">
+                        <label class="carrier-checkbox-label">
+                            <input type="checkbox" id="carrierRepeatClients">
+                            <span class="carrier-checkmark"></span>
+                            Priorizar clientes recurrentes
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="carrier-filter-actions">
+                <button class="carrier-btn carrier-btn-secondary carrier-btn-large" id="carrierPreviewResults">
+                    <i class="fas fa-eye"></i>
+                    Vista Previa (24 cargas)
+                </button>
+                <button class="carrier-btn carrier-btn-primary carrier-btn-large" id="carrierApplyFilters">
+                    <i class="fas fa-check"></i>
+                    Aplicar Filtros
+                </button>
+            </div>
+        </div>
+
+        <!-- Results Preview -->
+        <div class="carrier-results-preview">
+            <div class="carrier-results-header">
+                <h3>Vista Previa de Resultados</h3>
+                <div class="carrier-results-stats">
+                    <span class="carrier-results-count" id="carrierResultsCount">24</span>
+                    <span>cargas encontradas</span>
+                </div>
+            </div>
+
+            <div class="carrier-preview-loads">
+                <!-- Preview Load Card 1 -->
+                <div class="carrier-preview-card">
+                    <div class="carrier-preview-header">
+                        <span class="carrier-preview-badge carrier-preview-urgent">Urgente</span>
+                        <span class="carrier-preview-distance">12 km</span>
+                    </div>
+                    <div class="carrier-preview-route">
+                        <div class="carrier-preview-origin">Bogotá</div>
+                        <i class="fas fa-arrow-right"></i>
+                        <div class="carrier-preview-destination">Medellín</div>
+                    </div>
+                    <div class="carrier-preview-details">
+                        <div class="carrier-preview-detail">
+                            <i class="fas fa-weight-hanging"></i>
+                            1,200 kg
+                        </div>
+                        <div class="carrier-preview-detail">
+                            <i class="fas fa-box"></i>
+                            General
+                        </div>
+                    </div>
+                    <div class="carrier-preview-price">
+                        $850.000
+                    </div>
+                </div>
+
+                <!-- Preview Load Card 2 -->
+                <div class="carrier-preview-card">
+                    <div class="carrier-preview-header">
+                        <span class="carrier-preview-badge carrier-preview-matching">Coincide</span>
+                        <span class="carrier-preview-distance">8 km</span>
+                    </div>
+                    <div class="carrier-preview-route">
+                        <div class="carrier-preview-origin">Cali</div>
+                        <i class="fas fa-arrow-right"></i>
+                        <div class="carrier-preview-destination">Pereira</div>
+                    </div>
+                    <div class="carrier-preview-details">
+                        <div class="carrier-preview-detail">
+                            <i class="fas fa-weight-hanging"></i>
+                            800 kg
+                        </div>
+                        <div class="carrier-preview-detail">
+                            <i class="fas fa-snowflake"></i>
+                            Refrigerada
+                        </div>
+                    </div>
+                    <div class="carrier-preview-price">
+                        $620.000
+                    </div>
+                </div>
+
+                <!-- Preview Load Card 3 -->
+                <div class="carrier-preview-card">
+                    <div class="carrier-preview-header">
+                        <span class="carrier-preview-badge carrier-preview-express">Express</span>
+                        <span class="carrier-preview-distance">25 km</span>
+                    </div>
+                    <div class="carrier-preview-route">
+                        <div class="carrier-preview-origin">Barranquilla</div>
+                        <i class="fas fa-arrow-right"></i>
+                        <div class="carrier-preview-destination">Cartagena</div>
+                    </div>
+                    <div class="carrier-preview-details">
+                        <div class="carrier-preview-detail">
+                            <i class="fas fa-weight-hanging"></i>
+                            2,500 kg
+                        </div>
+                        <div class="carrier-preview-detail">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            Peligrosa
+                        </div>
+                    </div>
+                    <div class="carrier-preview-price">
+                        $1.200.000
+                    </div>
+                </div>
+
+                <!-- More preview cards would go here -->
+            </div>
+
+            <div class="carrier-preview-actions">
+                <button class="carrier-btn carrier-btn-outline carrier-btn-large">
+                    <i class="fas fa-expand"></i>
+                    Ver Todas las Cargas
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Save Preset Modal -->
+<div class="carrier-modal" id="carrierSavePresetModal">
+    <div class="carrier-modal-content">
+        <div class="carrier-modal-header">
+            <h3>Guardar Preset de Filtros</h3>
+            <button class="carrier-modal-close" id="carrierCloseSavePreset">&times;</button>
+        </div>
+        <div class="carrier-modal-body">
+            <div class="carrier-form-group">
+                <label for="carrierPresetName">Nombre del Preset</label>
+                <input type="text" id="carrierPresetName" placeholder="Ej: Mis Rutas Frecuentes">
+            </div>
+            <div class="carrier-form-group">
+                <label class="carrier-checkbox-label">
+                    <input type="checkbox" id="carrierSetAsDefault">
+                    <span class="carrier-checkmark"></span>
+                    Establecer como filtro predeterminado
+                </label>
+            </div>
+            <div class="carrier-modal-actions">
+                <button class="carrier-btn carrier-btn-outline" id="carrierCancelSavePreset">
+                    Cancelar
+                </button>
+                <button class="carrier-btn carrier-btn-primary" id="carrierConfirmSavePreset">
+                    Guardar Preset
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Load Preset Modal -->
+<div class="carrier-modal" id="carrierLoadPresetModal">
+    <div class="carrier-modal-content">
+        <div class="carrier-modal-header">
+            <h3>Mis Presets Guardados</h3>
+            <button class="carrier-modal-close" id="carrierCloseLoadPreset">&times;</button>
+        </div>
+        <div class="carrier-modal-body">
+            <div class="carrier-presets-list">
+                <div class="carrier-preset-item">
+                    <div class="carrier-preset-info">
+                        <h4>Rutas Frecuentes</h4>
+                        <p>Bogotá → Medellín, Cali → Pereira</p>
+                        <small>Creado: 15 Nov, 2024</small>
+                    </div>
+                    <div class="carrier-preset-actions">
+                        <button class="carrier-btn carrier-btn-outline carrier-btn-sm carrier-load-preset">
+                            Cargar
+                        </button>
+                        <button class="carrier-btn carrier-btn-text carrier-btn-sm carrier-delete-preset">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="carrier-preset-item">
+                    <div class="carrier-preset-info">
+                        <h4>Cargas Urgentes</h4>
+                        <p>24h delivery, precio fijo</p>
+                        <small>Creado: 10 Nov, 2024</small>
+                    </div>
+                    <div class="carrier-preset-actions">
+                        <button class="carrier-btn carrier-btn-outline carrier-btn-sm carrier-load-preset">
+                            Cargar
+                        </button>
+                        <button class="carrier-btn carrier-btn-text carrier-btn-sm carrier-delete-preset">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="carrier-modal-actions">
+                <button class="carrier-btn carrier-btn-outline" id="carrierClosePresets">
+                    Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/carrier_filter_loads.js') }}"></script>
+{% endblock %}

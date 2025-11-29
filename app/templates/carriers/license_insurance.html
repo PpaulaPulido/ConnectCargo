@@ -1,0 +1,302 @@
+{% extends "/carriers/base_carrier.html" %}
+
+{% block title %}Licencia y Seguros - ConnectCargo{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/license_insurance.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="license-insurance-container">
+    <!-- Header Section -->
+    <div class="page-header">
+        <div class="header-content">
+            <h1 class="page-title">
+                <i class="fas fa-id-card"></i>
+                Licencia y Seguros
+            </h1>
+            <p class="page-subtitle">
+                Gestiona tu documentación de conductor y pólizas de seguro
+            </p>
+        </div>
+        <div class="header-actions">
+            <button class="btn btn-primary" id="addDocumentBtn">
+                <i class="fas fa-plus"></i>
+                Agregar Documento
+            </button>
+        </div>
+    </div>
+
+    <!-- Status Overview -->
+    <div class="status-overview">
+        <div class="status-card valid">
+            <div class="status-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="status-content">
+                <h3>Licencia de Conducir</h3>
+                <p class="status-text">Vigente</p>
+                <p class="expiry-date">Vence: 15 Dic 2025</p>
+            </div>
+        </div>
+
+        <div class="status-card warning">
+            <div class="status-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <div class="status-content">
+                <h3>Seguro Vehicular</h3>
+                <p class="status-text">Por Vencer</p>
+                <p class="expiry-date">Vence: 30 Nov 2024</p>
+            </div>
+        </div>
+
+        <div class="status-card expired">
+            <div class="status-icon">
+                <i class="fas fa-times-circle"></i>
+            </div>
+            <div class="status-content">
+                <h3>SOAT</h3>
+                <p class="status-text">Vencido</p>
+                <p class="expiry-date">Venció: 15 Oct 2024</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Grid -->
+    <div class="content-grid">
+        <!-- License Section -->
+        <div class="document-section">
+            <div class="section-header">
+                <h2>
+                    <i class="fas fa-id-card-alt"></i>
+                    Licencia de Conducir
+                </h2>
+                <div class="section-actions">
+                    <button class="btn btn-outline btn-upload">
+                        <i class="fas fa-upload"></i>
+                        Actualizar
+                    </button>
+                    <button class="btn btn-outline">
+                        <i class="fas fa-eye"></i>
+                        Ver
+                    </button>
+                </div>
+            </div>
+
+            <div class="document-details">
+                <div class="detail-grid">
+                    <div class="detail-item">
+                        <label>Número de Licencia</label>
+                        <p class="detail-value">LC-123456789</p>
+                    </div>
+                    <div class="detail-item">
+                        <label>Categoría</label>
+                        <p class="detail-value">C1</p>
+                    </div>
+                    <div class="detail-item">
+                        <label>Fecha de Expedición</label>
+                        <p class="detail-value">15 Dic 2020</p>
+                    </div>
+                    <div class="detail-item">
+                        <label>Fecha de Vencimiento</label>
+                        <p class="detail-value warning-text">15 Dic 2025</p>
+                    </div>
+                    <div class="detail-item">
+                        <label>Entidad Emisora</label>
+                        <p class="detail-value">Ministerio de Transporte</p>
+                    </div>
+                    <div class="detail-item">
+                        <label>Estado</label>
+                        <span class="status-badge valid">Vigente</span>
+                    </div>
+                </div>
+
+                <div class="document-preview">
+                    <div class="preview-placeholder">
+                        <i class="fas fa-file-pdf"></i>
+                        <p>licencia_conducir.pdf</p>
+                        <span class="file-size">2.4 MB</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Insurance Section -->
+        <div class="document-section">
+            <div class="section-header">
+                <h2>
+                    <i class="fas fa-shield-alt"></i>
+                    Seguro Vehicular
+                </h2>
+                <div class="section-actions">
+                    <button class="btn btn-primary btn-renew">
+                        <i class="fas fa-sync-alt"></i>
+                        Renovar
+                    </button>
+                    <button class="btn btn-outline">
+                        <i class="fas fa-eye"></i>
+                        Ver Póliza
+                    </button>
+                </div>
+            </div>
+
+            <div class="document-details">
+                <div class="detail-grid">
+                    <div class="detail-item">
+                        <label>Compañía de Seguros</label>
+                        <p class="detail-value">Seguros Mapfre</p>
+                    </div>
+                    <div class="detail-item">
+                        <label>Número de Póliza</label>
+                        <p class="detail-value">POL-987654321</p>
+                    </div>
+                    <div class="detail-item">
+                        <label>Fecha de Inicio</label>
+                        <p class="detail-value">01 Dic 2023</p>
+                    </div>
+                    <div class="detail-item">
+                        <label>Fecha de Vencimiento</label>
+                        <p class="detail-value warning-text">30 Nov 2024</p>
+                    </div>
+                    <div class="detail-item">
+                        <label>Valor Asegurado</label>
+                        <p class="detail-value">$85,000,000 COP</p>
+                    </div>
+                    <div class="detail-item">
+                        <label>Estado</label>
+                        <span class="status-badge warning">Por Vencer</span>
+                    </div>
+                </div>
+
+                <div class="coverage-info">
+                    <h4>Coberturas Incluidas</h4>
+                    <div class="coverage-list">
+                        <span class="coverage-tag">Responsabilidad Civil</span>
+                        <span class="coverage-tag">Daños a Terceros</span>
+                        <span class="coverage-tag">Accidentes Personales</span>
+                        <span class="coverage-tag">Asistencia en Carretera</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Additional Documents -->
+        <div class="document-section">
+            <div class="section-header">
+                <h2>
+                    <i class="fas fa-file-contract"></i>
+                    Documentos Adicionales
+                </h2>
+            </div>
+
+            <div class="documents-grid">
+                <div class="document-card">
+                    <div class="document-icon">
+                        <i class="fas fa-file-medical"></i>
+                    </div>
+                    <div class="document-info">
+                        <h4>SOAT</h4>
+                        <p class="document-status expired">Vencido</p>
+                        <p class="document-expiry">Venció: 15 Oct 2024</p>
+                    </div>
+                    <div class="document-actions">
+                        <button class="btn btn-sm btn-primary">
+                            Renovar
+                        </button>
+                    </div>
+                </div>
+
+                <div class="document-card">
+                    <div class="document-icon">
+                        <i class="fas fa-tachometer-alt"></i>
+                    </div>
+                    <div class="document-info">
+                        <h4>Revisión Tecnomecánica</h4>
+                        <p class="document-status valid">Vigente</p>
+                        <p class="document-expiry">Vence: 20 Mar 2025</p>
+                    </div>
+                    <div class="document-actions">
+                        <button class="btn btn-sm btn-outline">
+                            Ver
+                        </button>
+                    </div>
+                </div>
+
+                <div class="document-card">
+                    <div class="document-icon">
+                        <i class="fas fa-gas-pump"></i>
+                    </div>
+                    <div class="document-info">
+                        <h4>Tarjeta de Operación</h4>
+                        <p class="document-status valid">Vigente</p>
+                        <p class="document-expiry">Vence: 10 Ene 2026</p>
+                    </div>
+                    <div class="document-actions">
+                        <button class="btn btn-sm btn-outline">
+                            Ver
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Upload Modal -->
+    <div class="modal" id="uploadModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Subir Documento</h3>
+                <button class="modal-close" id="modalClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="uploadForm" class="upload-form">
+                    <div class="form-group">
+                        <label for="documentType">Tipo de Documento</label>
+                        <select id="documentType" class="form-select" required>
+                            <option value="">Seleccionar tipo...</option>
+                            <option value="license">Licencia de Conducir</option>
+                            <option value="insurance">Seguro Vehicular</option>
+                            <option value="soat">SOAT</option>
+                            <option value="tecnomecanica">Revisión Tecnomecánica</option>
+                            <option value="operation">Tarjeta de Operación</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="documentFile">Archivo</label>
+                        <div class="file-upload-area" id="fileUploadArea">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>Arrastra tu archivo aquí o haz clic para seleccionar</p>
+                            <span>Formatos: PDF, JPG, PNG (Máx. 10MB)</span>
+                            <input type="file" id="documentFile" accept=".pdf,.jpg,.jpeg,.png" hidden>
+                        </div>
+                        <div class="file-preview" id="filePreview"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="expiryDate">Fecha de Vencimiento</label>
+                        <input type="date" id="expiryDate" class="form-input" required>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-outline" id="cancelUpload">
+                            Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-upload"></i>
+                            Subir Documento
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/license_insurance.js') }}"></script>
+{% endblock %}

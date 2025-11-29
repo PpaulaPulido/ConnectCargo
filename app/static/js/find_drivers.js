@@ -1,6 +1,7 @@
 class FindDrivers {
     constructor() {
         this.drivers = [];
+        this.driverImages = {};
         this.filters = {
             location: '',
             vehicleType: '',
@@ -17,9 +18,26 @@ class FindDrivers {
     }
 
     init() {
+        this.loadDriverImages();
         this.setupEventListeners();
         this.loadDrivers();
         this.applyFilters();
+    }
+
+    loadDriverImages() {
+        // Cargar las URLs de las imágenes desde el HTML
+        const imagesData = document.getElementById('driverImagesData');
+        if (imagesData) {
+            this.driverImages = {
+                1: imagesData.getAttribute('data-driver-1'),
+                2: imagesData.getAttribute('data-driver-2'),
+                3: imagesData.getAttribute('data-driver-3'),
+                4: imagesData.getAttribute('data-driver-4')
+            };
+        }
+        
+        // Verificar en consola que las rutas sean correctas
+        console.log('Driver images loaded:', this.driverImages);
     }
 
     setupEventListeners() {
@@ -87,7 +105,7 @@ class FindDrivers {
     }
 
     loadDrivers() {
-        // Simulated driver data - in a real app, this would come from an API
+        // Simulated driver data
         this.drivers = [
             {
                 id: 1,
@@ -103,8 +121,7 @@ class FindDrivers {
                 available: true,
                 responseTime: "15 min",
                 verified: true,
-                featured: true,
-                avatar: "driver-1.jpg"
+                featured: true
             },
             {
                 id: 2,
@@ -120,8 +137,7 @@ class FindDrivers {
                 available: true,
                 responseTime: "10 min",
                 verified: true,
-                featured: false,
-                avatar: "driver-2.jpg"
+                featured: false
             },
             {
                 id: 3,
@@ -137,8 +153,7 @@ class FindDrivers {
                 available: false,
                 responseTime: "2 horas",
                 verified: true,
-                featured: false,
-                avatar: "driver-3.jpg"
+                featured: false
             },
             {
                 id: 4,
@@ -154,8 +169,7 @@ class FindDrivers {
                 available: true,
                 responseTime: "5 min",
                 verified: true,
-                featured: false,
-                avatar: "driver-4.jpg"
+                featured: false
             }
         ];
     }
@@ -238,12 +252,10 @@ class FindDrivers {
             case 'experience':
                 return drivers.sort((a, b) => parseInt(b.experience) - parseInt(a.experience));
             case 'price':
-                // This would require price data
                 return drivers;
             case 'completed':
                 return drivers.sort((a, b) => b.completedTrips - a.completedTrips);
             case 'recent':
-                // This would require join date data
                 return drivers;
             default:
                 return drivers;
@@ -325,6 +337,10 @@ class FindDrivers {
         const card = document.createElement('div');
         card.className = `driver-card ${driver.featured ? 'featured' : ''}`;
         
+        // Usar la imagen del objeto driverImages
+        const driverImage = this.driverImages[driver.id] || 
+                           `https://via.placeholder.com/150/007bff/ffffff?text=Driver+${driver.id}`;
+        
         card.innerHTML = `
             <div class="driver-card-header">
                 <div class="driver-verified-badge">
@@ -342,7 +358,8 @@ class FindDrivers {
             <div class="driver-card-content">
                 <div class="driver-profile">
                     <div class="driver-avatar">
-                        <img src="{{ url_for('static', filename='images/${driver.avatar}') }}" alt="${driver.name}">
+                        <img src="${driverImage}" alt="${driver.name}" 
+                             onerror="this.src='https://via.placeholder.com/150/6c757d/ffffff?text=Driver+${driver.id}'">
                         <div class="driver-status ${driver.available ? 'online' : 'away'}"></div>
                     </div>
                     <div class="driver-info">
@@ -442,29 +459,24 @@ class FindDrivers {
     }
 
     setupDriverActions() {
-        // This would be handled by the individual buttons in the cards
+        // Handled by individual buttons in the cards
     }
 
     viewProfile(driverId) {
         this.showNotification('Redirigiendo al perfil del conductor...', 'info');
-        // In a real app, this would navigate to the driver's profile page
         setTimeout(() => {
-            // window.location.href = `/driver/profile/${driverId}`;
             console.log('Viewing profile for driver:', driverId);
         }, 1000);
     }
 
     contactDriver(driverId) {
         this.showNotification('Iniciando conversación con el conductor...', 'info');
-        // In a real app, this would open a chat/message interface
         setTimeout(() => {
-            // Open chat modal or redirect to messages
             console.log('Contacting driver:', driverId);
         }, 1000);
     }
 
     showNotification(message, type = 'info') {
-        // Remove existing notifications
         const existingNotification = document.querySelector('.drivers-notification');
         if (existingNotification) {
             existingNotification.remove();

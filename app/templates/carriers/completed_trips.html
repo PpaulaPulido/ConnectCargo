@@ -1,0 +1,534 @@
+{% extends "/carriers/base_carrier.html" %}
+
+{% block title %}Viajes Completados - ConnectCargo{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/completed_trips.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="completed-trips-page">
+    <div class="trips-header">
+        <div class="header-content">
+            <h1>Viajes Completados</h1>
+            <p>Historial de todos tus viajes finalizados exitosamente</p>
+        </div>
+        <div class="header-actions">
+            <button class="trip-action-btn outline" id="exportTripsBtn">
+                <i class="fas fa-file-export"></i>
+                Exportar Reporte
+            </button>
+        </div>
+    </div>
+
+    <!-- Estadísticas Rápidas -->
+    <div class="trips-stats">
+        <div class="trip-stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-road"></i>
+            </div>
+            <div class="stat-info">
+                <h3>47</h3>
+                <p>Total de Viajes</p>
+            </div>
+        </div>
+        <div class="trip-stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-money-bill-wave"></i>
+            </div>
+            <div class="stat-info">
+                <h3>$28.5M</h3>
+                <p>Ingresos Totales</p>
+            </div>
+        </div>
+        <div class="trip-stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-star"></i>
+            </div>
+            <div class="stat-info">
+                <h3>4.8</h3>
+                <p>Calificación Promedio</p>
+            </div>
+        </div>
+        <div class="trip-stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-percentage"></i>
+            </div>
+            <div class="stat-info">
+                <h3>96%</h3>
+                <p>Tasa de Éxito</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filtros y Búsqueda -->
+    <div class="trips-filters">
+        <div class="filter-section">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Buscar por cliente, origen o destino..." id="tripsSearch">
+            </div>
+            <div class="filter-controls">
+                <select id="timeFilter" class="filter-select">
+                    <option value="all">Todos los tiempos</option>
+                    <option value="week">Esta semana</option>
+                    <option value="month" selected>Este mes</option>
+                    <option value="quarter">Este trimestre</option>
+                    <option value="year">Este año</option>
+                </select>
+                <select id="ratingFilter" class="filter-select">
+                    <option value="all">Todas las calificaciones</option>
+                    <option value="5">5 estrellas</option>
+                    <option value="4">4+ estrellas</option>
+                    <option value="3">3+ estrellas</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lista de Viajes Completados -->
+    <div class="trips-container">
+        <!-- Viaje con Calificación 5 Estrellas -->
+        <div class="trip-card featured" data-rating="5" data-date="2024-12-15">
+            <div class="trip-header">
+                <div class="trip-title">
+                    <h3>#TR-7842 - Electrodomésticos</h3>
+                    <div class="trip-meta">
+                        <span class="trip-date">Completado: 15 Dic 2024</span>
+                        <span class="trip-duration">8 horas</span>
+                    </div>
+                </div>
+                <div class="trip-rating">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <span class="rating-text">Excelente servicio</span>
+                </div>
+            </div>
+
+            <div class="trip-content">
+                <div class="route-info">
+                    <div class="location origin">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <strong>Bogotá, DC</strong>
+                            <span>Bodega Central - Carrera 68 #45-90</span>
+                            <small>14 Dic, 08:00 AM</small>
+                        </div>
+                    </div>
+                    <div class="route-line">
+                        <div class="route-dots">
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                        </div>
+                    </div>
+                    <div class="location destination">
+                        <i class="fas fa-flag-checkered"></i>
+                        <div>
+                            <strong>Medellín, ANT</strong>
+                            <span>Centro Logístico - Calle 45 #25-67</span>
+                            <small>14 Dic, 04:00 PM</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="trip-details">
+                    <div class="detail-group">
+                        <div class="detail-item">
+                            <i class="fas fa-box"></i>
+                            <div>
+                                <label>Carga</label>
+                                <span>Electrodomésticos</span>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-weight-hanging"></i>
+                            <div>
+                                <label>Peso</label>
+                                <span>1,200 kg</span>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-ruler-combined"></i>
+                            <div>
+                                <label>Volumen</label>
+                                <span>15 m³</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-group">
+                        <div class="detail-item">
+                            <i class="fas fa-user-tie"></i>
+                            <div>
+                                <label>Cliente</label>
+                                <span>Almacenes Éxito</span>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-truck"></i>
+                            <div>
+                                <label>Vehículo</label>
+                                <span>Volvo FH 540 (ABC123)</span>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-road"></i>
+                            <div>
+                                <label>Distancia</label>
+                                <span>415 km</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="payment-info">
+                    <div class="payment-amount">
+                        <strong>$950,000</strong>
+                        <span>Pagado el 15 Dic 2024</span>
+                    </div>
+                    <div class="payment-method">
+                        <i class="fas fa-credit-card"></i>
+                        <span>Transferencia bancaria</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="trip-footer">
+                <div class="trip-actions">
+                    <button class="trip-action-btn outline">
+                        <i class="fas fa-receipt"></i>
+                        Ver Comprobante
+                    </button>
+                    <button class="trip-action-btn outline">
+                        <i class="fas fa-redo"></i>
+                        Repetir Ruta
+                    </button>
+                    <button class="trip-action-btn primary">
+                        <i class="fas fa-comment"></i>
+                        Contactar Cliente
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Viaje con Calificación 4 Estrellas -->
+        <div class="trip-card" data-rating="4" data-date="2024-12-12">
+            <div class="trip-header">
+                <div class="trip-title">
+                    <h3>#TR-7839 - Materiales de Construcción</h3>
+                    <div class="trip-meta">
+                        <span class="trip-date">Completado: 12 Dic 2024</span>
+                        <span class="trip-duration">10 horas</span>
+                    </div>
+                </div>
+                <div class="trip-rating">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                    </div>
+                    <span class="rating-text">Muy buen servicio</span>
+                </div>
+            </div>
+
+            <div class="trip-content">
+                <div class="route-info">
+                    <div class="location origin">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <strong>Medellín, ANT</strong>
+                            <span>Planta Cementos Argos - Autopista Norte</span>
+                            <small>11 Dic, 07:30 AM</small>
+                        </div>
+                    </div>
+                    <div class="route-line">
+                        <div class="route-dots">
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                        </div>
+                    </div>
+                    <div class="location destination">
+                        <i class="fas fa-flag-checkered"></i>
+                        <div>
+                            <strong>Cali, VAL</strong>
+                            <span>Obra Nueva - Carrera 100 #15-20</span>
+                            <small>11 Dic, 05:30 PM</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="trip-details">
+                    <div class="detail-group">
+                        <div class="detail-item">
+                            <i class="fas fa-box"></i>
+                            <div>
+                                <label>Carga</label>
+                                <span>Cemento y materiales</span>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-weight-hanging"></i>
+                            <div>
+                                <label>Peso</label>
+                                <span>18,000 kg</span>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-ruler-combined"></i>
+                            <div>
+                                <label>Volumen</label>
+                                <span>22 m³</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-group">
+                        <div class="detail-item">
+                            <i class="fas fa-user-tie"></i>
+                            <div>
+                                <label>Cliente</label>
+                                <span>Constructora Bolívar</span>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-truck"></i>
+                            <div>
+                                <label>Vehículo</label>
+                                <span>Mercedes Actros (DEF456)</span>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-road"></i>
+                            <div>
+                                <label>Distancia</label>
+                                <span>520 km</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="payment-info">
+                    <div class="payment-amount">
+                        <strong>$1,200,000</strong>
+                        <span>Pagado el 13 Dic 2024</span>
+                    </div>
+                    <div class="payment-method">
+                        <i class="fas fa-university"></i>
+                        <span>Depósito directo</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="trip-notes">
+                <div class="notes-header">
+                    <i class="fas fa-sticky-note"></i>
+                    <strong>Comentarios del Cliente</strong>
+                </div>
+                <p>"Excelente conductor, muy profesional. Llegó puntual y manejó con cuidado la carga. Recomendado."</p>
+            </div>
+
+            <div class="trip-footer">
+                <div class="trip-actions">
+                    <button class="trip-action-btn outline">
+                        <i class="fas fa-receipt"></i>
+                        Ver Comprobante
+                    </button>
+                    <button class="trip-action-btn outline">
+                        <i class="fas fa-redo"></i>
+                        Repetir Ruta
+                    </button>
+                    <button class="trip-action-btn primary">
+                        <i class="fas fa-comment"></i>
+                        Contactar Cliente
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Viaje Antiguo -->
+        <div class="trip-card" data-rating="5" data-date="2024-11-28">
+            <div class="trip-header">
+                <div class="trip-title">
+                    <h3>#TR-7815 - Productos Alimenticios</h3>
+                    <div class="trip-meta">
+                        <span class="trip-date">Completado: 28 Nov 2024</span>
+                        <span class="trip-duration">6 horas</span>
+                    </div>
+                </div>
+                <div class="trip-rating">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <span class="rating-text">Servicio excepcional</span>
+                </div>
+            </div>
+
+            <div class="trip-content">
+                <div class="route-info">
+                    <div class="location origin">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <strong>Bogotá, DC</strong>
+                            <span>Planta Alimentos Polar - Calle 80</span>
+                            <small>27 Nov, 10:00 AM</small>
+                        </div>
+                    </div>
+                    <div class="route-line">
+                        <div class="route-dots">
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                            <div class="dot"></div>
+                        </div>
+                    </div>
+                    <div class="location destination">
+                        <i class="fas fa-flag-checkered"></i>
+                        <div>
+                            <strong>Ibagué, TOL</strong>
+                            <span>Centro de Distribución - Av. Guabinal</span>
+                            <small>27 Nov, 04:00 PM</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="trip-details">
+                    <div class="detail-group">
+                        <div class="detail-item">
+                            <i class="fas fa-box"></i>
+                            <div>
+                                <label>Carga</label>
+                                <span>Productos alimenticios</span>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-weight-hanging"></i>
+                            <div>
+                                <label>Peso</label>
+                                <span>8,500 kg</span>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-snowflake"></i>
+                            <div>
+                                <label>Temperatura</label>
+                                <span>2°C - 8°C</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-group">
+                        <div class="detail-item">
+                            <i class="fas fa-user-tie"></i>
+                            <div>
+                                <label>Cliente</label>
+                                <span>Alimentos Polar Colombia</span>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-truck"></i>
+                            <div>
+                                <label>Vehículo</label>
+                                <span>Volvo FH 540 (ABC123)</span>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-road"></i>
+                            <div>
+                                <label>Distancia</label>
+                                <span>285 km</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="payment-info">
+                    <div class="payment-amount">
+                        <strong>$680,000</strong>
+                        <span>Pagado el 29 Nov 2024</span>
+                    </div>
+                    <div class="payment-method">
+                        <i class="fas fa-credit-card"></i>
+                        <span>Transferencia bancaria</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="trip-footer">
+                <div class="trip-actions">
+                    <button class="trip-action-btn outline">
+                        <i class="fas fa-receipt"></i>
+                        Ver Comprobante
+                    </button>
+                    <button class="trip-action-btn outline">
+                        <i class="fas fa-redo"></i>
+                        Repetir Ruta
+                    </button>
+                    <button class="trip-action-btn primary">
+                        <i class="fas fa-comment"></i>
+                        Contactar Cliente
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Paginación -->
+    <div class="pagination">
+        <button class="pagination-btn" disabled>
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="pagination-btn active">1</button>
+        <button class="pagination-btn">2</button>
+        <button class="pagination-btn">3</button>
+        <span class="pagination-ellipsis">...</span>
+        <button class="pagination-btn">8</button>
+        <button class="pagination-btn">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+    </div>
+
+    <!-- Estado Vacío -->
+    <div class="empty-trips hidden" id="emptyTrips">
+        <div class="empty-icon">
+            <i class="fas fa-road"></i>
+        </div>
+        <h3>No hay viajes completados</h3>
+        <p>Cuando completes tus primeros viajes, aparecerán aquí en tu historial</p>
+        <button class="trip-action-btn primary">
+            <i class="fas fa-truck-loading"></i>
+            Buscar Cargas Disponibles
+        </button>
+    </div>
+</div>
+
+<!-- Modal de Detalles del Viaje -->
+<div class="modal-overlay hidden" id="tripDetailsModal">
+    <div class="modal-content large">
+        <div class="modal-header">
+            <h3>Detalles del Viaje #TR-7842</h3>
+            <button class="modal-close" id="closeTripModal">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <!-- Contenido del modal se llenaría dinámicamente -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/completed_trips.js') }}"></script>
+{% endblock %}

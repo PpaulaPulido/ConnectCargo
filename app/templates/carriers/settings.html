@@ -1,0 +1,405 @@
+{% extends "/carriers/base_carrier.html" %}
+
+{% block title %}Configuración - ConnectCargo{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/settings_carrier.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="settings-page">
+    <div class="settings-header">
+        <h1>Configuración</h1>
+        <p>Personaliza tu experiencia en ConnectCargo</p>
+    </div>
+
+    <div class="settings-layout">
+        <!-- Navegación Lateral -->
+        <nav class="settings-nav">
+            <button class="settings-nav-btn active" data-tab="account">
+                <i class="fas fa-user-cog"></i>
+                <span>Cuenta</span>
+            </button>
+            <button class="settings-nav-btn" data-tab="notifications">
+                <i class="fas fa-bell"></i>
+                <span>Notificaciones</span>
+            </button>
+            <button class="settings-nav-btn" data-tab="privacy">
+                <i class="fas fa-shield-alt"></i>
+                <span>Privacidad & Seguridad</span>
+            </button>
+            <button class="settings-nav-btn" data-tab="preferences">
+                <i class="fas fa-sliders-h"></i>
+                <span>Preferencias</span>
+            </button>
+            <button class="settings-nav-btn" data-tab="payment">
+                <i class="fas fa-credit-card"></i>
+                <span>Métodos de Pago</span>
+            </button>
+            <button class="settings-nav-btn" data-tab="documents">
+                <i class="fas fa-file-contract"></i>
+                <span>Documentación</span>
+            </button>
+        </nav>
+
+        <!-- Contenido Principal -->
+        <main class="settings-content">
+            <!-- Pestaña: Cuenta -->
+            <section class="settings-tab-content active" id="account-tab">
+                <div class="tab-title">
+                    <h2>Configuración de Cuenta</h2>
+                    <p>Gestiona tu información personal y datos de contacto</p>
+                </div>
+
+                <form class="settings-form" id="accountForm">
+                    <!-- Información Personal -->
+                    <div class="form-section-card">
+                        <h3 class="section-title">Información Personal</h3>
+                        <div class="form-grid-2">
+                            <div class="input-group">
+                                <label for="fullName">Nombre Completo</label>
+                                <input type="text" id="fullName" name="fullName" 
+                                       value="{{ current_user.name if current_user else '' }}"
+                                       placeholder="Ingresa tu nombre completo">
+                            </div>
+                            <div class="input-group">
+                                <label for="email">Correo Electrónico</label>
+                                <input type="email" id="email" name="email" 
+                                       value="{{ current_user.email }}"
+                                       placeholder="tu@email.com" readonly>
+                                <div class="input-status verified">
+                                    <i class="fas fa-check-circle"></i>
+                                    Verificado
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label for="phone">Teléfono Principal</label>
+                                <input type="tel" id="phone" name="phone" 
+                                       value="{{ current_user.phone if current_user else '' }}"
+                                       placeholder="+57 300 123 4567">
+                            </div>
+                            <div class="input-group">
+                                <label for="altPhone">Teléfono Alternativo</label>
+                                <input type="tel" id="altPhone" name="altPhone" 
+                                       value="{{ current_user.alternative_phone if current_user else '' }}"
+                                       placeholder="+57 301 987 6543">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ubicación -->
+                    <div class="form-section-card">
+                        <h3 class="section-title">Ubicación</h3>
+                        <div class="form-grid-2">
+                            <div class="input-group">
+                                <label for="address">Dirección</label>
+                                <input type="text" id="address" name="address" 
+                                       value="{{ current_user.address if current_user else '' }}"
+                                       placeholder="Dirección completa">
+                            </div>
+                            <div class="input-group">
+                                <label for="city">Ciudad</label>
+                                <input type="text" id="city" name="city" 
+                                       value="{{ current_user.city if current_user else '' }}"
+                                       placeholder="Ciudad">
+                            </div>
+                            <div class="input-group">
+                                <label for="state">Departamento</label>
+                                <input type="text" id="state" name="state" 
+                                       value="{{ current_user.state if current_user else '' }}"
+                                       placeholder="Departamento">
+                            </div>
+                            <div class="input-group">
+                                <label for="country">País</label>
+                                <select id="country" name="country">
+                                    <option value="CO" {% if current_user.country == 'CO' %}selected{% endif %}>Colombia</option>
+                                    <option value="EC">Ecuador</option>
+                                    <option value="PE">Perú</option>
+                                    <option value="CL">Chile</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Foto de Perfil -->
+                    <div class="form-section-card">
+                        <h3 class="section-title">Foto de Perfil</h3>
+                        <div class="profile-picture-container">
+                            <div class="profile-image-wrapper">
+                                <img src="{{ current_user.get_profile_picture_url() if current_user else '/static/images/default-avatar.jpg' }}" 
+                                     alt="Foto de perfil" class="profile-image" id="profileImage">
+                                <div class="profile-image-actions">
+                                    <button type="button" class="action-btn outlined" id="changePhotoBtn">
+                                        <i class="fas fa-camera"></i>
+                                        Cambiar Foto
+                                    </button>
+                                    <button type="button" class="action-btn text-btn" id="removePhotoBtn">
+                                        <i class="fas fa-trash"></i>
+                                        Eliminar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions-bar">
+                        <button type="button" class="action-btn secondary" id="resetAccountBtn">
+                            Descartar Cambios
+                        </button>
+                        <button type="submit" class="action-btn primary" id="saveAccountBtn">
+                            <i class="fas fa-save"></i>
+                            Guardar Cambios
+                        </button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Pestaña: Notificaciones -->
+            <section class="settings-tab-content" id="notifications-tab">
+                <div class="tab-title">
+                    <h2>Configuración de Notificaciones</h2>
+                    <p>Controla cómo y cuándo recibir notificaciones</p>
+                </div>
+
+                <div class="notifications-settings-container">
+                    <!-- Notificaciones por Email -->
+                    <div class="settings-section-card">
+                        <h3 class="section-title">Notificaciones por Email</h3>
+                        <div class="toggle-settings-list">
+                            <div class="toggle-setting-item">
+                                <div class="toggle-info">
+                                    <h4>Nuevas Cargas Disponibles</h4>
+                                    <p>Recibe notificaciones cuando haya cargas en tus rutas preferidas</p>
+                                </div>
+                                <label class="custom-toggle">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="toggle-setting-item">
+                                <div class="toggle-info">
+                                    <h4>Actualizaciones de Viajes</h4>
+                                    <p>Notificaciones sobre cambios en tus viajes activos</p>
+                                </div>
+                                <label class="custom-toggle">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="toggle-setting-item">
+                                <div class="toggle-info">
+                                    <h4>Recordatorios de Pago</h4>
+                                    <p>Alertas sobre pagos pendientes y procesados</p>
+                                </div>
+                                <label class="custom-toggle">
+                                    <input type="checkbox">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Notificaciones Push -->
+                    <div class="settings-section-card">
+                        <h3 class="section-title">Notificaciones Push</h3>
+                        <div class="toggle-settings-list">
+                            <div class="toggle-setting-item">
+                                <div class="toggle-info">
+                                    <h4>Cargas Urgentes</h4>
+                                    <p>Notificaciones inmediatas para cargas de alta prioridad</p>
+                                </div>
+                                <label class="custom-toggle">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="toggle-setting-item">
+                                <div class="toggle-info">
+                                    <h4>Mensajes de Clientes</h4>
+                                    <p>Alertas cuando recibas nuevos mensajes</p>
+                                </div>
+                                <label class="custom-toggle">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="toggle-setting-item">
+                                <div class="toggle-info">
+                                    <h4>Recordatorios de Documentos</h4>
+                                    <p>Alertas sobre documentos por vencer</p>
+                                </div>
+                                <label class="custom-toggle">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Frecuencia de Notificaciones -->
+                    <div class="settings-section-card">
+                        <h3 class="section-title">Frecuencia de Resumen</h3>
+                        <div class="radio-settings-list">
+                            <label class="radio-option">
+                                <input type="radio" name="notificationFrequency" value="realtime" checked>
+                                <span class="radio-custom"></span>
+                                <div class="radio-content">
+                                    <strong>Tiempo real</strong>
+                                    <span>Recibe notificaciones inmediatamente (recomendado)</span>
+                                </div>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="notificationFrequency" value="daily">
+                                <span class="radio-custom"></span>
+                                <div class="radio-content">
+                                    <strong>Resumen diario</strong>
+                                    <span>Recibe un resumen una vez al día</span>
+                                </div>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="notificationFrequency" value="weekly">
+                                <span class="radio-custom"></span>
+                                <div class="radio-content">
+                                    <strong>Resumen semanal</strong>
+                                    <span>Recibe un resumen una vez por semana</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Pestaña: Privacidad & Seguridad -->
+            <section class="settings-tab-content" id="privacy-tab">
+                <div class="tab-title">
+                    <h2>Privacidad & Seguridad</h2>
+                    <p>Gestiona tu seguridad y configuración de privacidad</p>
+                </div>
+
+                <div class="privacy-settings-container">
+                    <!-- Cambio de Contraseña -->
+                    <div class="settings-section-card">
+                        <h3 class="section-title">Cambiar Contraseña</h3>
+                        <form class="password-form" id="passwordForm">
+                            <div class="input-group">
+                                <label for="currentPassword">Contraseña Actual</label>
+                                <input type="password" id="currentPassword" name="currentPassword" 
+                                       placeholder="Ingresa tu contraseña actual">
+                            </div>
+                            <div class="input-group">
+                                <label for="newPassword">Nueva Contraseña</label>
+                                <input type="password" id="newPassword" name="newPassword" 
+                                       placeholder="Crea una nueva contraseña">
+                                <div class="password-strength-meter">
+                                    <div class="strength-bar">
+                                        <div class="strength-fill" data-strength="0"></div>
+                                    </div>
+                                    <span class="strength-label">Seguridad: Débil</span>
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label for="confirmPassword">Confirmar Contraseña</label>
+                                <input type="password" id="confirmPassword" name="confirmPassword" 
+                                       placeholder="Repite la nueva contraseña">
+                            </div>
+                            <button type="submit" class="action-btn primary">
+                                <i class="fas fa-key"></i>
+                                Actualizar Contraseña
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Sesiones Activas -->
+                    <div class="settings-section-card">
+                        <h3 class="section-title">Sesiones Activas</h3>
+                        <div class="sessions-list">
+                            <div class="session-item current-session">
+                                <div class="session-details">
+                                    <h4>Dispositivo Actual</h4>
+                                    <p>Chrome en Windows • Bogotá, CO</p>
+                                    <small>Activo ahora</small>
+                                </div>
+                                <span class="session-badge current">Actual</span>
+                            </div>
+                            <div class="session-item">
+                                <div class="session-details">
+                                    <h4>iPhone 13</h4>
+                                    <p>Safari en iOS • Medellín, CO</p>
+                                    <small>Hace 2 horas</small>
+                                </div>
+                                <button class="action-btn text-btn danger">Cerrar Sesión</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Privacidad -->
+                    <div class="settings-section-card">
+                        <h3 class="section-title">Configuración de Privacidad</h3>
+                        <div class="toggle-settings-list">
+                            <div class="toggle-setting-item">
+                                <div class="toggle-info">
+                                    <h4>Perfil Público</h4>
+                                    <p>Permitir que las empresas vean tu perfil y calificaciones</p>
+                                </div>
+                                <label class="custom-toggle">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="toggle-setting-item">
+                                <div class="toggle-info">
+                                    <h4>Ubicación en Tiempo Real</h4>
+                                    <p>Compartir tu ubicación con clientes durante viajes activos</p>
+                                </div>
+                                <label class="custom-toggle">
+                                    <input type="checkbox" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="toggle-setting-item">
+                                <div class="toggle-info">
+                                    <h4>Datos de Análisis</h4>
+                                    <p>Compartir datos anónimos para mejorar la plataforma</p>
+                                </div>
+                                <label class="custom-toggle">
+                                    <input type="checkbox">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Pestañas placeholder -->
+            <section class="settings-tab-content" id="preferences-tab">
+                <div class="placeholder-content">
+                    <i class="fas fa-cogs"></i>
+                    <h3>Preferencias</h3>
+                    <p>Esta sección estará disponible próximamente</p>
+                </div>
+            </section>
+
+            <section class="settings-tab-content" id="payment-tab">
+                <div class="placeholder-content">
+                    <i class="fas fa-credit-card"></i>
+                    <h3>Métodos de Pago</h3>
+                    <p>Esta sección estará disponible próximamente</p>
+                </div>
+            </section>
+
+            <section class="settings-tab-content" id="documents-tab">
+                <div class="placeholder-content">
+                    <i class="fas fa-file-contract"></i>
+                    <h3>Documentación</h3>
+                    <p>Esta sección estará disponible próximamente</p>
+                </div>
+            </section>
+        </main>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/settings_carrier.js') }}"></script>
+{% endblock %}

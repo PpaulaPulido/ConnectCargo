@@ -1,0 +1,225 @@
+{% extends "/carriers/base_carrier.html" %}
+
+{% block title %}Notificaciones - ConnectCargo{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/notifications_carrier.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="notifications-container">
+    <div class="notifications-header">
+        <div class="header-content">
+            <h1>Notificaciones</h1>
+            <p>Mantente al día con tus actividades y alertas</p>
+        </div>
+        <div class="header-actions">
+            <button class="btn secondary" id="markAllRead">
+                <i class="fas fa-check-double"></i>
+                Marcar todas como leídas
+            </button>
+            <button class="btn outline" id="clearAll">
+                <i class="fas fa-trash"></i>
+                Limpiar todo
+            </button>
+        </div>
+    </div>
+
+    <!-- Filtros de Notificaciones -->
+    <div class="notifications-filters">
+        <div class="filter-tabs">
+            <button class="filter-tab active" data-filter="all">
+                <i class="fas fa-bell"></i>
+                Todas
+                <span class="count-badge">12</span>
+            </button>
+            <button class="filter-tab" data-filter="unread">
+                <i class="fas fa-envelope"></i>
+                No leídas
+                <span class="count-badge">3</span>
+            </button>
+            <button class="filter-tab" data-filter="system">
+                <i class="fas fa-cog"></i>
+                Sistema
+                <span class="count-badge">5</span>
+            </button>
+            <button class="filter-tab" data-filter="trips">
+                <i class="fas fa-truck-loading"></i>
+                Viajes
+                <span class="count-badge">4</span>
+            </button>
+            <button class="filter-tab" data-filter="payments">
+                <i class="fas fa-dollar-sign"></i>
+                Pagos
+                <span class="count-badge">2</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Lista de Notificaciones -->
+    <div class="notifications-list">
+        <!-- Notificación No Leída -->
+        <div class="notification-item unread" data-type="trips" data-id="1">
+            <div class="notification-icon">
+                <i class="fas fa-truck-loading"></i>
+                <div class="unread-dot"></div>
+            </div>
+            <div class="notification-content">
+                <div class="notification-header">
+                    <h3>Nueva carga disponible</h3>
+                    <span class="notification-time">Hace 5 min</span>
+                </div>
+                <p class="notification-message">
+                    Tienes una nueva carga disponible en tu ruta habitual: <strong>Bogotá a Medellín</strong>. 
+                    Peso: 1,200 kg - Pago: $850,000
+                </p>
+                <div class="notification-actions">
+                    <button class="action-btn primary" data-action="view-load">
+                        Ver Carga
+                    </button>
+                    <button class="action-btn outline" data-action="dismiss">
+                        Descartar
+                    </button>
+                </div>
+            </div>
+            <button class="notification-close" data-id="1">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <!-- Notificación del Sistema -->
+        <div class="notification-item" data-type="system" data-id="2">
+            <div class="notification-icon">
+                <i class="fas fa-cog"></i>
+            </div>
+            <div class="notification-content">
+                <div class="notification-header">
+                    <h3>Actualización del sistema</h3>
+                    <span class="notification-time">Hace 2 horas</span>
+                </div>
+                <p class="notification-message">
+                    Hemos mejorado nuestro sistema de seguimiento en tiempo real. 
+                    Ahora podrás compartir tu ubicación con los clientes de forma más precisa.
+                </p>
+            </div>
+            <button class="notification-close" data-id="2">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <!-- Notificación de Pago -->
+        <div class="notification-item unread" data-type="payments" data-id="3">
+            <div class="notification-icon">
+                <i class="fas fa-dollar-sign"></i>
+                <div class="unread-dot"></div>
+            </div>
+            <div class="notification-content">
+                <div class="notification-header">
+                    <h3>Pago procesado</h3>
+                    <span class="notification-time">Ayer, 15:30</span>
+                </div>
+                <p class="notification-message">
+                    Tu pago por el viaje #TR-7842 ha sido procesado exitosamente. 
+                    <strong>$950,000</strong> han sido depositados en tu cuenta.
+                </p>
+                <div class="notification-actions">
+                    <button class="action-btn outline" data-action="view-receipt">
+                        Ver Comprobante
+                    </button>
+                </div>
+            </div>
+            <button class="notification-close" data-id="3">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <!-- Notificación de Viaje -->
+        <div class="notification-item" data-type="trips" data-id="4">
+            <div class="notification-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="notification-content">
+                <div class="notification-header">
+                    <h3>Viaje completado</h3>
+                    <span class="notification-time">Ayer, 10:15</span>
+                </div>
+                <p class="notification-message">
+                    El cliente ha confirmado la entrega del viaje #TR-7841. 
+                    Tu calificación ha mejorado a <strong>4.8★</strong>
+                </p>
+                <div class="notification-actions">
+                    <button class="action-btn outline" data-action="view-rating">
+                        Ver Calificación
+                    </button>
+                </div>
+            </div>
+            <button class="notification-close" data-id="4">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <!-- Notificación de Documentos -->
+        <div class="notification-item unread" data-type="system" data-id="5">
+            <div class="notification-icon">
+                <i class="fas fa-file-alt"></i>
+                <div class="unread-dot"></div>
+            </div>
+            <div class="notification-content">
+                <div class="notification-header">
+                    <h3>Documento por vencer</h3>
+                    <span class="notification-time">2 días atrás</span>
+                </div>
+                <p class="notification-message">
+                    Tu seguro vehicular vence en <strong>15 días</strong>. 
+                    Por favor, actualiza tu documentación para mantener tu cuenta activa.
+                </p>
+                <div class="notification-actions">
+                    <button class="action-btn primary" data-action="upload-docs">
+                        Actualizar Documentos
+                    </button>
+                </div>
+            </div>
+            <button class="notification-close" data-id="5">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <!-- Más notificaciones antiguas -->
+        <div class="notification-item" data-type="system" data-id="6">
+            <div class="notification-icon">
+                <i class="fas fa-bullhorn"></i>
+            </div>
+            <div class="notification-content">
+                <div class="notification-header">
+                    <h3>Nueva funcionalidad</h3>
+                    <span class="notification-time">1 semana atrás</span>
+                </div>
+                <p class="notification-message">
+                    Ya puedes configurar rutas preferidas y recibir notificaciones 
+                    cuando haya cargas disponibles en tus trayectos habituales.
+                </p>
+            </div>
+            <button class="notification-close" data-id="6">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Estado vacío -->
+    <div class="empty-state hidden" id="emptyState">
+        <div class="empty-icon">
+            <i class="fas fa-bell-slash"></i>
+        </div>
+        <h3>No hay notificaciones</h3>
+        <p>Cuando tengas nuevas notificaciones, aparecerán aquí.</p>
+        <button class="btn primary" id="refreshNotifications">
+            <i class="fas fa-sync"></i>
+            Actualizar
+        </button>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/notifications_carrier.js') }}"></script>
+{% endblock %}

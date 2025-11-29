@@ -1,0 +1,471 @@
+{% extends "/carriers/base_carrier.html" %}
+
+{% block title %}Mis Rutas - ConnectCargo{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/routes.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="routes-page">
+    <div class="routes-header">
+        <div class="header-content">
+            <h1>Mis Rutas</h1>
+            <p>Gestiona tus rutas habituales y descubre cargas en tu camino</p>
+        </div>
+        <div class="header-actions">
+            <button class="routes-action-btn primary" id="addRouteBtn">
+                <i class="fas fa-plus"></i>
+                Nueva Ruta
+            </button>
+        </div>
+    </div>
+
+    <!-- Estadísticas Rápidas -->
+    <div class="routes-stats">
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-route"></i>
+            </div>
+            <div class="stat-info">
+                <h3>5</h3>
+                <p>Rutas Activas</p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-truck-loading"></i>
+            </div>
+            <div class="stat-info">
+                <h3>12</h3>
+                <p>Cargas Esta Semana</p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-money-bill-wave"></i>
+            </div>
+            <div class="stat-info">
+                <h3>$4.2M</h3>
+                <p>Ingresos Totales</p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-star"></i>
+            </div>
+            <div class="stat-info">
+                <h3>4.8</h3>
+                <p>Calificación Promedio</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filtros y Búsqueda -->
+    <div class="routes-filters">
+        <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Buscar rutas por origen o destino..." id="routesSearch">
+        </div>
+        <div class="filter-tabs">
+            <button class="filter-tab active" data-filter="all">
+                <i class="fas fa-list"></i>
+                Todas las Rutas
+            </button>
+            <button class="filter-tab" data-filter="active">
+                <i class="fas fa-play-circle"></i>
+                Activas
+            </button>
+            <button class="filter-tab" data-filter="favorite">
+                <i class="fas fa-star"></i>
+                Favoritas
+            </button>
+            <button class="filter-tab" data-filter="archived">
+                <i class="fas fa-archive"></i>
+                Archivadas
+            </button>
+        </div>
+    </div>
+
+    <!-- Lista de Rutas -->
+    <div class="routes-container">
+        <!-- Ruta Activa -->
+        <div class="route-card active" data-category="active" data-favorite="true">
+            <div class="route-header">
+                <div class="route-title">
+                    <h3>Bogotá - Medellín</h3>
+                    <div class="route-tags">
+                        <span class="route-tag primary">Activa</span>
+                        <span class="route-tag success">Alta Demanda</span>
+                        <span class="route-tag favorite">
+                            <i class="fas fa-star"></i>
+                            Favorita
+                        </span>
+                    </div>
+                </div>
+                <div class="route-actions">
+                    <button class="route-action-btn" title="Editar">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="route-action-btn" title="Archivar">
+                        <i class="fas fa-archive"></i>
+                    </button>
+                    <button class="route-action-btn favorite-btn active" title="Quitar de favoritos">
+                        <i class="fas fa-star"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="route-content">
+                <div class="route-map-preview">
+                    <div class="map-points">
+                        <div class="point origin">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Bogotá, DC</span>
+                        </div>
+                        <div class="route-line">
+                            <div class="route-dots">
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                            </div>
+                        </div>
+                        <div class="point destination">
+                            <i class="fas fa-flag-checkered"></i>
+                            <span>Medellín, ANT</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="route-details">
+                    <div class="detail-item">
+                        <i class="fas fa-road"></i>
+                        <div>
+                            <strong>415 km</strong>
+                            <span>Distancia total</span>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <strong>8-10 hrs</strong>
+                            <span>Tiempo estimado</span>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-money-bill-wave"></i>
+                        <div>
+                            <strong>$750K - $1.2M</strong>
+                            <span>Rango de precios</span>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-calendar"></i>
+                        <div>
+                            <strong>3/semana</strong>
+                            <span>Frecuencia</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="route-footer">
+                <div class="route-stats">
+                    <div class="stat">
+                        <i class="fas fa-truck-loading"></i>
+                        <span>12 cargas este mes</span>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-percentage"></i>
+                        <span>95% de éxito</span>
+                    </div>
+                </div>
+                <button class="routes-action-btn outline">
+                    <i class="fas fa-eye"></i>
+                    Ver Cargas
+                </button>
+            </div>
+        </div>
+
+        <!-- Ruta Activa 2 -->
+        <div class="route-card active" data-category="active">
+            <div class="route-header">
+                <div class="route-title">
+                    <h3>Medellín - Cali</h3>
+                    <div class="route-tags">
+                        <span class="route-tag primary">Activa</span>
+                        <span class="route-tag warning">Media Demanda</span>
+                    </div>
+                </div>
+                <div class="route-actions">
+                    <button class="route-action-btn" title="Editar">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="route-action-btn" title="Archivar">
+                        <i class="fas fa-archive"></i>
+                    </button>
+                    <button class="route-action-btn favorite-btn" title="Marcar como favorita">
+                        <i class="fas fa-star"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="route-content">
+                <div class="route-map-preview">
+                    <div class="map-points">
+                        <div class="point origin">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Medellín, ANT</span>
+                        </div>
+                        <div class="route-line">
+                            <div class="route-dots">
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                            </div>
+                        </div>
+                        <div class="point destination">
+                            <i class="fas fa-flag-checkered"></i>
+                            <span>Cali, VAL</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="route-details">
+                    <div class="detail-item">
+                        <i class="fas fa-road"></i>
+                        <div>
+                            <strong>520 km</strong>
+                            <span>Distancia total</span>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <strong>10-12 hrs</strong>
+                            <span>Tiempo estimado</span>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-money-bill-wave"></i>
+                        <div>
+                            <strong>$600K - $950K</strong>
+                            <span>Rango de precios</span>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-calendar"></i>
+                        <div>
+                            <strong>2/semana</strong>
+                            <span>Frecuencia</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="route-footer">
+                <div class="route-stats">
+                    <div class="stat">
+                        <i class="fas fa-truck-loading"></i>
+                        <span>8 cargas este mes</span>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-percentage"></i>
+                        <span>92% de éxito</span>
+                    </div>
+                </div>
+                <button class="routes-action-btn outline">
+                    <i class="fas fa-eye"></i>
+                    Ver Cargas
+                </button>
+            </div>
+        </div>
+
+        <!-- Ruta Archivada -->
+        <div class="route-card archived" data-category="archived">
+            <div class="route-header">
+                <div class="route-title">
+                    <h3>Bogotá - Cartagena</h3>
+                    <div class="route-tags">
+                        <span class="route-tag secondary">Archivada</span>
+                        <span class="route-tag danger">Baja Demanda</span>
+                    </div>
+                </div>
+                <div class="route-actions">
+                    <button class="route-action-btn" title="Reactivar">
+                        <i class="fas fa-play"></i>
+                    </button>
+                    <button class="route-action-btn" title="Eliminar">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="route-content">
+                <div class="route-map-preview">
+                    <div class="map-points">
+                        <div class="point origin">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Bogotá, DC</span>
+                        </div>
+                        <div class="route-line">
+                            <div class="route-dots">
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                            </div>
+                        </div>
+                        <div class="point destination">
+                            <i class="fas fa-flag-checkered"></i>
+                            <span>Cartagena, BOL</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="route-details">
+                    <div class="detail-item">
+                        <i class="fas fa-road"></i>
+                        <div>
+                            <strong>1,045 km</strong>
+                            <span>Distancia total</span>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <strong>18-22 hrs</strong>
+                            <span>Tiempo estimado</span>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-money-bill-wave"></i>
+                        <div>
+                            <strong>$1.2M - $1.8M</strong>
+                            <span>Rango de precios</span>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-calendar"></i>
+                        <div>
+                            <strong>1/mes</strong>
+                            <span>Frecuencia</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="route-footer">
+                <div class="route-stats">
+                    <div class="stat">
+                        <i class="fas fa-truck-loading"></i>
+                        <span>2 cargas este año</span>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-percentage"></i>
+                        <span>85% de éxito</span>
+                    </div>
+                </div>
+                <button class="routes-action-btn outline">
+                    <i class="fas fa-history"></i>
+                    Reactivar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Estado Vacío -->
+    <div class="empty-routes hidden" id="emptyRoutes">
+        <div class="empty-icon">
+            <i class="fas fa-route"></i>
+        </div>
+        <h3>No hay rutas configuradas</h3>
+        <p>Comienza agregando tu primera ruta para recibir notificaciones de cargas disponibles</p>
+        <button class="routes-action-btn primary" id="addFirstRouteBtn">
+            <i class="fas fa-plus"></i>
+            Crear Mi Primera Ruta
+        </button>
+    </div>
+</div>
+
+<!-- Modal para Nueva Ruta -->
+<div class="modal-overlay hidden" id="routeModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Agregar Nueva Ruta</h3>
+            <button class="modal-close" id="closeModal">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <form class="route-form" id="newRouteForm">
+            <div class="form-row">
+                <div class="input-group">
+                    <label for="routeOrigin">Origen</label>
+                    <input type="text" id="routeOrigin" name="origin" placeholder="Ciudad de origen" required>
+                </div>
+                <div class="input-group">
+                    <label for="routeDestination">Destino</label>
+                    <input type="text" id="routeDestination" name="destination" placeholder="Ciudad de destino" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="input-group">
+                    <label for="routeFrequency">Frecuencia</label>
+                    <select id="routeFrequency" name="frequency">
+                        <option value="daily">Diaria</option>
+                        <option value="weekly" selected>Semanal</option>
+                        <option value="monthly">Mensual</option>
+                        <option value="occasional">Ocasional</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="routeVehicle">Tipo de Vehículo</label>
+                    <select id="routeVehicle" name="vehicle_type">
+                        <option value="camion">Camión</option>
+                        <option value="furgon">Furgón</option>
+                        <option value="volqueta">Volqueta</option>
+                        <option value="tanquero">Tanquero</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="routeCapacity">Capacidad (kg)</label>
+                <input type="number" id="routeCapacity" name="capacity" placeholder="Ej: 10000" min="0" required>
+            </div>
+
+            <div class="input-group">
+                <label for="routeDescription">Descripción (Opcional)</label>
+                <textarea id="routeDescription" name="description" placeholder="Agrega detalles sobre tu ruta, preferencias, etc." rows="3"></textarea>
+            </div>
+
+            <div class="form-options">
+                <label class="checkbox-option">
+                    <input type="checkbox" name="notifications" checked>
+                    <span class="checkmark"></span>
+                    Recibir notificaciones de cargas en esta ruta
+                </label>
+                <label class="checkbox-option">
+                    <input type="checkbox" name="favorite">
+                    <span class="checkmark"></span>
+                    Marcar como favorita
+                </label>
+            </div>
+
+            <div class="modal-actions">
+                <button type="button" class="routes-action-btn secondary" id="cancelRoute">
+                    Cancelar
+                </button>
+                <button type="submit" class="routes-action-btn primary">
+                    <i class="fas fa-save"></i>
+                    Guardar Ruta
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/routes_carrier.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,467 @@
+{% extends "/carriers/base_carrier.html" %}
+
+{% block title %}Mi Perfil - ConnectCargo{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/carrier_profile.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="carrier-profile-container">
+    <!-- Header del Perfil -->
+    <div class="carrier-profile-header">
+        <div class="carrier-header-content">
+            <div class="carrier-header-text">
+                <h1>Mi Perfil de Transportista</h1>
+                <p>Completa tu información para aumentar tus oportunidades de carga</p>
+            </div>
+            <div class="carrier-header-actions">
+                <button class="carrier-btn carrier-btn-secondary" id="carrierPreviewProfile">
+                    <i class="fas fa-eye"></i>
+                    Vista Previa
+                </button>
+                <button class="carrier-btn carrier-btn-primary" id="carrierSaveProfile">
+                    <i class="fas fa-save"></i>
+                    Guardar Cambios
+                </button>
+            </div>
+        </div>
+        
+        <!-- Barra de Progreso -->
+        <div class="carrier-profile-completion">
+            <div class="carrier-completion-header">
+                <span>Progreso del Perfil</span>
+                <span class="carrier-completion-percentage" id="carrierCompletionPercentage">45%</span>
+            </div>
+            <div class="carrier-completion-bar">
+                <div class="carrier-completion-progress" id="carrierCompletionProgress" style="width: 45%"></div>
+            </div>
+            <p class="carrier-completion-hint">Completa toda tu información para aparecer en los primeros resultados de búsqueda</p>
+        </div>
+    </div>
+
+    <div class="carrier-profile-content">
+        <!-- Sección Izquierda: Navegación -->
+        <div class="carrier-profile-sidebar">
+            <!-- Foto de Perfil -->
+            <div class="carrier-profile-picture-section">
+                <div class="carrier-profile-picture">
+                    <img src="{{ current_user.get_profile_picture_url() }}" alt="Foto de perfil" id="carrierProfileImage">
+                    <input type="file" id="carrierPhotoUpload" accept="image/*" style="display: none;">
+                    <button class="carrier-change-photo-btn" id="carrierChangePhotoBtn">
+                        <i class="fas fa-camera"></i>
+                    </button>
+                </div>
+                <h3 id="carrierUserName">{{ current_user.name if current_user.name else current_user.email.split('@')[0] }}</h3>
+                <p class="carrier-profile-verification">
+                    <i class="fas fa-shield-alt"></i>
+                    Verificación: <span class="carrier-verification-level" id="carrierVerificationLevel">Básica</span>
+                </p>
+                <div class="carrier-profile-stats">
+                    <div class="carrier-stat">
+                        <span class="carrier-stat-number" id="carrierCompletedTrips">0</span>
+                        <span class="carrier-stat-label">Viajes Completados</span>
+                    </div>
+                    <div class="carrier-stat">
+                        <span class="carrier-stat-number" id="carrierAverageRating">0.0</span>
+                        <span class="carrier-stat-label">Calificación</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navegación del Perfil -->
+            <nav class="carrier-profile-nav">
+                <a href="#carrier-personal" class="carrier-nav-item carrier-nav-active" data-carrier-section="personal">
+                    <i class="fas fa-user"></i>
+                    Información Personal
+                </a>
+                <a href="#carrier-professional" class="carrier-nav-item" data-carrier-section="professional">
+                    <i class="fas fa-briefcase"></i>
+                    Información Profesional
+                </a>
+                <a href="#carrier-documents" class="carrier-nav-item" data-carrier-section="documents">
+                    <i class="fas fa-file-alt"></i>
+                    Documentación
+                </a>
+                <a href="#carrier-vehicle" class="carrier-nav-item" data-carrier-section="vehicle">
+                    <i class="fas fa-truck"></i>
+                    Vehículo y Capacidad
+                </a>
+                <a href="#carrier-preferences" class="carrier-nav-item" data-carrier-section="preferences">
+                    <i class="fas fa-sliders-h"></i>
+                    Preferencias
+                </a>
+            </nav>
+        </div>
+
+        <!-- Sección Derecha: Formularios -->
+        <div class="carrier-profile-forms">
+            <!-- Información Personal -->
+            <section id="carrier-personal" class="carrier-form-section carrier-form-active">
+                <div class="carrier-section-header">
+                    <h2><i class="fas fa-user"></i> Información Personal</h2>
+                    <p>Información básica de contacto y ubicación</p>
+                </div>
+                
+                <form class="carrier-profile-form" id="carrierPersonalForm">
+                    <div class="carrier-form-grid">
+                        <div class="carrier-form-group">
+                            <label for="carrierEmail">Email</label>
+                            <input type="email" id="carrierEmail" name="email" value="{{ current_user.email }}" readonly>
+                            <small>El email no se puede modificar</small>
+                        </div>
+                        <div class="carrier-form-group">
+                            <label for="carrierPhone">Teléfono Principal</label>
+                            <input type="tel" id="carrierPhone" name="phone" value="{{ current_user.phone }}">
+                        </div>
+                    </div>
+
+                    <div class="carrier-form-grid">
+                        <div class="carrier-form-group">
+                            <label for="carrierAlternativePhone">Teléfono Alternativo</label>
+                            <input type="tel" id="carrierAlternativePhone" name="alternative_phone" value="{{ current_user.alternative_phone if current_user.alternative_phone }}">
+                        </div>
+                        <div class="carrier-form-group">
+                            <label for="carrierAddress">Dirección</label>
+                            <input type="text" id="carrierAddress" name="address" value="{{ current_user.address }}">
+                        </div>
+                    </div>
+
+                    <div class="carrier-form-grid">
+                        <div class="carrier-form-group">
+                            <label for="carrierCity">Ciudad</label>
+                            <input type="text" id="carrierCity" name="city" value="{{ current_user.city }}">
+                        </div>
+                        <div class="carrier-form-group">
+                            <label for="carrierState">Departamento/Estado</label>
+                            <input type="text" id="carrierState" name="state" value="{{ current_user.state if current_user.state }}">
+                        </div>
+                    </div>
+
+                    <div class="carrier-form-group">
+                        <label for="carrierCountry">País</label>
+                        <select id="carrierCountry" name="country">
+                            <option value="">Seleccionar país</option>
+                            <option value="Colombia" {% if current_user.country == 'Colombia' %}selected{% endif %}>Colombia</option>
+                            <option value="Argentina" {% if current_user.country == 'Argentina' %}selected{% endif %}>Argentina</option>
+                            <option value="México" {% if current_user.country == 'México' %}selected{% endif %}>México</option>
+                            <option value="Chile" {% if current_user.country == 'Chile' %}selected{% endif %}>Chile</option>
+                            <option value="Perú" {% if current_user.country == 'Perú' %}selected{% endif %}>Perú</option>
+                        </select>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Información Profesional -->
+            <section id="carrier-professional" class="carrier-form-section">
+                <div class="carrier-section-header">
+                    <h2><i class="fas fa-briefcase"></i> Información Profesional</h2>
+                    <p>Datos sobre tu experiencia y servicios de transporte</p>
+                </div>
+                
+                <form class="carrier-profile-form" id="carrierProfessionalForm">
+                    <div class="carrier-form-group">
+                        <label for="carrierType">Tipo de Transportista</label>
+                        <select id="carrierType" name="carrier_type">
+                            <option value="individual" {% if current_user.carrier and current_user.carrier.carrier_type.value == 'individual' %}selected{% endif %}>Transportista Individual</option>
+                            <option value="company" {% if current_user.carrier and current_user.carrier.carrier_type.value == 'company' %}selected{% endif %}>Empresa de Transporte</option>
+                        </select>
+                    </div>
+
+                    <div class="carrier-form-grid">
+                        <div class="carrier-form-group">
+                            <label for="carrierDriverLicense">Licencia de Conducción</label>
+                            <input type="text" id="carrierDriverLicense" name="driver_license" 
+                                   value="{{ current_user.carrier.driver_license if current_user.carrier }}">
+                        </div>
+                        <div class="carrier-form-group">
+                            <label for="carrierLicenseCategory">Categoría de Licencia</label>
+                            <input type="text" id="carrierLicenseCategory" name="license_category" 
+                                   value="{{ current_user.carrier.license_category if current_user.carrier }}">
+                        </div>
+                    </div>
+
+                    <div class="carrier-form-grid">
+                        <div class="carrier-form-group">
+                            <label for="carrierLicenseExpiry">Vencimiento Licencia</label>
+                            <input type="date" id="carrierLicenseExpiry" name="license_expiry_date" 
+                                   value="{{ current_user.carrier.license_expiry_date if current_user.carrier and current_user.carrier.license_expiry_date }}">
+                        </div>
+                        <div class="carrier-form-group">
+                            <label for="carrierYearsExperience">Años de Experiencia</label>
+                            <input type="number" id="carrierYearsExperience" name="years_experience" min="0" max="50" 
+                                   value="{{ current_user.carrier.years_experience if current_user.carrier }}">
+                        </div>
+                    </div>
+
+                    <div class="carrier-form-group">
+                        <label>Especializaciones en Carga</label>
+                        <div class="carrier-tags-input" id="carrierCargoSpecializations">
+                            {% if current_user.carrier and current_user.carrier.cargo_specializations %}
+                                {% for spec in current_user.carrier.get_cargo_specializations() %}
+                                    <span class="carrier-tag">{{ spec }} <i class="fas fa-times"></i></span>
+                                {% endfor %}
+                            {% endif %}
+                            <input type="text" class="carrier-tags-input-field" placeholder="Agregar especialización...">
+                        </div>
+                        <small>Ejemplos: Alimentos refrigerados, Materiales peligrosos, Carga general, etc.</small>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Documentación -->
+            <section id="carrier-documents" class="carrier-form-section">
+                <div class="carrier-section-header">
+                    <h2><i class="fas fa-file-alt"></i> Documentación</h2>
+                    <p>Documentos requeridos para verificación</p>
+                </div>
+                
+                <div class="carrier-documents-grid">
+                    <div class="carrier-document-card">
+                        <div class="carrier-document-icon">
+                            <i class="fas fa-id-card"></i>
+                        </div>
+                        <div class="carrier-document-info">
+                            <h4>Documento de Identidad</h4>
+                            <p class="carrier-document-status carrier-document-verified">
+                                <i class="fas fa-check-circle"></i>
+                                Verificado
+                            </p>
+                            <small>Subido el 15 Nov, 2024</small>
+                        </div>
+                        <button class="carrier-btn carrier-btn-outline">Actualizar</button>
+                    </div>
+
+                    <div class="carrier-document-card">
+                        <div class="carrier-document-icon">
+                            <i class="fas fa-id-card-alt"></i>
+                        </div>
+                        <div class="carrier-document-info">
+                            <h4>Licencia de Conducción</h4>
+                            <p class="carrier-document-status carrier-document-pending">
+                                <i class="fas fa-clock"></i>
+                                Pendiente de revisión
+                            </p>
+                            <small>Subido el 20 Nov, 2024</small>
+                        </div>
+                        <button class="carrier-btn carrier-btn-outline">Ver Detalles</button>
+                    </div>
+
+                    <div class="carrier-document-card">
+                        <div class="carrier-document-icon">
+                            <i class="fas fa-file-contract"></i>
+                        </div>
+                        <div class="carrier-document-info">
+                            <h4>Póliza de Seguro</h4>
+                            <p class="carrier-document-status carrier-document-missing">
+                                <i class="fas fa-exclamation-circle"></i>
+                                No subido
+                            </p>
+                            <small>Requerido para operar</small>
+                        </div>
+                        <button class="carrier-btn carrier-btn-primary">Subir Documento</button>
+                    </div>
+
+                    <div class="carrier-document-card">
+                        <div class="carrier-document-icon">
+                            <i class="fas fa-car-crash"></i>
+                        </div>
+                        <div class="carrier-document-info">
+                            <h4>SOAT</h4>
+                            <p class="carrier-document-status carrier-document-expired">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                Vencido
+                            </p>
+                            <small>Venció el 10 Nov, 2024</small>
+                        </div>
+                        <button class="carrier-btn carrier-btn-warning">Renovar</button>
+                    </div>
+                </div>
+
+                <div class="carrier-upload-area" id="carrierUploadArea">
+                    <div class="carrier-upload-content">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <h4>Arrastra tus documentos aquí</h4>
+                        <p>o <span class="carrier-browse-link">busca en tu dispositivo</span></p>
+                        <small>Formatos aceptados: PDF, JPG, PNG (Máx. 10MB)</small>
+                    </div>
+                    <input type="file" id="carrierDocumentUpload" multiple style="display: none;">
+                </div>
+            </section>
+
+            <!-- Vehículo y Capacidad -->
+            <section id="carrier-vehicle" class="carrier-form-section">
+                <div class="carrier-section-header">
+                    <h2><i class="fas fa-truck"></i> Vehículo y Capacidad</h2>
+                    <p>Información sobre tu(s) vehículo(s) de transporte</p>
+                </div>
+                
+                <form class="carrier-profile-form" id="carrierVehicleForm">
+                    <div class="carrier-form-grid">
+                        <div class="carrier-form-group">
+                            <label for="carrierMaxCapacity">Capacidad Máxima (kg)</label>
+                            <input type="number" id="carrierMaxCapacity" name="max_capacity_kg" 
+                                   value="{{ current_user.carrier.max_capacity_kg if current_user.carrier }}">
+                        </div>
+                        <div class="carrier-form-group">
+                            <label for="carrierVehicleCount">Número de Vehículos</label>
+                            <input type="number" id="carrierVehicleCount" name="vehicle_count" min="1" 
+                                   value="{{ current_user.carrier.vehicle_count if current_user.carrier else 1 }}">
+                        </div>
+                    </div>
+
+                    <div class="carrier-form-group">
+                        <label>Tipos de Vehículo Disponibles</label>
+                        <div class="carrier-checkbox-grid">
+                            <label class="carrier-checkbox-label">
+                                <input type="checkbox" name="vehicle_types" value="camion_pequeno">
+                                <span class="carrier-checkmark"></span>
+                                Camión Pequeño (≤ 3.5T)
+                            </label>
+                            <label class="carrier-checkbox-label">
+                                <input type="checkbox" name="vehicle_types" value="camion_mediano">
+                                <span class="carrier-checkmark"></span>
+                                Camión Mediano (3.5T - 7.5T)
+                            </label>
+                            <label class="carrier-checkbox-label">
+                                <input type="checkbox" name="vehicle_types" value="camion_grande">
+                                <span class="carrier-checkmark"></span>
+                                Camión Grande (≥ 7.5T)
+                            </label>
+                            <label class="carrier-checkbox-label">
+                                <input type="checkbox" name="vehicle_types" value="furgon">
+                                <span class="carrier-checkmark"></span>
+                                Furgón
+                            </label>
+                            <label class="carrier-checkbox-label">
+                                <input type="checkbox" name="vehicle_types" value="volquete">
+                                <span class="carrier-checkmark"></span>
+                                Volquete
+                            </label>
+                            <label class="carrier-checkbox-label">
+                                <input type="checkbox" name="vehicle_types" value="tanquero">
+                                <span class="carrier-checkmark"></span>
+                                Tanquero
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="carrier-form-group">
+                        <label>Equipamiento Especial</label>
+                        <div class="carrier-checkbox-grid">
+                            <label class="carrier-checkbox-label">
+                                <input type="checkbox" name="has_refrigerated_equipment" 
+                                       {% if current_user.carrier and current_user.carrier.has_refrigerated_equipment %}checked{% endif %}>
+                                <span class="carrier-checkmark"></span>
+                                Equipo de Refrigeración
+                            </label>
+                            <label class="carrier-checkbox-label">
+                                <input type="checkbox" name="has_dangerous_goods_cert" 
+                                       {% if current_user.carrier and current_user.carrier.has_dangerous_goods_cert %}checked{% endif %}>
+                                <span class="carrier-checkmark"></span>
+                                Certificado para Materiales Peligrosos
+                            </label>
+                            <label class="carrier-checkbox-label">
+                                <input type="checkbox" name="availability_24_7" 
+                                       {% if current_user.carrier and current_user.carrier.availability_24_7 %}checked{% endif %}>
+                                <span class="carrier-checkmark"></span>
+                                Disponibilidad 24/7
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="carrier-form-group">
+                        <label for="carrierUsualRoutes">Rutas Habituales</label>
+                        <textarea id="carrierUsualRoutes" name="usual_routes" rows="3" 
+                                  placeholder="Ej: Bogotá - Medellín, Cali - Pereira, etc.">{% if current_user.carrier and current_user.carrier.usual_routes %}{{ current_user.carrier.get_usual_routes()|join(', ') }}{% endif %}</textarea>
+                        <small>Separa las rutas con comas</small>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Preferencias -->
+            <section id="carrier-preferences" class="carrier-form-section">
+                <div class="carrier-section-header">
+                    <h2><i class="fas fa-sliders-h"></i> Preferencias</h2>
+                    <p>Configura tus preferencias de trabajo y notificaciones</p>
+                </div>
+                
+                <form class="carrier-profile-form" id="carrierPreferencesForm">
+                    <div class="carrier-form-group">
+                        <label class="carrier-switch-label">
+                            <input type="checkbox" name="notifications_active" 
+                                   {% if current_user.notifications_active %}checked{% endif %}>
+                            <span class="carrier-slider"></span>
+                            <span class="carrier-switch-text">Recibir notificaciones de nuevas cargas</span>
+                        </label>
+                    </div>
+
+                    <div class="carrier-form-group">
+                        <label class="carrier-switch-label">
+                            <input type="checkbox" name="email_notifications" checked>
+                            <span class="carrier-slider"></span>
+                            <span class="carrier-switch-text">Notificaciones por email</span>
+                        </label>
+                    </div>
+
+                    <div class="carrier-form-group">
+                        <label class="carrier-switch-label">
+                            <input type="checkbox" name="sms_notifications">
+                            <span class="carrier-slider"></span>
+                            <span class="carrier-switch-text">Notificaciones por SMS</span>
+                        </label>
+                    </div>
+
+                    <div class="carrier-form-group">
+                        <label for="carrierPreferredRadius">Radio de Búsqueda Preferido (km)</label>
+                        <input type="range" id="carrierPreferredRadius" name="preferred_radius" min="10" max="500" value="100">
+                        <div class="carrier-range-value">
+                            <span id="carrierRadiusValue">100 km</span>
+                        </div>
+                    </div>
+
+                    <div class="carrier-form-group">
+                        <label for="carrierLanguage">Idioma Preferido</label>
+                        <select id="carrierLanguage" name="language">
+                            <option value="es" selected>Español</option>
+                            <option value="en">English</option>
+                            <option value="pt">Português</option>
+                        </select>
+                    </div>
+
+                    <div class="carrier-form-actions">
+                        <button type="button" class="carrier-btn carrier-btn-primary" id="carrierSavePreferences">
+                            <i class="fas fa-save"></i>
+                            Guardar Preferencias
+                        </button>
+                        <button type="button" class="carrier-btn carrier-btn-outline" id="carrierResetPreferences">
+                            <i class="fas fa-undo"></i>
+                            Restablecer
+                        </button>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Vista Previa -->
+<div class="carrier-modal" id="carrierPreviewModal">
+    <div class="carrier-modal-content">
+        <div class="carrier-modal-header">
+            <h3>Vista Previa del Perfil</h3>
+            <button class="carrier-modal-close" id="carrierClosePreview">&times;</button>
+        </div>
+        <div class="carrier-modal-body">
+            <div class="carrier-profile-preview">
+                <!-- Contenido de la vista previa -->
+                <p>Esta funcionalidad mostrará cómo ven las empresas tu perfil.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/carrier_profile.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,684 @@
+{% extends "/carriers/base_carrier.html" %}
+
+{% block title %}Mi Vehículo - ConnectCargo{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/vehicle_info.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="vehicle-page">
+    <div class="vehicle-header">
+        <div class="header-content">
+            <h1>Información del Vehículo</h1>
+            <p>Gestiona los datos de tu vehículo y flota</p>
+        </div>
+        <div class="header-actions">
+            <button class="vehicle-action-btn primary" id="addVehicleBtn">
+                <i class="fas fa-plus"></i>
+                Agregar Vehículo
+            </button>
+        </div>
+    </div>
+
+    <!-- Pestañas de Navegación -->
+    <div class="vehicle-tabs">
+        <button class="vehicle-tab active" data-tab="fleet">
+            <i class="fas fa-truck-fleet"></i>
+            Mi Flota
+        </button>
+        <button class="vehicle-tab" data-tab="documents">
+            <i class="fas fa-file-contract"></i>
+            Documentos
+        </button>
+        <button class="vehicle-tab" data-tab="maintenance">
+            <i class="fas fa-tools"></i>
+            Mantenimiento
+        </button>
+        <button class="vehicle-tab" data-tab="insurance">
+            <i class="fas fa-shield-alt"></i>
+            Seguros
+        </button>
+    </div>
+
+    <!-- Contenido de Pestañas -->
+    <div class="vehicle-content">
+        <!-- Pestaña: Mi Flota -->
+        <div class="vehicle-tab-content active" id="fleet-tab">
+            <!-- Estadísticas de Flota -->
+            <div class="fleet-stats">
+                <div class="fleet-stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-truck"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>3</h3>
+                        <p>Vehículos Activos</p>
+                    </div>
+                </div>
+                <div class="fleet-stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-road"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>45,280</h3>
+                        <p>Km Recorridos</p>
+                    </div>
+                </div>
+                <div class="fleet-stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-gas-pump"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>2.8</h3>
+                        <p>Km/L Promedio</p>
+                    </div>
+                </div>
+                <div class="fleet-stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>92%</h3>
+                        <p>Disponibilidad</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lista de Vehículos -->
+            <div class="vehicles-grid">
+                <!-- Vehículo Principal -->
+                <div class="vehicle-card featured">
+                    <div class="vehicle-badge primary">Principal</div>
+                    <div class="vehicle-image">
+                        <img src="{{ url_for('static', filename='images/truck-default.jpg') }}" alt="Volvo FH 540">
+                        <div class="vehicle-status available">Disponible</div>
+                    </div>
+                    
+                    <div class="vehicle-info">
+                        <h3>Volvo FH 540</h3>
+                        <div class="vehicle-details">
+                            <div class="detail">
+                                <i class="fas fa-hashtag"></i>
+                                <span>PLACA: ABC123</span>
+                            </div>
+                            <div class="detail">
+                                <i class="fas fa-weight-hanging"></i>
+                                <span>25,000 kg</span>
+                            </div>
+                            <div class="detail">
+                                <i class="fas fa-ruler-combined"></i>
+                                <span>13.6 m</span>
+                            </div>
+                            <div class="detail">
+                                <i class="fas fa-gas-pump"></i>
+                                <span>Diésel</span>
+                            </div>
+                        </div>
+
+                        <div class="vehicle-specs">
+                            <div class="spec">
+                                <label>Año</label>
+                                <span>2022</span>
+                            </div>
+                            <div class="spec">
+                                <label>Color</label>
+                                <span>Blanco</span>
+                            </div>
+                            <div class="spec">
+                                <label>Ejes</label>
+                                <span>3</span>
+                            </div>
+                            <div class="spec">
+                                <label>KM Actual</label>
+                                <span>85,450 km</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="vehicle-actions">
+                        <button class="vehicle-action-btn outline">
+                            <i class="fas fa-edit"></i>
+                            Editar
+                        </button>
+                        <button class="vehicle-action-btn primary">
+                            <i class="fas fa-eye"></i>
+                            Ver Detalles
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Vehículo Secundario -->
+                <div class="vehicle-card">
+                    <div class="vehicle-image">
+                        <img src="{{ url_for('static', filename='images/truck-default.jpg') }}" alt="Mercedes Actros">
+                        <div class="vehicle-status maintenance">En Mantenimiento</div>
+                    </div>
+                    
+                    <div class="vehicle-info">
+                        <h3>Mercedes Actros 2545</h3>
+                        <div class="vehicle-details">
+                            <div class="detail">
+                                <i class="fas fa-hashtag"></i>
+                                <span>PLACA: DEF456</span>
+                            </div>
+                            <div class="detail">
+                                <i class="fas fa-weight-hanging"></i>
+                                <span>18,000 kg</span>
+                            </div>
+                            <div class="detail">
+                                <i class="fas fa-ruler-combined"></i>
+                                <span>10.5 m</span>
+                            </div>
+                            <div class="detail">
+                                <i class="fas fa-gas-pump"></i>
+                                <span>Diésel</span>
+                            </div>
+                        </div>
+
+                        <div class="vehicle-specs">
+                            <div class="spec">
+                                <label>Año</label>
+                                <span>2020</span>
+                            </div>
+                            <div class="spec">
+                                <label>Color</label>
+                                <span>Azul</span>
+                            </div>
+                            <div class="spec">
+                                <label>Ejes</label>
+                                <span>2</span>
+                            </div>
+                            <div class="spec">
+                                <label>KM Actual</label>
+                                <span>142,300 km</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="vehicle-actions">
+                        <button class="vehicle-action-btn outline">
+                            <i class="fas fa-edit"></i>
+                            Editar
+                        </button>
+                        <button class="vehicle-action-btn primary">
+                            <i class="fas fa-eye"></i>
+                            Ver Detalles
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Vehículo Adicional -->
+                <div class="vehicle-card">
+                    <div class="vehicle-image">
+                        <img src="{{ url_for('static', filename='images/truck-default.jpg') }}" alt="Kenworth T680">
+                        <div class="vehicle-status available">Disponible</div>
+                    </div>
+                    
+                    <div class="vehicle-info">
+                        <h3>Kenworth T680</h3>
+                        <div class="vehicle-details">
+                            <div class="detail">
+                                <i class="fas fa-hashtag"></i>
+                                <span>PLACA: GHI789</span>
+                            </div>
+                            <div class="detail">
+                                <i class="fas fa-weight-hanging"></i>
+                                <span>30,000 kg</span>
+                            </div>
+                            <div class="detail">
+                                <i class="fas fa-ruler-combined"></i>
+                                <span>16.2 m</span>
+                            </div>
+                            <div class="detail">
+                                <i class="fas fa-gas-pump"></i>
+                                <span>Diésel</span>
+                            </div>
+                        </div>
+
+                        <div class="vehicle-specs">
+                            <div class="spec">
+                                <label>Año</label>
+                                <span>2023</span>
+                            </div>
+                            <div class="spec">
+                                <label>Color</label>
+                                <span>Rojo</span>
+                            </div>
+                            <div class="spec">
+                                <label>Ejes</label>
+                                <span>4</span>
+                            </div>
+                            <div class="spec">
+                                <label>KM Actual</label>
+                                <span>23,150 km</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="vehicle-actions">
+                        <button class="vehicle-action-btn outline">
+                            <i class="fas fa-edit"></i>
+                            Editar
+                        </button>
+                        <button class="vehicle-action-btn primary">
+                            <i class="fas fa-eye"></i>
+                            Ver Detalles
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botón para Agregar Más Vehículos -->
+            <div class="add-vehicle-card">
+                <div class="add-vehicle-content">
+                    <i class="fas fa-plus-circle"></i>
+                    <h3>Agregar otro vehículo</h3>
+                    <p>Expande tu flota para aumentar tu capacidad de carga</p>
+                    <button class="vehicle-action-btn outline" id="addAnotherVehicleBtn">
+                        <i class="fas fa-truck"></i>
+                        Nuevo Vehículo
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pestaña: Documentos -->
+        <div class="vehicle-tab-content" id="documents-tab">
+            <div class="documents-section">
+                <h2>Documentos del Vehículo</h2>
+                <p>Gestiona toda la documentación legal de tu flota</p>
+
+                <div class="documents-grid">
+                    <!-- Tarjeta de Documento -->
+                    <div class="document-card">
+                        <div class="document-icon">
+                            <i class="fas fa-file-contract"></i>
+                        </div>
+                        <div class="document-info">
+                            <h4>SOAT</h4>
+                            <p>Seguro Obligatorio de Accidentes de Tránsito</p>
+                            <div class="document-meta">
+                                <span class="status valid">Vigente</span>
+                                <span class="expiry">Vence: 15 Dic 2024</span>
+                            </div>
+                        </div>
+                        <div class="document-actions">
+                            <button class="document-action-btn" title="Descargar">
+                                <i class="fas fa-download"></i>
+                            </button>
+                            <button class="document-action-btn" title="Renovar">
+                                <i class="fas fa-sync"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="document-card">
+                        <div class="document-icon">
+                            <i class="fas fa-id-card"></i>
+                        </div>
+                        <div class="document-info">
+                            <h4>Tarjeta de Operación</h4>
+                            <p>Documento de habilitación vehicular</p>
+                            <div class="document-meta">
+                                <span class="status valid">Vigente</span>
+                                <span class="expiry">Vence: 30 Nov 2024</span>
+                            </div>
+                        </div>
+                        <div class="document-actions">
+                            <button class="document-action-btn" title="Descargar">
+                                <i class="fas fa-download"></i>
+                            </button>
+                            <button class="document-action-btn" title="Renovar">
+                                <i class="fas fa-sync"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="document-card">
+                        <div class="document-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div class="document-info">
+                            <h4>Seguro Extracontractual</h4>
+                            <p>Seguro de responsabilidad civil</p>
+                            <div class="document-meta">
+                                <span class="status warning">Por vencer</span>
+                                <span class="expiry">Vence: 10 Dic 2024</span>
+                            </div>
+                        </div>
+                        <div class="document-actions">
+                            <button class="document-action-btn" title="Descargar">
+                                <i class="fas fa-download"></i>
+                            </button>
+                            <button class="document-action-btn" title="Renovar">
+                                <i class="fas fa-sync"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="document-card">
+                        <div class="document-icon">
+                            <i class="fas fa-certificate"></i>
+                        </div>
+                        <div class="document-info">
+                            <h4>Revisión Tecnomecánica</h4>
+                            <p>Certificado de revisión técnico-mecánica</p>
+                            <div class="document-meta">
+                                <span class="status expired">Vencido</span>
+                                <span class="expiry">Venció: 15 Oct 2024</span>
+                            </div>
+                        </div>
+                        <div class="document-actions">
+                            <button class="document-action-btn" title="Descargar">
+                                <i class="fas fa-download"></i>
+                            </button>
+                            <button class="document-action-btn" title="Renovar">
+                                <i class="fas fa-sync"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="upload-section">
+                    <h3>Subir Nuevo Documento</h3>
+                    <div class="upload-area" id="uploadArea">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Arrastra tus documentos aquí o <span class="browse-link">examina</span></p>
+                        <small>Formatos: PDF, JPG, PNG (Máx. 10MB)</small>
+                        <input type="file" id="documentUpload" accept=".pdf,.jpg,.jpeg,.png" hidden>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pestaña: Mantenimiento -->
+        <div class="vehicle-tab-content" id="maintenance-tab">
+            <div class="maintenance-section">
+                <h2>Historial de Mantenimiento</h2>
+                <p>Registro de servicios y mantenimientos realizados</p>
+
+                <div class="maintenance-stats">
+                    <div class="maintenance-stat">
+                        <i class="fas fa-wrench"></i>
+                        <div>
+                            <h4>3</h4>
+                            <span>Mantenimientos este año</span>
+                        </div>
+                    </div>
+                    <div class="maintenance-stat">
+                        <i class="fas fa-calendar"></i>
+                        <div>
+                            <h4>45 días</h4>
+                            <span>Próximo mantenimiento</span>
+                        </div>
+                    </div>
+                    <div class="maintenance-stat">
+                        <i class="fas fa-money-bill-wave"></i>
+                        <div>
+                            <h4>$2.8M</h4>
+                            <span>Invertido en mantenimiento</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="maintenance-list">
+                    <div class="maintenance-item">
+                        <div class="maintenance-icon">
+                            <i class="fas fa-oil-can"></i>
+                        </div>
+                        <div class="maintenance-details">
+                            <h4>Cambio de Aceite y Filtros</h4>
+                            <p>Servicio de mantenimiento preventivo completo</p>
+                            <div class="maintenance-meta">
+                                <span class="date">15 Oct 2024</span>
+                                <span class="odometer">80,450 km</span>
+                                <span class="cost">$450,000</span>
+                            </div>
+                        </div>
+                        <div class="maintenance-status completed">
+                            Completado
+                        </div>
+                    </div>
+
+                    <div class="maintenance-item">
+                        <div class="maintenance-icon">
+                            <i class="fas fa-tire"></i>
+                        </div>
+                        <div class="maintenance-details">
+                            <h4>Rotación y Balanceo</h4>
+                            <p>Rotación de llantas y balanceo completo</p>
+                            <div class="maintenance-meta">
+                                <span class="date">02 Sep 2024</span>
+                                <span class="odometer">75,200 km</span>
+                                <span class="cost">$280,000</span>
+                            </div>
+                        </div>
+                        <div class="maintenance-status completed">
+                            Completado
+                        </div>
+                    </div>
+
+                    <div class="maintenance-item upcoming">
+                        <div class="maintenance-icon">
+                            <i class="fas fa-tools"></i>
+                        </div>
+                        <div class="maintenance-details">
+                            <h4>Revisión General</h4>
+                            <p>Revisión completa de sistemas y componentes</p>
+                            <div class="maintenance-meta">
+                                <span class="date">30 Dic 2024</span>
+                                <span class="odometer">90,000 km</span>
+                                <span class="cost">-</span>
+                            </div>
+                        </div>
+                        <div class="maintenance-status scheduled">
+                            Programado
+                        </div>
+                    </div>
+                </div>
+
+                <button class="vehicle-action-btn outline">
+                    <i class="fas fa-plus"></i>
+                    Agregar Mantenimiento
+                </button>
+            </div>
+        </div>
+
+        <!-- Pestaña: Seguros -->
+        <div class="vehicle-tab-content" id="insurance-tab">
+            <div class="insurance-section">
+                <h2>Pólizas de Seguro</h2>
+                <p>Gestiona las pólizas de seguro de tu flota</p>
+
+                <div class="insurance-cards">
+                    <div class="insurance-card">
+                        <div class="insurance-header">
+                            <div class="insurance-icon">
+                                <i class="fas fa-car-crash"></i>
+                            </div>
+                            <div class="insurance-info">
+                                <h4>SOAT</h4>
+                                <span class="policy-number">Póliza: SOAT-2024-784512</span>
+                            </div>
+                        </div>
+                        <div class="insurance-details">
+                            <div class="detail">
+                                <label>Aseguradora:</label>
+                                <span>Seguros Bolívar</span>
+                            </div>
+                            <div class="detail">
+                                <label>Vigencia:</label>
+                                <span>15 Dic 2023 - 15 Dic 2024</span>
+                            </div>
+                            <div class="detail">
+                                <label>Valor:</label>
+                                <span>$850,000</span>
+                            </div>
+                        </div>
+                        <div class="insurance-status valid">
+                            <i class="fas fa-check-circle"></i>
+                            Vigente
+                        </div>
+                    </div>
+
+                    <div class="insurance-card">
+                        <div class="insurance-header">
+                            <div class="insurance-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <div class="insurance-info">
+                                <h4>Todo Riesgo</h4>
+                                <span class="policy-number">Póliza: TR-2024-451236</span>
+                            </div>
+                        </div>
+                        <div class="insurance-details">
+                            <div class="detail">
+                                <label>Aseguradora:</label>
+                                <span>Mapfre Seguros</span>
+                            </div>
+                            <div class="detail">
+                                <label>Vigencia:</label>
+                                <span>01 Ene 2024 - 01 Ene 2025</span>
+                            </div>
+                            <div class="detail">
+                                <label>Valor:</label>
+                                <span>$4,200,000</span>
+                            </div>
+                        </div>
+                        <div class="insurance-status valid">
+                            <i class="fas fa-check-circle"></i>
+                            Vigente
+                        </div>
+                    </div>
+
+                    <div class="insurance-card">
+                        <div class="insurance-header">
+                            <div class="insurance-icon">
+                                <i class="fas fa-user-shield"></i>
+                            </div>
+                            <div class="insurance-info">
+                                <h4>Responsabilidad Civil</h4>
+                                <span class="policy-number">Póliza: RC-2024-789123</span>
+                            </div>
+                        </div>
+                        <div class="insurance-details">
+                            <div class="detail">
+                                <label>Aseguradora:</label>
+                                <span>Seguros del Estado</span>
+                            </div>
+                            <div class="detail">
+                                <label>Vigencia:</label>
+                                <span>01 Mar 2024 - 01 Mar 2025</span>
+                            </div>
+                            <div class="detail">
+                                <label>Valor:</label>
+                                <span>$2,800,000</span>
+                            </div>
+                        </div>
+                        <div class="insurance-status warning">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            Por vencer
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para Agregar Vehículo -->
+<div class="modal-overlay hidden" id="vehicleModal">
+    <div class="modal-content large">
+        <div class="modal-header">
+            <h3>Agregar Nuevo Vehículo</h3>
+            <button class="modal-close" id="closeVehicleModal">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <form class="vehicle-form" id="newVehicleForm">
+            <div class="form-section">
+                <h4>Información Básica</h4>
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label for="vehicleBrand">Marca</label>
+                        <input type="text" id="vehicleBrand" name="brand" placeholder="Ej: Volvo" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="vehicleModel">Modelo</label>
+                        <input type="text" id="vehicleModel" name="model" placeholder="Ej: FH 540" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="vehicleYear">Año</label>
+                        <input type="number" id="vehicleYear" name="year" placeholder="Ej: 2023" min="1990" max="2024" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="vehiclePlate">Placa</label>
+                        <input type="text" id="vehiclePlate" name="plate" placeholder="Ej: ABC123" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h4>Especificaciones Técnicas</h4>
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label for="vehicleCapacity">Capacidad (kg)</label>
+                        <input type="number" id="vehicleCapacity" name="capacity" placeholder="Ej: 25000" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="vehicleLength">Longitud (m)</label>
+                        <input type="number" id="vehicleLength" name="length" placeholder="Ej: 13.6" step="0.1" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="vehicleAxles">Número de Ejes</label>
+                        <select id="vehicleAxles" name="axles" required>
+                            <option value="">Seleccionar</option>
+                            <option value="2">2 Ejes</option>
+                            <option value="3">3 Ejes</option>
+                            <option value="4">4 Ejes</option>
+                            <option value="5">5+ Ejes</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="vehicleFuel">Tipo de Combustible</label>
+                        <select id="vehicleFuel" name="fuel" required>
+                            <option value="">Seleccionar</option>
+                            <option value="diesel">Diésel</option>
+                            <option value="gasoline">Gasolina</option>
+                            <option value="electric">Eléctrico</option>
+                            <option value="hybrid">Híbrido</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h4>Información Adicional</h4>
+                <div class="input-group">
+                    <label for="vehicleColor">Color</label>
+                    <input type="text" id="vehicleColor" name="color" placeholder="Ej: Blanco">
+                </div>
+                <div class="input-group">
+                    <label for="vehicleDescription">Descripción</label>
+                    <textarea id="vehicleDescription" name="description" placeholder="Agrega detalles adicionales sobre el vehículo..." rows="3"></textarea>
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button type="button" class="vehicle-action-btn secondary" id="cancelVehicle">
+                    Cancelar
+                </button>
+                <button type="submit" class="vehicle-action-btn primary">
+                    <i class="fas fa-save"></i>
+                    Guardar Vehículo
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/vehicle_info.js') }}"></script>
+{% endblock %}

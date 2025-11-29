@@ -1,0 +1,637 @@
+{% extends "/carriers/base_carrier.html" %}
+
+{% block title %}Viajes Pendientes - ConnectCargo{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pending_trips.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="pending-trips-container">
+    <!-- Header Section -->
+    <div class="page-header">
+        <div class="header-content">
+            <h1 class="page-title">
+                <i class="fas fa-clock"></i>
+                Viajes Pendientes
+            </h1>
+            <p class="page-subtitle">
+                Gestiona tus solicitudes de viaje pendientes de confirmación
+            </p>
+        </div>
+        <div class="header-stats">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-hourglass-half"></i>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-number">5</span>
+                    <span class="stat-label">Pendientes</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-calendar-check"></i>
+                </div>
+                <div class="stat-info">
+                    <span class="stat-number">3</span>
+                    <span class="stat-label">Por esta semana</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filters Section -->
+    <div class="filters-section">
+        <div class="filters-header">
+            <h3>Filtrar Viajes</h3>
+            <button class="btn btn-outline btn-sm" id="clearFilters">
+                <i class="fas fa-times"></i>
+                Limpiar Filtros
+            </button>
+        </div>
+        <div class="filters-grid">
+            <div class="filter-group">
+                <label for="statusFilter">Estado</label>
+                <select id="statusFilter" class="form-select">
+                    <option value="all">Todos los estados</option>
+                    <option value="pending">Pendiente de respuesta</option>
+                    <option value="negotiation">En negociación</option>
+                    <option value="confirmed">Confirmado por cliente</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="dateFilter">Fecha de recogida</label>
+                <select id="dateFilter" class="form-select">
+                    <option value="all">Todas las fechas</option>
+                    <option value="today">Hoy</option>
+                    <option value="tomorrow">Mañana</option>
+                    <option value="week">Esta semana</option>
+                    <option value="next-week">Próxima semana</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="typeFilter">Tipo de carga</label>
+                <select id="typeFilter" class="form-select">
+                    <option value="all">Todos los tipos</option>
+                    <option value="general">Carga general</option>
+                    <option value="refrigerated">Refrigerada</option>
+                    <option value="dangerous">Peligrosa</option>
+                    <option value="fragile">Frágil</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="priceFilter">Rango de precio</label>
+                <select id="priceFilter" class="form-select">
+                    <option value="all">Todos los precios</option>
+                    <option value="low">$0 - $500.000</option>
+                    <option value="medium">$500.000 - $1.000.000</option>
+                    <option value="high">$1.000.000+</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- Trips List -->
+    <div class="trips-section">
+        <div class="section-header">
+            <h2>Solicitudes de Viaje</h2>
+            <div class="sort-options">
+                <span class="sort-label">Ordenar por:</span>
+                <select id="sortTrips" class="form-select sort-select">
+                    <option value="newest">Más recientes</option>
+                    <option value="oldest">Más antiguos</option>
+                    <option value="price-high">Mayor precio</option>
+                    <option value="price-low">Menor precio</option>
+                    <option value="pickup-date">Fecha de recogida</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="trips-list" id="tripsList">
+            <!-- Trip Card 1 -->
+            <div class="trip-card" data-status="pending" data-date="today" data-type="general" data-price="high">
+                <div class="trip-header">
+                    <div class="trip-badge urgent">
+                        <i class="fas fa-bolt"></i>
+                        Urgente
+                    </div>
+                    <div class="trip-meta">
+                        <span class="trip-id">#VC-7842</span>
+                        <span class="trip-date">Solicitado: Hoy 08:30 AM</span>
+                    </div>
+                </div>
+
+                <div class="trip-content">
+                    <div class="route-info">
+                        <div class="route-point origin">
+                            <div class="point-marker">
+                                <i class="fas fa-play-circle"></i>
+                            </div>
+                            <div class="point-details">
+                                <h4>Origen</h4>
+                                <p>Bodega Central, Calle 100 #15-20, Bogotá</p>
+                                <span class="point-time">Recoger: Hoy 2:00 PM</span>
+                            </div>
+                        </div>
+                        <div class="route-line">
+                            <div class="route-duration">
+                                <i class="fas fa-clock"></i>
+                                4h 30m
+                            </div>
+                            <div class="route-distance">280 km</div>
+                        </div>
+                        <div class="route-point destination">
+                            <div class="point-marker">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="point-details">
+                                <h4>Destino</h4>
+                                <p>Centro Logístico, Carrera 50 #82-100, Medellín</p>
+                                <span class="point-time">Entregar: Hoy 6:30 PM</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="trip-details">
+                        <div class="detail-item">
+                            <i class="fas fa-box"></i>
+                            <div class="detail-content">
+                                <span class="detail-label">Tipo de carga</span>
+                                <span class="detail-value">Electrónicos</span>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-weight-hanging"></i>
+                            <div class="detail-content">
+                                <span class="detail-label">Peso / Volumen</span>
+                                <span class="detail-value">1,200 kg / 18m³</span>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-truck"></i>
+                            <div class="detail-content">
+                                <span class="detail-label">Vehículo requerido</span>
+                                <span class="detail-value">Camión 3/4</span>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-dollar-sign"></i>
+                            <div class="detail-content">
+                                <span class="detail-label">Precio ofertado</span>
+                                <span class="detail-value price">$1,250,000</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="client-info">
+                        <div class="client-avatar">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <div class="client-details">
+                            <h5>TechImport S.A.S.</h5>
+                            <div class="client-rating">
+                                <i class="fas fa-star"></i>
+                                <span>4.8 (124 viajes)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="trip-actions">
+                    <button class="btn btn-success btn-sm" onclick="pendingTrips.acceptTrip(this)">
+                        <i class="fas fa-check-circle"></i>
+                        Aceptar Viaje
+                    </button>
+                    <button class="btn btn-outline btn-sm" onclick="pendingTrips.negotiateTrip(this)">
+                        <i class="fas fa-comments"></i>
+                        Negociar
+                    </button>
+                    <button class="btn btn-danger btn-sm" onclick="pendingTrips.rejectTrip(this)">
+                        <i class="fas fa-times-circle"></i>
+                        Rechazar
+                    </button>
+                </div>
+            </div>
+
+            <!-- Trip Card 2 -->
+            <div class="trip-card" data-status="negotiation" data-date="tomorrow" data-type="refrigerated" data-price="medium">
+                <div class="trip-header">
+                    <div class="trip-badge negotiation">
+                        <i class="fas fa-comments"></i>
+                        En Negociación
+                    </div>
+                    <div class="trip-meta">
+                        <span class="trip-id">#VC-7819</span>
+                        <span class="trip-date">Solicitado: Ayer 3:15 PM</span>
+                    </div>
+                </div>
+
+                <div class="trip-content">
+                    <div class="route-info">
+                        <div class="route-point origin">
+                            <div class="point-marker">
+                                <i class="fas fa-play-circle"></i>
+                            </div>
+                            <div class="point-details">
+                                <h4>Origen</h4>
+                                <p>Planta Alimentos Frescos, Vía Cali-Palmira KM 5</p>
+                                <span class="point-time">Recoger: Mañana 8:00 AM</span>
+                            </div>
+                        </div>
+                        <div class="route-line">
+                            <div class="route-duration">
+                                <i class="fas fa-clock"></i>
+                                6h 15m
+                            </div>
+                            <div class="route-distance">420 km</div>
+                        </div>
+                        <div class="route-point destination">
+                            <div class="point-marker">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="point-details">
+                                <h4>Destino</h4>
+                                <p>Centro Comercial Mayor, Bogotá</p>
+                                <span class="point-time">Entregar: Mañana 2:15 PM</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="trip-details">
+                        <div class="detail-item">
+                            <i class="fas fa-snowflake"></i>
+                            <div class="detail-content">
+                                <span class="detail-label">Tipo de carga</span>
+                                <span class="detail-value">Alimentos refrigerados</span>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-weight-hanging"></i>
+                            <div class="detail-content">
+                                <span class="detail-label">Peso / Volumen</span>
+                                <span class="detail-value">800 kg / 12m³</span>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-truck"></i>
+                            <div class="detail-content">
+                                <span class="detail-label">Requisitos</span>
+                                <span class="detail-value">Refrigeración 2-4°C</span>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-dollar-sign"></i>
+                            <div class="detail-content">
+                                <span class="detail-label">Tu contraoferta</span>
+                                <span class="detail-value price">$850,000</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="negotiation-info">
+                        <div class="offer-comparison">
+                            <div class="offer original">
+                                <span>Oferta original:</span>
+                                <span class="price">$750,000</span>
+                            </div>
+                            <div class="offer current">
+                                <span>Tu oferta:</span>
+                                <span class="price">$850,000</span>
+                            </div>
+                        </div>
+                        <div class="negotiation-status">
+                            <i class="fas fa-clock"></i>
+                            Esperando respuesta del cliente
+                        </div>
+                    </div>
+
+                    <div class="client-info">
+                        <div class="client-avatar">
+                            <i class="fas fa-store"></i>
+                        </div>
+                        <div class="client-details">
+                            <h5>SuperMercados La 14</h5>
+                            <div class="client-rating">
+                                <i class="fas fa-star"></i>
+                                <span>4.9 (89 viajes)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="trip-actions">
+                    <button class="btn btn-outline btn-sm" onclick="pendingTrips.modifyOffer(this)">
+                        <i class="fas fa-edit"></i>
+                        Modificar Oferta
+                    </button>
+                    <button class="btn btn-success btn-sm" onclick="pendingTrips.acceptCounterOffer(this)">
+                        <i class="fas fa-handshake"></i>
+                        Aceptar $800,000
+                    </button>
+                    <button class="btn btn-danger btn-sm" onclick="pendingTrips.cancelNegotiation(this)">
+                        <i class="fas fa-times"></i>
+                        Cancelar
+                    </button>
+                </div>
+            </div>
+
+            <!-- Trip Card 3 -->
+            <div class="trip-card" data-status="confirmed" data-date="week" data-type="fragile" data-price="medium">
+                <div class="trip-header">
+                    <div class="trip-badge confirmed">
+                        <i class="fas fa-check-circle"></i>
+                        Confirmado
+                    </div>
+                    <div class="trip-meta">
+                        <span class="trip-id">#VC-7805</span>
+                        <span class="trip-date">Confirmado: Hoy 9:00 AM</span>
+                    </div>
+                </div>
+
+                <div class="trip-content">
+                    <div class="route-info">
+                        <div class="route-point origin">
+                            <div class="point-marker">
+                                <i class="fas fa-play-circle"></i>
+                            </div>
+                            <div class="point-details">
+                                <h4>Origen</h4>
+                                <p>Fábrica de Vidrios, Zona Industrial, Barranquilla</p>
+                                <span class="point-time">Recoger: Vie 15 Nov 10:00 AM</span>
+                            </div>
+                        </div>
+                        <div class="route-line">
+                            <div class="route-duration">
+                                <i class="fas fa-clock"></i>
+                                8h 0m
+                            </div>
+                            <div class="route-distance">550 km</div>
+                        </div>
+                        <div class="route-point destination">
+                            <div class="point-marker">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="point-details">
+                                <h4>Destino</h4>
+                                <p>Almacén Central, Cartagena</p>
+                                <span class="point-time">Entregar: Vie 15 Nov 6:00 PM</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="trip-details">
+                        <div class="detail-item">
+                            <i class="fas fa-glass-cheers"></i>
+                            <div class="detail-content">
+                                <span class="detail-label">Tipo de carga</span>
+                                <span class="detail-value">Vidrio templado</span>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-weight-hanging"></i>
+                            <div class="detail-content">
+                                <span class="detail-label">Peso / Volumen</span>
+                                <span class="detail-value">2,500 kg / 25m³</span>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <div class="detail-content">
+                                <span class="detail-label">Especial</span>
+                                <span class="detail-value">Manejo delicado</span>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-dollar-sign"></i>
+                            <div class="detail-content">
+                                <span class="detail-label">Precio acordado</span>
+                                <span class="detail-value price">$950,000</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="confirmed-info">
+                        <div class="confirmation-details">
+                            <div class="detail">
+                                <i class="fas fa-file-contract"></i>
+                                <span>Contrato generado</span>
+                            </div>
+                            <div class="detail">
+                                <i class="fas fa-money-bill-wave"></i>
+                                <span>Anticipo: $285,000 (30%)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="client-info">
+                        <div class="client-avatar">
+                            <i class="fas fa-industry"></i>
+                        </div>
+                        <div class="client-details">
+                            <h5>Vidrios Seguros Ltda.</h5>
+                            <div class="client-rating">
+                                <i class="fas fa-star"></i>
+                                <span>4.7 (156 viajes)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="trip-actions">
+                    <button class="btn btn-primary btn-sm" onclick="pendingTrips.viewContract(this)">
+                        <i class="fas fa-file-contract"></i>
+                        Ver Contrato
+                    </button>
+                    <button class="btn btn-success btn-sm" onclick="pendingTrips.startTrip(this)">
+                        <i class="fas fa-play-circle"></i>
+                        Iniciar Viaje
+                    </button>
+                    <button class="btn btn-outline btn-sm" onclick="pendingTrips.contactClient(this)">
+                        <i class="fas fa-phone"></i>
+                        Contactar
+                    </button>
+                </div>
+            </div>
+
+            <!-- Trip Card 4 -->
+            <div class="trip-card" data-status="pending" data-date="next-week" data-type="dangerous" data-price="high">
+                <div class="trip-header">
+                    <div class="trip-badge specialized">
+                        <i class="fas fa-flask"></i>
+                        Especializada
+                    </div>
+                    <div class="trip-meta">
+                        <span class="trip-id">#VC-7833</span>
+                        <span class="trip-date">Solicitado: Hoy 11:20 AM</span>
+                    </div>
+                </div>
+
+                <div class="trip-content">
+                    <div class="route-info">
+                        <div class="route-point origin">
+                            <div class="point-marker">
+                                <i class="fas fa-play-circle"></i>
+                            </div>
+                            <div class="point-details">
+                                <h4>Origen</h4>
+                                <p>Planta Química, Zona Franca, Cartagena</p>
+                                <span class="point-time">Recoger: Lun 18 Nov 9:00 AM</span>
+                            </div>
+                        </div>
+                        <div class="route-line">
+                            <div class="route-duration">
+                                <i class="fas fa-clock"></i>
+                                10h 30m
+                            </div>
+                            <div class="route-distance">680 km</div>
+                        </div>
+                        <div class="route-point destination">
+                            <div class="point-marker">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="point-details">
+                                <h4>Destino</h4>
+                                <p>Refinería, Yumbo - Valle</p>
+                                <span class="point-time">Entregar: Lun 18 Nov 7:30 PM</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="trip-details">
+                        <div class="detail-item">
+                            <i class="fas fa-radiation"></i>
+                            <div class="detail-content">
+                                <span class="detail-label">Tipo de carga</span>
+                                <span class="detail-value">Productos químicos</span>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-weight-hanging"></i>
+                            <div class="detail-content">
+                                <span class="detail-label">Peso / Volumen</span>
+                                <span class="detail-value">15,000 kg / 35m³</span>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-certificate"></i>
+                            <div class="detail-content">
+                                <span class="detail-label">Requisitos</span>
+                                <span class="detail-value">Certificación ADR</span>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-dollar-sign"></i>
+                            <div class="detail-content">
+                                <span class="detail-label">Precio ofertado</span>
+                                <span class="detail-value price">$2,100,000</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="special-requirements">
+                        <h5>Requisitos Especiales:</h5>
+                        <div class="requirements-list">
+                            <span class="requirement-tag">Certificación ADR</span>
+                            <span class="requirement-tag">Tanque certificado</span>
+                            <span class="requirement-tag">Kit emergencias</span>
+                            <span class="requirement-tag">Ruta autorizada</span>
+                        </div>
+                    </div>
+
+                    <div class="client-info">
+                        <div class="client-avatar">
+                            <i class="fas fa-atom"></i>
+                        </div>
+                        <div class="client-details">
+                            <h5>Química Avanzada S.A.</h5>
+                            <div class="client-rating">
+                                <i class="fas fa-star"></i>
+                                <span>5.0 (67 viajes)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="trip-actions">
+                    <button class="btn btn-success btn-sm" onclick="pendingTrips.acceptTrip(this)">
+                        <i class="fas fa-check-circle"></i>
+                        Aceptar Viaje
+                    </button>
+                    <button class="btn btn-outline btn-sm" onclick="pendingTrips.negotiateTrip(this)">
+                        <i class="fas fa-comments"></i>
+                        Negociar
+                    </button>
+                    <button class="btn btn-danger btn-sm" onclick="pendingTrips.rejectTrip(this)">
+                        <i class="fas fa-times-circle"></i>
+                        Rechazar
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Empty State -->
+        <div class="empty-state" id="emptyState" style="display: none;">
+            <div class="empty-icon">
+                <i class="fas fa-inbox"></i>
+            </div>
+            <h3>No hay viajes pendientes</h3>
+            <p>No tienes solicitudes de viaje que coincidan con los filtros aplicados.</p>
+            <button class="btn btn-primary" onclick="pendingTrips.clearFilters()">
+                <i class="fas fa-times"></i>
+                Limpiar Filtros
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Negotiation Modal -->
+<div class="modal" id="negotiationModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Negociar Precio del Viaje</h3>
+            <button class="modal-close" onclick="pendingTrips.closeModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="negotiation-info">
+                <div class="current-offer">
+                    <h4>Oferta Actual del Cliente</h4>
+                    <div class="offer-amount">$750,000</div>
+                </div>
+                <div class="negotiation-form">
+                    <div class="form-group">
+                        <label for="counterOffer">Tu Contraoferta</label>
+                        <div class="input-group">
+                            <span class="input-prefix">$</span>
+                            <input type="number" id="counterOffer" class="form-input" placeholder="850000" min="750000" max="1200000">
+                        </div>
+                        <div class="offer-range">
+                            <span>Mín: $750,000</span>
+                            <span>Máx recomendado: $1,200,000</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="offerMessage">Mensaje (Opcional)</label>
+                        <textarea id="offerMessage" class="form-textarea" placeholder="Explica brevemente tu propuesta de precio..." rows="3"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-outline" onclick="pendingTrips.closeModal()">
+                    Cancelar
+                </button>
+                <button class="btn btn-primary" onclick="pendingTrips.submitCounterOffer()">
+                    <i class="fas fa-paper-plane"></i>
+                    Enviar Contraoferta
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/pending_trips.js') }}"></script>
+{% endblock %}

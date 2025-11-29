@@ -1,0 +1,542 @@
+{% extends "/carriers/base_carrier.html" %}
+
+{% block title %}Cargas Disponibles - ConnectCargo{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/carrier_loads.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="carrier-loads-container">
+    <!-- Header -->
+    <div class="carrier-loads-header">
+        <div class="carrier-loads-header-content">
+            <div class="carrier-loads-header-text">
+                <h1>Cargas Disponibles</h1>
+                <p>Encuentra cargas que se adapten a tu ruta y capacidad</p>
+            </div>
+            <div class="carrier-loads-header-stats">
+                <div class="carrier-stat-card">
+                    <div class="carrier-stat-icon">
+                        <i class="fas fa-boxes"></i>
+                    </div>
+                    <div class="carrier-stat-info">
+                        <span class="carrier-stat-number" id="carrierTotalLoads">24</span>
+                        <span class="carrier-stat-label">Cargas Disponibles</span>
+                    </div>
+                </div>
+                <div class="carrier-stat-card">
+                    <div class="carrier-stat-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div class="carrier-stat-info">
+                        <span class="carrier-stat-number" id="carrierNearbyLoads">8</span>
+                        <span class="carrier-stat-label">Cercanas a Ti</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Filters -->
+        <div class="carrier-quick-filters">
+            <div class="carrier-filter-tags">
+                <button class="carrier-filter-tag carrier-filter-active" data-filter="all">
+                    Todas las Cargas
+                </button>
+                <button class="carrier-filter-tag" data-filter="nearby">
+                    <i class="fas fa-location-dot"></i>
+                    Cercanas
+                </button>
+                <button class="carrier-filter-tag" data-filter="urgent">
+                    <i class="fas fa-clock"></i>
+                    Urgentes
+                </button>
+                <button class="carrier-filter-tag" data-filter="matching">
+                    <i class="fas fa-check-circle"></i>
+                    Coinciden con mi Ruta
+                </button>
+            </div>
+            <div class="carrier-view-controls">
+                <button class="carrier-view-btn carrier-view-active" data-view="grid">
+                    <i class="fas fa-th"></i>
+                </button>
+                <button class="carrier-view-btn" data-view="list">
+                    <i class="fas fa-list"></i>
+                </button>
+                <button class="carrier-btn carrier-btn-outline" id="carrierOpenFilters">
+                    <i class="fas fa-filter"></i>
+                    Filtros Avanzados
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="carrier-loads-content">
+        <!-- Filters Sidebar -->
+        <div class="carrier-filters-sidebar" id="carrierFiltersSidebar">
+            <div class="carrier-filters-header">
+                <h3>Filtros Avanzados</h3>
+                <button class="carrier-filters-close" id="carrierCloseFilters">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="carrier-filters-content">
+                <!-- Origen y Destino -->
+                <div class="carrier-filter-group">
+                    <h4>Ubicación</h4>
+                    <div class="carrier-filter-field">
+                        <label>Origen</label>
+                        <input type="text" id="carrierFilterOrigin" placeholder="Ciudad o región">
+                    </div>
+                    <div class="carrier-filter-field">
+                        <label>Destino</label>
+                        <input type="text" id="carrierFilterDestination" placeholder="Ciudad o región">
+                    </div>
+                </div>
+
+                <!-- Fechas -->
+                <div class="carrier-filter-group">
+                    <h4>Fechas</h4>
+                    <div class="carrier-filter-field">
+                        <label>Recogida Desde</label>
+                        <input type="date" id="carrierFilterPickupFrom">
+                    </div>
+                    <div class="carrier-filter-field">
+                        <label>Recogida Hasta</label>
+                        <input type="date" id="carrierFilterPickupTo">
+                    </div>
+                </div>
+
+                <!-- Capacidad y Peso -->
+                <div class="carrier-filter-group">
+                    <h4>Capacidad</h4>
+                    <div class="carrier-filter-field">
+                        <label>Peso Mínimo (kg)</label>
+                        <input type="number" id="carrierFilterWeightMin" placeholder="0">
+                    </div>
+                    <div class="carrier-filter-field">
+                        <label>Peso Máximo (kg)</label>
+                        <input type="number" id="carrierFilterWeightMax" placeholder="10000">
+                    </div>
+                </div>
+
+                <!-- Tipo de Carga -->
+                <div class="carrier-filter-group">
+                    <h4>Tipo de Carga</h4>
+                    <div class="carrier-checkbox-list">
+                        <label class="carrier-checkbox-label">
+                            <input type="checkbox" name="cargo_type" value="general">
+                            <span class="carrier-checkmark"></span>
+                            Carga General
+                        </label>
+                        <label class="carrier-checkbox-label">
+                            <input type="checkbox" name="cargo_type" value="refrigerated">
+                            <span class="carrier-checkmark"></span>
+                            Refrigerada
+                        </label>
+                        <label class="carrier-checkbox-label">
+                            <input type="checkbox" name="cargo_type" value="dangerous">
+                            <span class="carrier-checkmark"></span>
+                            Materiales Peligrosos
+                        </label>
+                        <label class="carrier-checkbox-label">
+                            <input type="checkbox" name="cargo_type" value="fragile">
+                            <span class="carrier-checkmark"></span>
+                            Frágil
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Precio -->
+                <div class="carrier-filter-group">
+                    <h4>Precio</h4>
+                    <div class="carrier-filter-field">
+                        <label>Precio Mínimo</label>
+                        <input type="number" id="carrierFilterPriceMin" placeholder="$0">
+                    </div>
+                    <div class="carrier-filter-field">
+                        <label>Precio Máximo</label>
+                        <input type="number" id="carrierFilterPriceMax" placeholder="$5000">
+                    </div>
+                </div>
+
+                <!-- Acciones -->
+                <div class="carrier-filter-actions">
+                    <button class="carrier-btn carrier-btn-primary" id="carrierApplyFilters">
+                        Aplicar Filtros
+                    </button>
+                    <button class="carrier-btn carrier-btn-outline" id="carrierResetFilters">
+                        Limpiar Filtros
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loads Grid -->
+        <div class="carrier-loads-main">
+            <!-- Search and Sort -->
+            <div class="carrier-loads-toolbar">
+                <div class="carrier-search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="carrierLoadsSearch" placeholder="Buscar por origen, destino o tipo de carga...">
+                </div>
+                <div class="carrier-sort-controls">
+                    <select id="carrierSortSelect">
+                        <option value="newest">Más Recientes</option>
+                        <option value="price_high">Mayor Precio</option>
+                        <option value="price_low">Menor Precio</option>
+                        <option value="distance">Más Cercanas</option>
+                        <option value="urgency">Más Urgentes</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Loads Grid/List -->
+            <div class="carrier-loads-view carrier-grid-view" id="carrierLoadsView">
+                <!-- Load Card 1 -->
+                <div class="carrier-load-card" data-load-id="1">
+                    <div class="carrier-load-header">
+                        <span class="carrier-load-badge carrier-load-urgent">Urgente</span>
+                        <span class="carrier-load-distance">15 km</span>
+                    </div>
+                    
+                    <div class="carrier-load-route">
+                        <div class="carrier-route-point">
+                            <div class="carrier-point-icon">
+                                <i class="fas fa-play"></i>
+                            </div>
+                            <div class="carrier-point-info">
+                                <span class="carrier-point-city">Bogotá, DC</span>
+                                <span class="carrier-point-address">Centro Industrial</span>
+                            </div>
+                        </div>
+                        <div class="carrier-route-line"></div>
+                        <div class="carrier-route-point">
+                            <div class="carrier-point-icon">
+                                <i class="fas fa-flag-checkered"></i>
+                            </div>
+                            <div class="carrier-point-info">
+                                <span class="carrier-point-city">Medellín, ANT</span>
+                                <span class="carrier-point-address">Zona Industrial</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="carrier-load-details">
+                        <div class="carrier-detail-item">
+                            <i class="fas fa-weight-hanging"></i>
+                            <span>1,200 kg</span>
+                        </div>
+                        <div class="carrier-detail-item">
+                            <i class="fas fa-ruler-combined"></i>
+                            <span>12m³</span>
+                        </div>
+                        <div class="carrier-detail-item">
+                            <i class="fas fa-box"></i>
+                            <span>Carga General</span>
+                        </div>
+                    </div>
+
+                    <div class="carrier-load-timeline">
+                        <div class="carrier-timeline-item">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>Recoger: Hoy 14:00</span>
+                        </div>
+                        <div class="carrier-timeline-item">
+                            <i class="fas fa-clock"></i>
+                            <span>Entregar: Mañana 10:00</span>
+                        </div>
+                    </div>
+
+                    <div class="carrier-load-price">
+                        <span class="carrier-price-amount">$850.000</span>
+                        <span class="carrier-price-note">Precio fijo</span>
+                    </div>
+
+                    <div class="carrier-load-actions">
+                        <button class="carrier-btn carrier-btn-outline carrier-btn-sm">
+                            <i class="fas fa-info-circle"></i>
+                            Detalles
+                        </button>
+                        <button class="carrier-btn carrier-btn-primary carrier-btn-sm carrier-btn-accept">
+                            <i class="fas fa-check"></i>
+                            Aceptar Carga
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Load Card 2 -->
+                <div class="carrier-load-card" data-load-id="2">
+                    <div class="carrier-load-header">
+                        <span class="carrier-load-badge carrier-load-matching">Coincide con tu Ruta</span>
+                        <span class="carrier-load-distance">8 km</span>
+                    </div>
+                    
+                    <div class="carrier-load-route">
+                        <div class="carrier-route-point">
+                            <div class="carrier-point-icon">
+                                <i class="fas fa-play"></i>
+                            </div>
+                            <div class="carrier-point-info">
+                                <span class="carrier-point-city">Cali, VAL</span>
+                                <span class="carrier-point-address">Centro Logístico</span>
+                            </div>
+                        </div>
+                        <div class="carrier-route-line"></div>
+                        <div class="carrier-route-point">
+                            <div class="carrier-point-icon">
+                                <i class="fas fa-flag-checkered"></i>
+                            </div>
+                            <div class="carrier-point-info">
+                                <span class="carrier-point-city">Pereira, RIS</span>
+                                <span class="carrier-point-address">Zona Franca</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="carrier-load-details">
+                        <div class="carrier-detail-item">
+                            <i class="fas fa-weight-hanging"></i>
+                            <span>800 kg</span>
+                        </div>
+                        <div class="carrier-detail-item">
+                            <i class="fas fa-ruler-combined"></i>
+                            <span>8m³</span>
+                        </div>
+                        <div class="carrier-detail-item">
+                            <i class="fas fa-snowflake"></i>
+                            <span>Refrigerada</span>
+                        </div>
+                    </div>
+
+                    <div class="carrier-load-timeline">
+                        <div class="carrier-timeline-item">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>Recoger: 15 Dic 09:00</span>
+                        </div>
+                        <div class="carrier-timeline-item">
+                            <i class="fas fa-clock"></i>
+                            <span>Entregar: 15 Dic 18:00</span>
+                        </div>
+                    </div>
+
+                    <div class="carrier-load-price">
+                        <span class="carrier-price-amount">$620.000</span>
+                        <span class="carrier-price-note">Negociable</span>
+                    </div>
+
+                    <div class="carrier-load-actions">
+                        <button class="carrier-btn carrier-btn-outline carrier-btn-sm">
+                            <i class="fas fa-info-circle"></i>
+                            Detalles
+                        </button>
+                        <button class="carrier-btn carrier-btn-primary carrier-btn-sm carrier-btn-accept">
+                            <i class="fas fa-check"></i>
+                            Aceptar Carga
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Load Card 3 -->
+                <div class="carrier-load-card" data-load-id="3">
+                    <div class="carrier-load-header">
+                        <span class="carrier-load-badge carrier-load-new">Nueva</span>
+                        <span class="carrier-load-distance">25 km</span>
+                    </div>
+                    
+                    <div class="carrier-load-route">
+                        <div class="carrier-route-point">
+                            <div class="carrier-point-icon">
+                                <i class="fas fa-play"></i>
+                            </div>
+                            <div class="carrier-point-info">
+                                <span class="carrier-point-city">Barranquilla, ATL</span>
+                                <span class="carrier-point-address">Puerto Industrial</span>
+                            </div>
+                        </div>
+                        <div class="carrier-route-line"></div>
+                        <div class="carrier-route-point">
+                            <div class="carrier-point-icon">
+                                <i class="fas fa-flag-checkered"></i>
+                            </div>
+                            <div class="carrier-point-info">
+                                <span class="carrier-point-city">Cartagena, BOL</span>
+                                <span class="carrier-point-address">Zona Portuaria</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="carrier-load-details">
+                        <div class="carrier-detail-item">
+                            <i class="fas fa-weight-hanging"></i>
+                            <span>2,500 kg</span>
+                        </div>
+                        <div class="carrier-detail-item">
+                            <i class="fas fa-ruler-combined"></i>
+                            <span>18m³</span>
+                        </div>
+                        <div class="carrier-detail-item">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <span>Materiales Peligrosos</span>
+                        </div>
+                    </div>
+
+                    <div class="carrier-load-timeline">
+                        <div class="carrier-timeline-item">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>Recoger: 16 Dic 08:00</span>
+                        </div>
+                        <div class="carrier-timeline-item">
+                            <i class="fas fa-clock"></i>
+                            <span>Entregar: 17 Dic 12:00</span>
+                        </div>
+                    </div>
+
+                    <div class="carrier-load-price">
+                        <span class="carrier-price-amount">$1.200.000</span>
+                        <span class="carrier-price-note">Certificación requerida</span>
+                    </div>
+
+                    <div class="carrier-load-actions">
+                        <button class="carrier-btn carrier-btn-outline carrier-btn-sm">
+                            <i class="fas fa-info-circle"></i>
+                            Detalles
+                        </button>
+                        <button class="carrier-btn carrier-btn-primary carrier-btn-sm carrier-btn-accept">
+                            <i class="fas fa-check"></i>
+                            Aceptar Carga
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Load Card 4 -->
+                <div class="carrier-load-card" data-load-id="4">
+                    <div class="carrier-load-header">
+                        <span class="carrier-load-badge carrier-load-express">Express</span>
+                        <span class="carrier-load-distance">12 km</span>
+                    </div>
+                    
+                    <div class="carrier-load-route">
+                        <div class="carrier-route-point">
+                            <div class="carrier-point-icon">
+                                <i class="fas fa-play"></i>
+                            </div>
+                            <div class="carrier-point-info">
+                                <span class="carrier-point-city">Bucaramanga, SAN</span>
+                                <span class="carrier-point-address">Centro Comercial</span>
+                            </div>
+                        </div>
+                        <div class="carrier-route-line"></div>
+                        <div class="carrier-route-point">
+                            <div class="carrier-point-icon">
+                                <i class="fas fa-flag-checkered"></i>
+                            </div>
+                            <div class="carrier-point-info">
+                                <span class="carrier-point-city">Cúcuta, NDS</span>
+                                <span class="carrier-point-address">Zona Fronteriza</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="carrier-load-details">
+                        <div class="carrier-detail-item">
+                            <i class="fas fa-weight-hanging"></i>
+                            <span>500 kg</span>
+                        </div>
+                        <div class="carrier-detail-item">
+                            <i class="fas fa-ruler-combined"></i>
+                            <span>6m³</span>
+                        </div>
+                        <div class="carrier-detail-item">
+                            <i class="fas fa-gift"></i>
+                            <span>Frágil</span>
+                        </div>
+                    </div>
+
+                    <div class="carrier-load-timeline">
+                        <div class="carrier-timeline-item">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>Recoger: Hoy 16:00</span>
+                        </div>
+                        <div class="carrier-timeline-item">
+                            <i class="fas fa-clock"></i>
+                            <span>Entregar: Mañana 08:00</span>
+                        </div>
+                    </div>
+
+                    <div class="carrier-load-price">
+                        <span class="carrier-price-amount">$450.000</span>
+                        <span class="carrier-price-note">Manejo especial</span>
+                    </div>
+
+                    <div class="carrier-load-actions">
+                        <button class="carrier-btn carrier-btn-outline carrier-btn-sm">
+                            <i class="fas fa-info-circle"></i>
+                            Detalles
+                        </button>
+                        <button class="carrier-btn carrier-btn-primary carrier-btn-sm carrier-btn-accept">
+                            <i class="fas fa-check"></i>
+                            Aceptar Carga
+                        </button>
+                    </div>
+                </div>
+
+                <!-- More load cards would go here -->
+            </div>
+
+            <!-- Load More -->
+            <div class="carrier-load-more">
+                <button class="carrier-btn carrier-btn-outline" id="carrierLoadMore">
+                    <i class="fas fa-refresh"></i>
+                    Cargar Más Cargas
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Load Details Modal -->
+<div class="carrier-modal" id="carrierLoadDetailsModal">
+    <div class="carrier-modal-content carrier-modal-large">
+        <div class="carrier-modal-header">
+            <h3>Detalles de la Carga</h3>
+            <button class="carrier-modal-close" id="carrierCloseLoadDetails">&times;</button>
+        </div>
+        <div class="carrier-modal-body">
+            <div class="carrier-load-details-content">
+                <!-- Content will be loaded dynamically -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Accept Load Modal -->
+<div class="carrier-modal" id="carrierAcceptLoadModal">
+    <div class="carrier-modal-content">
+        <div class="carrier-modal-header">
+            <h3>Aceptar Carga</h3>
+            <button class="carrier-modal-close" id="carrierCloseAcceptModal">&times;</button>
+        </div>
+        <div class="carrier-modal-body">
+            <p>¿Estás seguro de que quieres aceptar esta carga?</p>
+            <div class="carrier-load-summary" id="carrierAcceptLoadSummary">
+                <!-- Load summary will be loaded here -->
+            </div>
+            <div class="carrier-modal-actions">
+                <button class="carrier-btn carrier-btn-outline" id="carrierCancelAccept">
+                    Cancelar
+                </button>
+                <button class="carrier-btn carrier-btn-primary" id="carrierConfirmAccept">
+                    Sí, Aceptar Carga
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/carrier_loads.js') }}"></script>
+{% endblock %}
